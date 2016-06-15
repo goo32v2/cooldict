@@ -25,8 +25,10 @@ public class AddEditWordActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
         AddEditWordFragment addEditWordFragment = (AddEditWordFragment)
                 getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
@@ -36,11 +38,14 @@ public class AddEditWordActivity extends AppCompatActivity {
 
             if (getIntent().hasExtra(AddEditWordFragment.ARGUMENT_EDIT_WORD_ID)) {
                 wordId = getIntent().getStringExtra(AddEditWordFragment.ARGUMENT_EDIT_WORD_ID);
-                actionBar.setTitle(R.string.edit_word);
+                if (actionBar != null) {
+                    actionBar.setTitle(R.string.edit_word);
+                }
                 Bundle bundle = new Bundle();
                 bundle.putString(AddEditWordFragment.ARGUMENT_EDIT_WORD_ID, wordId);
                 addEditWordFragment.setArguments(bundle);
             } else {
+                assert actionBar != null;
                 actionBar.setTitle(R.string.add_new_word_title);
             }
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),

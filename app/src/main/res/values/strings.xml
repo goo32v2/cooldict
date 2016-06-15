@@ -24,5 +24,7 @@
     <string name="addedit_et_translated_word">Translated</string>
     <string name="addedit_et_dictionary_id">Dictionary</string>
     <string name="ea_not_empty_word_error_text">Word cannot be empty</string>
+    <string name="menu_delete_task">Delete word</string>
+    <string name="no_data">No Data</string>
 
 </resources>

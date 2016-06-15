@@ -71,7 +71,7 @@ public class AddEditWordPresenter implements AddEditWordPresenterContract, DataS
     @Override
     public void onLoaded(WordModel entry) {
         if (mAddWordView.isActive()) {
-            mAddWordView.setWordId(entry.getId());
+//            mAddWordView.setWordId(entry.getId());
             mAddWordView.setOriginalWord(entry.getOriginalWord());
             mAddWordView.setTranslatedWord(entry.getTranslatedWord());
             mAddWordView.setDictionaryId(entry.getDictionaryID());
