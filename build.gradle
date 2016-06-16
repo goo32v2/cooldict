@@ -27,7 +27,7 @@ ext {
     targetSdkVer = 23
 
 // App dependencies versions
-    supportLibraryVer = '23.4.0'
+    supportLibraryVer = '24.0.0'
     guavaVer = '19.0'
     junitVer = '4.12'
     espressoVer = '2.2.2'

@@ -9,19 +9,18 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.addeditword.AddEditWordActivity;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.worddetails.WordDetailActivity;
-import com.goo32v2.cooldict.words.interfaces.ItemListener;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
@@ -37,8 +36,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class WordsFragment extends Fragment implements WordViewContract {
 
     private WordPresenterContract mPresenter;
-    private WordAdapter mWordAdapter;
-    private LinearLayout mWordView;
+    private WordRecycleAdapter mWordAdapter;
+    private RecyclerView mWordRecycleView;
     private View mNoWordsView;
     private ImageView mNoWordsIcon;
     private TextView mNoWordsTextView;
@@ -54,12 +53,6 @@ public class WordsFragment extends Fragment implements WordViewContract {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mWordAdapter = new WordAdapter(new ArrayList<WordModel>(0), new ItemListener<WordModel>() {
-            @Override
-            public void onClick(WordModel clickedItem) {
-                mPresenter.openWordDetail(clickedItem);
-            }
-        });
     }
 
     @Override
@@ -73,9 +66,12 @@ public class WordsFragment extends Fragment implements WordViewContract {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.words_fragment, container, false);
-        ListView listView = (ListView) root.findViewById(R.id.wordsList);
-        listView.setAdapter(mWordAdapter);
-        mWordView = (LinearLayout) root.findViewById(R.id.wordsLL);
+
+        mWordRecycleView = (RecyclerView) root.findViewById(R.id.wordsLL);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
+        mWordAdapter = new WordRecycleAdapter(new ArrayList<WordModel>(0), mPresenter);
+        mWordRecycleView.setLayoutManager(llm);
+        mWordRecycleView.setAdapter(mWordAdapter);
 
         mNoWordsView = root.findViewById(R.id.noWords);
         mNoWordsIcon = (ImageView) root.findViewById(R.id.noWordsIcon);
@@ -104,7 +100,7 @@ public class WordsFragment extends Fragment implements WordViewContract {
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
         );
-        swipeToRefreshLayout.setScrollUpChild(listView);
+        swipeToRefreshLayout.setScrollUpChild(mWordRecycleView);
 
         swipeToRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -142,7 +138,7 @@ public class WordsFragment extends Fragment implements WordViewContract {
     @Override
     public void showWords(List<WordModel> words) {
         mWordAdapter.replaceData(words);
-        mWordView.setVisibility(View.VISIBLE);
+        mWordRecycleView.setVisibility(View.VISIBLE);
         mNoWordsView.setVisibility(View.GONE);
     }
 
@@ -178,7 +174,7 @@ public class WordsFragment extends Fragment implements WordViewContract {
     }
 
     private void showNoWordsView(String mainText, boolean showAddView) {
-        mWordView.setVisibility(View.GONE);
+        mWordRecycleView.setVisibility(View.GONE);
         mNoWordsView.setVisibility(View.VISIBLE);
 
         mNoWordsTextView.setText(mainText);
