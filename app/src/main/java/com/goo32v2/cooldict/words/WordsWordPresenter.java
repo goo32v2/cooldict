@@ -61,6 +61,9 @@ public class WordsWordPresenter implements WordPresenterContract {
                 if (!mWordsView.isActive()) {
                     return;
                 }
+                if (showLoadingUi) {
+                    mWordsView.setLoadingIndicator(false);
+                }
                 // TODO: 29-May-16 what about error?
                 mWordsView.showNoWords();
             }
