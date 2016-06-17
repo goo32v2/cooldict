@@ -12,26 +12,15 @@ import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
  * Created on 16-Jun-16. (c) CoolDict
  */
 
-public class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class RecycleViewHolder extends RecyclerView.ViewHolder {
 
     public TextView originalWordTV;
     public TextView translatedWordTV;
-    private WordPresenterContract mPresenter;
-    private WordModel mModel;
 
-    public RecycleViewHolder(View itemView, WordPresenterContract presenterContract) {
+    public RecycleViewHolder(View itemView) {
         super(itemView);
         originalWordTV = (TextView) itemView.findViewById(R.id.original_word);
         translatedWordTV = (TextView) itemView.findViewById(R.id.translated_word);
-        mPresenter = presenterContract;
     }
 
-    @Override
-    public void onClick(View v) {
-        mPresenter.openWordDetail(mModel);
-    }
-
-    public void setWordModel(WordModel model){
-        this.mModel = model;
-    }
 }

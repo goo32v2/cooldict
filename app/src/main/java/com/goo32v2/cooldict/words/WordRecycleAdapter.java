@@ -17,10 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created on 16-Jun-16. (c) CoolDict
  */
 
-public class WordRecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder> {
+public class WordRecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder>
+        implements View.OnClickListener {
 
     private List<WordModel> mWords;
     private WordPresenterContract mPresenter;
+    private WordModel mActiveWordModel;
 
     WordRecycleAdapter(List<WordModel> w, WordPresenterContract presenter){
         setList(w);
@@ -35,8 +37,8 @@ public class WordRecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder> 
     @Override
     public RecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_item, parent, false);
-        RecycleViewHolder rvh = new RecycleViewHolder(root, mPresenter);
-        root.setOnClickListener(rvh);
+        RecycleViewHolder rvh = new RecycleViewHolder(root);
+        root.setOnClickListener(this);
         return rvh;
     }
 
@@ -44,13 +46,15 @@ public class WordRecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder> 
     public void onBindViewHolder(RecycleViewHolder holder, int position) {
         holder.originalWordTV.setText(mWords.get(position).getOriginalWord());
         holder.translatedWordTV.setText(mWords.get(position).getTranslatedWord());
-        holder.setWordModel(mWords.get(position));
+        this.mActiveWordModel = mWords.get(position);
     }
 
     @Override
     public int getItemCount() {
         return mWords.size();
     }
+
+
 
     public void replaceData(List<WordModel> words){
         setList(words);
@@ -59,5 +63,10 @@ public class WordRecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder> 
 
     public void setList(List<WordModel> list) {
         this.mWords = checkNotNull(list);
+    }
+
+    @Override
+    public void onClick(View v) {
+        mPresenter.openWordDetail(mActiveWordModel);
     }
 }
