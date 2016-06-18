@@ -85,7 +85,7 @@ public class AddEditWordFragment extends Fragment implements AddEditWordViewCont
 
         View root = inflater.inflate(R.layout.fragment_add_edit_word, container, false);
 
-//        mWordId = (TextView) root.findViewById(R.id.ea_word_id);
+        mWordId = (TextView) root.findViewById(R.id.ea_word_id);
         mOriginalWord = (TextView) root.findViewById(R.id.ea_original_word);
         mTranslatedWord = (TextView) root.findViewById(R.id.ea_translated_word);
         mDictionaryId = (TextView) root.findViewById(R.id.ea_dictionary_id);

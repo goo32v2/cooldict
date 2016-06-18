@@ -11,12 +11,13 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <!--<EditText-->
-            <!--android:id="@+id/ea_word_id"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:hint="@string/addedit_et_word_id"-->
-            <!--android:singleLine="true" />-->
+        <EditText
+            android:id="@+id/ea_word_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/addedit_et_word_id"
+            android:visibility="gone"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/ea_original_word"
