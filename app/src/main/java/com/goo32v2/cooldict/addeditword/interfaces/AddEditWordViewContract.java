@@ -20,5 +20,5 @@ public interface AddEditWordViewContract extends BaseView<AddEditWordPresenterCo
 
     void setTranslatedWord(String translatedWord);
 
-    void setDictionaryId(String dictionaryID);
+    void setDictionary(String dictionary);
 }

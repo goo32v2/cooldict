@@ -33,12 +33,13 @@
             android:hint="@string/addedit_et_translated_word"
             android:singleLine="true" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/ea_dictionary_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/addedit_et_dictionary_id"
-            android:singleLine="true" />
+            android:completionThreshold="1"
+            />
 
 
 

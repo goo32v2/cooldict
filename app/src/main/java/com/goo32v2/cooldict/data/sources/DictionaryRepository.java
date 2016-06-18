@@ -113,6 +113,25 @@ public class DictionaryRepository implements DictDataSource {
     }
 
     @Override
+    public void getByTitle(@NonNull String dictionaryTitle,
+                           @NonNull final GetEntryCallback<DictionaryModel> callback) {
+        checkNotNull(mDictionaryDao);
+        checkNotNull(callback);
+
+        mDictionaryDao.getByTitle(dictionaryTitle, new GetEntryCallback<DictionaryModel>() {
+            @Override
+            public void onLoaded(DictionaryModel entry) {
+                callback.onLoaded(entry);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    @Override
     public void getDefaultDictionary(@NonNull final GetEntryCallback<DictionaryModel> callback) {
         if (mCache.get(DEFAULT_DICTIONARY) != null){
             callback.onLoaded((DictionaryModel) mCache.get(DEFAULT_DICTIONARY));

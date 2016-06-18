@@ -162,6 +162,41 @@ public class DictionaryDao implements DictDataSource {
     }
 
     @Override
+    public void getByTitle(@NonNull String dictionaryTitle, @NonNull GetEntryCallback<DictionaryModel> callback) {
+        db = mDatabaseHelper.getReadableDatabase();
+
+        String[] projection = {
+                DictionaryEntry.COLUMN_ENTRY_ID,
+                DictionaryEntry.COLUMN_TITLE,
+        };
+
+        String selection = DictionaryEntry.COLUMN_TITLE + " LIKE ?";
+        String[] selectionArgs = { dictionaryTitle };
+
+        Cursor c = db.query(
+                DictionaryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
+        );
+
+        DictionaryModel dictionary = null;
+        if (c != null && c.getCount() > 0 && c.moveToFirst()){
+            String itemId = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_ENTRY_ID));
+            String title = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_TITLE));
+            dictionary = new DictionaryModel(itemId, title);
+        }
+
+        if (c != null){
+            c.close();
+        }
+        db.close();
+
+        if (dictionary != null){
+            callback.onLoaded(dictionary);
+        } else {
+            callback.onDataNotAvailable();
+        }
+    }
+
+    @Override
     public void getDefaultDictionary(@NonNull final GetEntryCallback<DictionaryModel> callback) {
         get(SourcesConstants.DEFAULT_DICTIONARY_ID, new GetEntryCallback<DictionaryModel>() {
             @Override

@@ -10,16 +10,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.addeditword.interfaces.AddEditWordPresenterContract;
 import com.goo32v2.cooldict.addeditword.interfaces.AddEditWordViewContract;
+import com.goo32v2.cooldict.data.models.DictionaryModel;
+import com.goo32v2.cooldict.data.sources.DictionaryRepository;
+import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
-public class AddEditWordFragment extends Fragment implements AddEditWordViewContract {
+public class AddEditWordFragment extends Fragment implements AddEditWordViewContract, DataSource.GetListCallback<DictionaryModel>
+{
 
     public static final String ARGUMENT_EDIT_WORD_ID = "EDIT_WORD_ID";
 
@@ -28,9 +38,11 @@ public class AddEditWordFragment extends Fragment implements AddEditWordViewCont
     private TextView mWordId;
     private TextView mOriginalWord;
     private TextView mTranslatedWord;
-    private TextView mDictionaryId;
-
+    private AutoCompleteTextView mDictionary;
     private String mEditWordId;
+
+    private DictionaryRepository dictionaryRepository;
+    private List<DictionaryModel> dictionaries;
 
     public static AddEditWordFragment newInstance() {
         return new AddEditWordFragment();
@@ -65,14 +77,14 @@ public class AddEditWordFragment extends Fragment implements AddEditWordViewCont
                     mPresenter.createWord(
                             mOriginalWord.getText().toString(),
                             mTranslatedWord.getText().toString(),
-                            mDictionaryId.getText().toString()
+                            mDictionary.getText().toString()
                     );
                 } else {
                     mPresenter.updateWord(
                             mWordId.getText().toString(),
                             mOriginalWord.getText().toString(),
                             mTranslatedWord.getText().toString(),
-                            mDictionaryId.getText().toString()
+                            mDictionary.getText().toString()
                     );
                 }
             }
@@ -82,13 +94,20 @@ public class AddEditWordFragment extends Fragment implements AddEditWordViewCont
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        this.dictionaryRepository = Injection.provideDictionaryRepository(getActivity().getApplicationContext());
         View root = inflater.inflate(R.layout.fragment_add_edit_word, container, false);
 
         mWordId = (TextView) root.findViewById(R.id.ea_word_id);
         mOriginalWord = (TextView) root.findViewById(R.id.ea_original_word);
         mTranslatedWord = (TextView) root.findViewById(R.id.ea_translated_word);
-        mDictionaryId = (TextView) root.findViewById(R.id.ea_dictionary_id);
+        mDictionary = (AutoCompleteTextView) root.findViewById(R.id.ea_dictionary_id);
+
+        ArrayAdapter<String> dictionaryAdapter = new ArrayAdapter<>(
+                getActivity().getApplicationContext(),
+                R.layout.auto_complete_item,
+                getDictionaryNames());
+
+        mDictionary.setAdapter(dictionaryAdapter);
 
         setHasOptionsMenu(true);
         setRetainInstance(true);
@@ -137,7 +156,26 @@ public class AddEditWordFragment extends Fragment implements AddEditWordViewCont
     }
 
     @Override
-    public void setDictionaryId(String dictionaryID) {
-        mDictionaryId.setText(dictionaryID);
+    public void setDictionary(String dictionary) {
+        mDictionary.setText(dictionary);
+    }
+
+    private List<String> getDictionaryNames(){
+        dictionaryRepository.get(this);
+        List<String> result = new ArrayList<>();
+        for (DictionaryModel model : dictionaries) {
+            result.add(model.getTitle());
+        }
+        return result;
+    }
+
+    @Override
+    public void onLoaded(List<DictionaryModel> entry) {
+        this.dictionaries = entry;
+    }
+
+    @Override
+    public void onDataNotAvailable() {
+
     }
 }

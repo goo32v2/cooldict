@@ -52,7 +52,9 @@ public class AddEditWordActivity extends AppCompatActivity {
                     addEditWordFragment, R.id.contentFrame);
         }
 
-        new AddEditWordPresenter(wordId, Injection.provideWordRepository(getApplicationContext()),
+        new AddEditWordPresenter(wordId,
+                Injection.provideWordRepository(getApplicationContext()),
+                Injection.provideDictionaryRepository(getApplicationContext()),
                 addEditWordFragment);
     }
 
