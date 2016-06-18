@@ -17,12 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public class WordsWordPresenter implements WordPresenterContract {
+public class WordsPresenter implements WordPresenterContract {
     private final WordRepository mWordsRepository;
     private final WordViewContract mWordsView;
 
 
-    public WordsWordPresenter(@NonNull WordRepository wordsRepository, @NonNull WordViewContract wordsView) {
+    public WordsPresenter(@NonNull WordRepository wordsRepository, @NonNull WordViewContract wordsView) {
         mWordsRepository = checkNotNull(wordsRepository, "wordsRepository cannot be null!");
         mWordsView = checkNotNull(wordsView, "wordsView cannot be null!");
 
