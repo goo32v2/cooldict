@@ -33,8 +33,6 @@ public class WordsActivity extends AppCompatActivity {
     private WordsFragment wordsFragment;
     private DrawerLayout mDrawerLayout;
     private ListView mNavigationLV;
-    private WordsPresenter mWordsPresenter;
-    private ArrayAdapter<String> mNavigationAdapter;
     private DictionaryRepository mDictionaryRepository;
 
 
@@ -57,11 +55,7 @@ public class WordsActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        if (navigationView != null){
-//            setupDrawerContent(navigationView);
-//        }
-        setupDrawerContent(mNavigationLV);
+        setupDrawerContent();
 
          wordsFragment = (WordsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.contentFrame);
@@ -73,7 +67,7 @@ public class WordsActivity extends AppCompatActivity {
                     R.id.contentFrame);
         }
 
-        mWordsPresenter = new WordsPresenter(Injection.provideWordRepository(
+        new WordsPresenter(Injection.provideWordRepository(
                 getApplicationContext()), wordsFragment);
 
         if (savedInstanceState != null){
@@ -82,15 +76,21 @@ public class WordsActivity extends AppCompatActivity {
         }
     }
 
-    private void setupDrawerContent(ListView navLV) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupDrawerContent();
+    }
+
+    private void setupDrawerContent() {
         CallbackHelper callback = new CallbackHelper();
         mDictionaryRepository.get(callback);
-        mNavigationAdapter = new ArrayAdapter<>(
+        ArrayAdapter<String> mNavigationAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
                 callback.getModelStrings());
-        navLV.setAdapter(mNavigationAdapter);
-        navLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mNavigationLV.setAdapter(mNavigationAdapter);
+        mNavigationLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(WordsActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
