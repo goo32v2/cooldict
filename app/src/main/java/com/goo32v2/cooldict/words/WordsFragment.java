@@ -35,6 +35,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class WordsFragment extends Fragment implements WordViewContract {
 
+    public static String DICTIONARY_NAME = "dictionaryName";
     private WordPresenterContract mPresenter;
     private WordRecycleAdapter mWordAdapter;
     private RecyclerView mWordRecycleView;
@@ -58,7 +59,7 @@ public class WordsFragment extends Fragment implements WordViewContract {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+        mPresenter.start(getArguments().getString(DICTIONARY_NAME));
     }
 
     @Nullable

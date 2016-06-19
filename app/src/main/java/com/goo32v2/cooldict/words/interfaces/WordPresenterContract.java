@@ -12,9 +12,13 @@ import com.goo32v2.cooldict.data.models.WordModel;
 
 public interface WordPresenterContract extends BasePresenter {
 
+    void start(String dict);
+
     void result(int requestCode, int resultCode);
 
     void loadWords(boolean showLoadingUi);
+
+    void loadWords(String dictionaryName,boolean showLoadingUi);
 
     void addNewWord();
 

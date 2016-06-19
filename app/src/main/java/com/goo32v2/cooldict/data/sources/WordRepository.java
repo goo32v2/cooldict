@@ -92,6 +92,23 @@ public class WordRepository implements WordDataSource {
     }
 
     @Override
+    public void get(final @NonNull String dictionaryId, final @NonNull GetListCallback<WordModel> callback) {
+        checkNotNull(callback);
+
+        mWordDao.get(dictionaryId, new GetListCallback<WordModel>() {
+            @Override
+            public void onLoaded(List<WordModel> entry) {
+                callback.onLoaded(entry);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    @Override
     public void save(@NonNull WordModel entry) {
         checkNotNull(entry);
         mWordDao.save(entry);
@@ -115,20 +132,5 @@ public class WordRepository implements WordDataSource {
         mWordDao.update(id, newModel);
         mCache.remove(id);
         mCache.push(id, newModel);
-    }
-
-    @Override
-    public void getAllWordsByDictionary(String dictionaryID, final GetListCallback<WordModel> callback) {
-        mWordDao.getAllWordsByDictionary(dictionaryID, new GetListCallback<WordModel>() {
-            @Override
-            public void onLoaded(List<WordModel> entry) {
-                callback.onLoaded(entry);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                callback.onDataNotAvailable();
-            }
-        });
     }
 }

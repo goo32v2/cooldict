@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
+import com.goo32v2.cooldict.data.sources.DictionaryRepository;
 import com.goo32v2.cooldict.data.sources.WordRepository;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
@@ -19,11 +20,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class WordsPresenter implements WordPresenterContract {
     private final WordRepository mWordsRepository;
+    private final DictionaryRepository mDictionaryRepository;
     private final WordViewContract mWordsView;
 
 
-    public WordsPresenter(@NonNull WordRepository wordsRepository, @NonNull WordViewContract wordsView) {
+    public WordsPresenter(@NonNull WordRepository wordsRepository,
+                          @NonNull DictionaryRepository dictionaryRepository,
+                          @NonNull WordViewContract wordsView) {
         mWordsRepository = checkNotNull(wordsRepository, "wordsRepository cannot be null!");
+        mDictionaryRepository = checkNotNull(dictionaryRepository, "dictionaryRepository cannot be null!");
         mWordsView = checkNotNull(wordsView, "wordsView cannot be null!");
 
         mWordsView.setPresenter(this);
@@ -31,7 +36,15 @@ public class WordsPresenter implements WordPresenterContract {
 
     @Override
     public void start() {
-        loadWords(true);
+    }
+
+    @Override
+    public void start(String dict) {
+        if (dict == null){
+            loadWords(true);
+        } else{
+            loadWords(dict, true);
+        }
     }
 
     @Override
@@ -44,7 +57,32 @@ public class WordsPresenter implements WordPresenterContract {
             mWordsView.setLoadingIndicator(true);
         }
 
-        mWordsRepository.get(new DataSource.GetListCallback<WordModel>() {
+        mWordsRepository.get(getCallback(showLoadingUi));
+    }
+
+    @Override
+    public void loadWords(final String dictionaryName, final boolean showLoadingUi) {
+        if (showLoadingUi) {
+            mWordsView.setLoadingIndicator(true);
+        }
+
+        mDictionaryRepository.getByTitle(dictionaryName, new DataSource.GetEntryCallback<DictionaryModel>() {
+            @Override
+            public void onLoaded(DictionaryModel entry) {
+                mWordsRepository.get(entry.getId(), getCallback(showLoadingUi));
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                getCallback(showLoadingUi).onDataNotAvailable();
+            }
+        });
+
+
+    }
+
+    private DataSource.GetListCallback<WordModel> getCallback(final boolean showLoadingUi){
+        return new DataSource.GetListCallback<WordModel>() {
             @Override
             public void onLoaded(List<WordModel> entry) {
                 if (!mWordsView.isActive()) {
@@ -67,7 +105,7 @@ public class WordsPresenter implements WordPresenterContract {
                 // TODO: 29-May-16 what about error?
                 mWordsView.showNoWords();
             }
-        });
+        };
     }
 
     @Override

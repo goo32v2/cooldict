@@ -1,7 +1,6 @@
 package com.goo32v2.cooldict.words;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
@@ -29,8 +27,7 @@ public class WordsActivity extends AppCompatActivity {
 
     private static final String CURRENT_DICTIONARY = "CURRENT_DICTIONARY";
 
-    @Nullable
-    private WordsFragment wordsFragment;
+    private static boolean isAnyFragmentSetup = false;
     private DrawerLayout mDrawerLayout;
     private ListView mNavigationLV;
     private DictionaryRepository mDictionaryRepository;
@@ -57,23 +54,37 @@ public class WordsActivity extends AppCompatActivity {
 
         setupDrawerContent();
 
-         wordsFragment = (WordsFragment)
-                getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-
-        if (wordsFragment == null){
-            wordsFragment = WordsFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    wordsFragment,
-                    R.id.contentFrame);
-        }
-
-        new WordsPresenter(Injection.provideWordRepository(
-                getApplicationContext()), wordsFragment);
+        setNewFragment(null);
 
         if (savedInstanceState != null){
             // TODO: 17-May-16 Get serialized current dictionary from navigation drawer
             savedInstanceState.getSerializable(CURRENT_DICTIONARY);
         }
+    }
+
+    private void setNewFragment(String dictName){
+
+        WordsFragment fragment = WordsFragment.newInstance();
+        Bundle bundle = new Bundle();
+        bundle.putString(WordsFragment.DICTIONARY_NAME, dictName);
+        fragment.setArguments(bundle);
+
+        if (!isAnyFragmentSetup){
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    fragment,
+                    R.id.contentFrame);
+            isAnyFragmentSetup = true;
+        } else {
+            ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(),
+                    fragment,
+                    R.id.contentFrame);
+        }
+
+        new WordsPresenter(
+                Injection.provideWordRepository(getApplicationContext()),
+                Injection.provideDictionaryRepository(getApplicationContext()),
+                fragment
+        );
     }
 
     @Override
@@ -93,7 +104,8 @@ public class WordsActivity extends AppCompatActivity {
         mNavigationLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(WordsActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                mDrawerLayout.closeDrawers();
+                setNewFragment(parent.getItemAtPosition(position).toString());
             }
         });
     }
