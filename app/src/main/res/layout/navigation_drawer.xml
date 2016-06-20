@@ -25,20 +25,20 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:src="@android:drawable/sym_def_app_icon"
-            android:contentDescription="ava" />
+            android:contentDescription="@string/nvd_iv_description" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:text="Android Studio"
+            android:text="@string/nvd_tv_username"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="android.studio@android.com" />
+            android:text="@string/nvd_tv_email" />
 
     </LinearLayout>
 

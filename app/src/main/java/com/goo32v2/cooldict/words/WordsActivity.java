@@ -1,5 +1,6 @@
 package com.goo32v2.cooldict.words;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +18,7 @@ import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.sources.DictionaryRepository;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
+import com.goo32v2.cooldict.settings.SettingsActivity;
 import com.goo32v2.cooldict.utils.ActivityUtils;
 
 import java.util.ArrayList;
@@ -134,10 +136,16 @@ public class WordsActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            showSettings();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivityForResult(intent, SettingsActivity.REQUEST_SETTINGS);
     }
 
     class CallbackHelper implements DataSource.GetListCallback<DictionaryModel>{
