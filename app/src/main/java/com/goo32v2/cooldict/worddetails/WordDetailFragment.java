@@ -81,7 +81,7 @@ public class WordDetailFragment extends Fragment implements WordDetailViewContra
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_word_detail_menu, menu);
+        inflater.inflate(R.menu.menu_word_detail, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

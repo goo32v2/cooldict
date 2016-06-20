@@ -34,7 +34,7 @@ public class WordRecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder> 
 
     @Override
     public RecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_item, parent, false);
+        View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_words, parent, false);
         RecycleViewHolder rvh = new RecycleViewHolder(root, mPresenter);
         root.setOnClickListener(rvh);
         return rvh;

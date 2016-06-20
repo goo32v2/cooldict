@@ -104,7 +104,7 @@ public class AddEditWordFragment extends Fragment implements AddEditWordViewCont
 
         ArrayAdapter<String> dictionaryAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),
-                R.layout.auto_complete_item,
+                R.layout.item_auto_complete_popup,
                 getDictionaryNames());
 
         mDictionary.setAdapter(dictionaryAdapter);

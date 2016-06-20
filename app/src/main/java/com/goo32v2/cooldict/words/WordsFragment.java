@@ -66,7 +66,7 @@ public class WordsFragment extends Fragment implements WordViewContract {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.words_fragment, container, false);
+        View root = inflater.inflate(R.layout.fragment_words, container, false);
 
         mWordRecycleView = (RecyclerView) root.findViewById(R.id.wordsLL);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
