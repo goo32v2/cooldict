@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">CoolDict</string>
-    <string name="title_activity_words">WordsActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -15,19 +14,17 @@
 
     <string name="words_loading_error_text">Error while loading words</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="edit_word">Edit word</string>
-    <string name="add_new_word_title">New word</string>
-    <string name="addedit_et_original_word">Original</string>
-    <string name="addedit_et_word_id">Word id</string>
-    <string name="addedit_et_translated_word">Translated</string>
-    <string name="addedit_et_dictionary_id">Dictionary</string>
-    <string name="ea_not_empty_word_error_text">Word cannot be empty</string>
-    <string name="menu_delete_task">Delete word</string>
+    <string name="actionbar_title_edit_word_activity">Edit word</string>
+    <string name="actionbar_title_add_new_word_activity">New word</string>
+    <string name="add_new_word_edit_text_original_word">Original</string>
+    <string name="add_new_word_edit_text_word_id">Word id</string>
+    <string name="add_new_word_edit_text_translated_word">Translated</string>
+    <string name="add_new_word_edit_text_dictionary_title">Dictionary</string>
+    <string name="show_empty_word_error_text">Word cannot be empty</string>
+    <string name="word_detail_menu_delete_task_text">Delete word</string>
     <string name="no_data">No Data</string>
 
-    <string name="title_activity_settings">Settings</string>
+    <string name="actionbar_title_settings_activity">Settings</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact

@@ -126,7 +126,7 @@ public class AddEditWordFragment extends Fragment implements AddEditWordViewCont
 
     @Override
     public void showEmptyWordError() {
-        Snackbar.make(mWordId, R.string.ea_not_empty_word_error_text, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mWordId, R.string.show_empty_word_error_text, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

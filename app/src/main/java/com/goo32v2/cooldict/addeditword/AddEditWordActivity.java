@@ -39,14 +39,14 @@ public class AddEditWordActivity extends AppCompatActivity {
             if (getIntent().hasExtra(AddEditWordFragment.ARGUMENT_EDIT_WORD_ID)) {
                 wordId = getIntent().getStringExtra(AddEditWordFragment.ARGUMENT_EDIT_WORD_ID);
                 if (actionBar != null) {
-                    actionBar.setTitle(R.string.edit_word);
+                    actionBar.setTitle(R.string.actionbar_title_edit_word_activity);
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString(AddEditWordFragment.ARGUMENT_EDIT_WORD_ID, wordId);
                 addEditWordFragment.setArguments(bundle);
             } else {
                 assert actionBar != null;
-                actionBar.setTitle(R.string.add_new_word_title);
+                actionBar.setTitle(R.string.actionbar_title_add_new_word_activity);
             }
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     addEditWordFragment, R.id.contentFrame);
