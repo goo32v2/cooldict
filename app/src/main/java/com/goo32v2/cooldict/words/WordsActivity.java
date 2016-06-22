@@ -39,23 +39,11 @@ public class WordsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_words);
 
         mDictionaryRepository = Injection.provideDictionaryRepository(getApplicationContext());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavigationLV = (ListView) findViewById(R.id.navList);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
+        setupView();
         setupDrawerContent();
-
         setNewFragment(null);
 
         if (savedInstanceState != null){
@@ -64,8 +52,44 @@ public class WordsActivity extends AppCompatActivity {
         }
     }
 
+    private void setupView(){
+        setContentView(R.layout.activity_words);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationLV = (ListView) findViewById(R.id.navList);
+        setupDrawer(toolbar);
+    }
+
+    private void setupDrawer(Toolbar toolbar){
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void setupDrawerContent() {
+
+        CallbackHelper callback = new CallbackHelper();
+        mDictionaryRepository.get(callback);
+        ArrayAdapter<String> mNavigationAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                callback.getModelStrings());
+        mNavigationLV.setAdapter(mNavigationAdapter);
+        mNavigationLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mDrawerLayout.closeDrawers();
+                setNewFragment(parent.getItemAtPosition(position).toString());
+            }
+        });
+    }
+
     private void setNewFragment(String dictName){
 
+        // TODO: 22-Jun-16 optimize this by checking data not changed
         WordsFragment fragment = WordsFragment.newInstance();
         Bundle bundle = new Bundle();
         bundle.putString(WordsFragment.DICTIONARY_NAME, dictName);
@@ -95,23 +119,6 @@ public class WordsActivity extends AppCompatActivity {
         setupDrawerContent();
     }
 
-    private void setupDrawerContent() {
-        CallbackHelper callback = new CallbackHelper();
-        mDictionaryRepository.get(callback);
-        ArrayAdapter<String> mNavigationAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                callback.getModelStrings());
-        mNavigationLV.setAdapter(mNavigationAdapter);
-        mNavigationLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mDrawerLayout.closeDrawers();
-                setNewFragment(parent.getItemAtPosition(position).toString());
-            }
-        });
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // TODO: 17-May-16 Save state (dictionary? or implement some kind of sorting?)
@@ -122,19 +129,14 @@ public class WordsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_words, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             showSettings();
             return true;

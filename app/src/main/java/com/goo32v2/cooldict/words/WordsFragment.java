@@ -86,7 +86,7 @@ public class WordsFragment extends Fragment implements WordViewContract {
         });
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
-                getActivity().findViewById(R.id.fab_add_new_word);
+                getActivity().findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
