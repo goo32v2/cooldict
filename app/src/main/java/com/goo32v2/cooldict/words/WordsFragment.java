@@ -145,15 +145,15 @@ public class WordsFragment extends Fragment implements WordViewContract {
 
     @Override
     public void showAddWord() {
-        Intent intent = new Intent(getContext(), AddEditWordActivity.class);
-        startActivityForResult(intent, AddEditWordActivity.REQUEST_ADD_WORD);
+//        Intent intent = new Intent(getContext(), AddEditWordActivity.class);
+//        startActivityForResult(intent, AddEditWordActivity.REQUEST_ADD_WORD);
     }
 
     @Override
     public void showWordDetailUi(WordModel word) {
-        Intent intent = new Intent(getContext(), WordDetailActivity.class);
-        intent.putExtra(WordDetailActivity.EXTRA_WORD_ID, word.getId());
-        startActivity(intent);
+//        Intent intent = new Intent(getContext(), WordDetailActivity.class);
+//        intent.putExtra(WordDetailActivity.EXTRA_WORD_ID, word.getId());
+//        startActivity(intent);
     }
 
     @Override

@@ -146,8 +146,8 @@ public class WordsActivity extends AppCompatActivity {
     }
 
     private void showSettings() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivityForResult(intent, SettingsActivity.REQUEST_SETTINGS);
+//        Intent intent = new Intent(this, SettingsActivity.class);
+//        startActivityForResult(intent, SettingsActivity.REQUEST_SETTINGS);
     }
 
     class CallbackHelper implements DataSource.GetListCallback<DictionaryModel>{
