@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.goo32v2.cooldict.words.WordsActivity">
+    tools:context=".words.WordsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,17 +21,25 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.goo32v2.cooldict.words.WordsFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/fragment_words" />
 
-        <FrameLayout
-            android:id="@+id/contentFrame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <!--<android.support.design.widget.CoordinatorLayout-->
+    <!--android:id="@+id/coordinatorLayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
-    </android.support.design.widget.CoordinatorLayout>
+    <!--<FrameLayout-->
+    <!--android:id="@+id/contentFrame"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <!--</android.support.design.widget.CoordinatorLayout>-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -1,5 +1,6 @@
 package com.goo32v2.cooldict.words;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.goo32v2.cooldict.data.models.DictionaryModel;
@@ -7,6 +8,8 @@ import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.DictionaryRepository;
 import com.goo32v2.cooldict.data.sources.WordRepository;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
+import com.goo32v2.cooldict.settings.SettingsActivity;
+import com.goo32v2.cooldict.utils.ActivityUtils;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
@@ -41,55 +44,39 @@ public class WordsPresenter implements WordPresenterContract {
     @Override
     public void start(String dict) {
         if (dict == null){
-            loadWords(true);
+            loadWords();
         } else{
-            loadWords(dict, true);
+            loadWords(dict);
         }
+    }
+
+    public void loadWords() {
+        mWordsRepository.get(getCallback());
     }
 
     @Override
-    public void result(int requestCode, int resultCode) {
-        // TODO: 29-May-16 implement when task added successful
-    }
-
-    public void loadWords(final boolean showLoadingUi) {
-        if (showLoadingUi) {
-            mWordsView.setLoadingIndicator(true);
-        }
-
-        mWordsRepository.get(getCallback(showLoadingUi));
-    }
-
-    @Override
-    public void loadWords(final String dictionaryName, final boolean showLoadingUi) {
-        if (showLoadingUi) {
-            mWordsView.setLoadingIndicator(true);
-        }
-
+    public void loadWords(final String dictionaryName) {
         mDictionaryRepository.getByTitle(dictionaryName, new DataSource.GetEntryCallback<DictionaryModel>() {
             @Override
             public void onLoaded(DictionaryModel entry) {
-                mWordsRepository.get(entry.getId(), getCallback(showLoadingUi));
+                mWordsRepository.get(entry.getId(), getCallback());
             }
 
             @Override
             public void onDataNotAvailable() {
-                getCallback(showLoadingUi).onDataNotAvailable();
+                getCallback().onDataNotAvailable();
             }
         });
 
 
     }
 
-    private DataSource.GetListCallback<WordModel> getCallback(final boolean showLoadingUi){
+    private DataSource.GetListCallback<WordModel> getCallback(){
         return new DataSource.GetListCallback<WordModel>() {
             @Override
             public void onLoaded(List<WordModel> entry) {
                 if (!mWordsView.isActive()) {
                     return;
-                }
-                if (showLoadingUi) {
-                    mWordsView.setLoadingIndicator(false);
                 }
                 mWordsView.showWords(entry);
             }
@@ -99,9 +86,6 @@ public class WordsPresenter implements WordPresenterContract {
                 if (!mWordsView.isActive()) {
                     return;
                 }
-                if (showLoadingUi) {
-                    mWordsView.setLoadingIndicator(false);
-                }
                 // TODO: 29-May-16 what about error?
                 mWordsView.showNoWords();
             }
@@ -109,18 +93,19 @@ public class WordsPresenter implements WordPresenterContract {
     }
 
     @Override
-    public void addNewWord() {
-        mWordsView.showAddWord();
+    public void startAddNewWordActivity() {
+
+
     }
 
     @Override
-    public void openWordDetail(@NonNull WordModel word) {
+    public void startWordDetailsActivity(@NonNull WordModel word) {
         checkNotNull(word);
         mWordsView.showWordDetailUi(word);
     }
 
     @Override
-    public DictionaryModel getCurrentDictionary() {
+    public DictionaryModel getAllDictionaries() {
         // TODO: 17-May-16 Implement serialization for save state
         return null;
     }

@@ -2,6 +2,7 @@ package com.goo32v2.cooldict.words;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,38 +13,54 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
+import com.goo32v2.cooldict.addeditword.AddEditWordFragment;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.sources.DictionaryRepository;
+import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 import com.goo32v2.cooldict.settings.SettingsActivity;
 import com.goo32v2.cooldict.utils.ActivityUtils;
+import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
+import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class WordsActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class WordsActivity extends AppCompatActivity implements WordViewContract{
+
+    private WordsPresenter mWordsPresenter;
+    private WordsFragment mWordsFragment;
+    private NavDrawerFragment mNavDrawerFragment;
+
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.navList) ListView mNavigationLV;
+    @BindView(R.id.fab) FloatingActionButton floatingActionButton;
 
     private static final String CURRENT_DICTIONARY = "CURRENT_DICTIONARY";
-
     private static boolean isAnyFragmentSetup = false;
-    private DrawerLayout mDrawerLayout;
-    private ListView mNavigationLV;
-    private DictionaryRepository mDictionaryRepository;
 
 
     // TODO: 17-May-16 think about sorting words with rating
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
 
-        mDictionaryRepository = Injection.provideDictionaryRepository(getApplicationContext());
+        new WordsPresenter(
+                Injection.provideWordRepository(getApplicationContext()),
+                Injection.provideDictionaryRepository(getApplicationContext()),
+                this
+        );
 
         setupView();
-        setupDrawerContent();
         setNewFragment(null);
 
         if (savedInstanceState != null){
@@ -52,37 +69,107 @@ public class WordsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // TODO: 24-Jun-16 change to NavDrawer Update
+        // mNavDrawerFragment.update();
+        setupDrawerContent();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // TODO: 17-May-16 Save state (dictionary? or implement some kind of sorting?)
+//        outState.putSerializable(CURRENT_DICTIONARY, mWordsPresenter.getAllDictionaries());
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_words, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            // for single entry point
+            mWordsPresenter.startSettingsActivity();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void startSettingsActivity() {
+//        Intent intent = new Intent(this, SettingsActivity.class);
+//        startActivityForResult(intent, SettingsActivity.REQUEST_SETTINGS);
+    }
+
+    @Override
+    public void startAddWordActivity() {
+//        Intent intent = new Intent(this, AddEditWordFragment.class);
+//        startActivity(intent);
+    }
+
+    @Override
+    public void startWordDetailActivity(WordModel word) {
+//        Intent intent = new Intent(getContext(), WordDetailActivity.class);
+//        intent.putExtra(WordDetailActivity.EXTRA_WORD_ID, word.getId());
+//        startActivity(intent);
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        Toast.makeText(WordsActivity.this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setPresenter(WordPresenterContract presenter) {
+        this.mWordsPresenter = (WordsPresenter) presenter;
+    }
+
+
     private void setupView(){
         setContentView(R.layout.activity_words);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavigationLV = (ListView) findViewById(R.id.navList);
         setupDrawer(toolbar);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // for single entry point
+                mWordsPresenter.startAddNewWordActivity();
+            }
+        });
     }
 
     private void setupDrawer(Toolbar toolbar){
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this,
+                mDrawerLayout,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
     private void setupDrawerContent() {
-
-        CallbackHelper callback = new CallbackHelper();
-        mDictionaryRepository.get(callback);
-        ArrayAdapter<String> mNavigationAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                callback.getModelStrings());
-        mNavigationLV.setAdapter(mNavigationAdapter);
-        mNavigationLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mWordsPresenter.getAllDictionaries(new DataSource.GetListCallback<DictionaryModel>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mDrawerLayout.closeDrawers();
-                setNewFragment(parent.getItemAtPosition(position).toString());
+            public void onLoaded(List<DictionaryModel> entry) {
+                mNavDrawerFragment.setupNavigationDrawer(entry);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // TODO: 24-Jun-16 Implement presenter method with show message
             }
         });
     }
@@ -104,76 +191,6 @@ public class WordsActivity extends AppCompatActivity {
             ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(),
                     fragment,
                     R.id.contentFrame);
-        }
-
-        new WordsPresenter(
-                Injection.provideWordRepository(getApplicationContext()),
-                Injection.provideDictionaryRepository(getApplicationContext()),
-                fragment
-        );
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupDrawerContent();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        // TODO: 17-May-16 Save state (dictionary? or implement some kind of sorting?)
-//        outState.putSerializable(CURRENT_DICTIONARY, mWordsPresenter.getCurrentDictionary());
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_words, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            showSettings();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showSettings() {
-//        Intent intent = new Intent(this, SettingsActivity.class);
-//        startActivityForResult(intent, SettingsActivity.REQUEST_SETTINGS);
-    }
-
-    class CallbackHelper implements DataSource.GetListCallback<DictionaryModel>{
-
-        private List<DictionaryModel> models;
-
-        @Override
-        public void onLoaded(List<DictionaryModel> entry) {
-            this.models = entry;
-        }
-
-        @Override
-        public void onDataNotAvailable() {
-            this.models = Collections.emptyList();
-        }
-
-        public List<DictionaryModel> getModels() {
-            return models;
-        }
-
-        public List<String> getModelStrings(){
-            List<String> res = new ArrayList<>();
-            for (DictionaryModel model : models) {
-                res.add(model.getTitle());
-            }
-            return res;
         }
     }
 

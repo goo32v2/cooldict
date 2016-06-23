@@ -28,7 +28,7 @@ public class RecycleViewHolder extends RecyclerView.ViewHolder implements View.O
 
     @Override
     public void onClick(View v) {
-        mPresenter.openWordDetail(mModel);
+        mPresenter.startWordDetailsActivity(mModel);
     }
 
     public void setWordModel(WordModel model) {
