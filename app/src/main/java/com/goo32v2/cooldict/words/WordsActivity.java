@@ -1,8 +1,8 @@
 package com.goo32v2.cooldict.words;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,24 +10,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.addeditword.AddEditWordFragment;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
-import com.goo32v2.cooldict.settings.SettingsActivity;
 import com.goo32v2.cooldict.utils.ActivityUtils;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +55,17 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
         );
 
         setupView();
+
+        // get all created fragments and assign it to vars
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof WordsFragment){
+                this.mWordsFragment = (WordsFragment) fragment;
+            }
+            if (fragment instanceof NavDrawerFragment){
+                this.mNavDrawerFragment = (NavDrawerFragment) fragment;
+            }
+        }
+
         setNewFragment(null);
 
         if (savedInstanceState != null){
@@ -174,6 +179,7 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
         });
     }
 
+    @Deprecated
     private void setNewFragment(String dictName){
 
         // TODO: 22-Jun-16 optimize this by checking data not changed

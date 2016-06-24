@@ -22,7 +22,7 @@ public interface WordViewContract extends BaseView<WordPresenterContract> {
 
     void showMessage(String msg);
 
-    interface Fragment{
+    interface FragmentView {
 
         void showWords(List<WordModel> words, View.OnClickListener callback);
 
