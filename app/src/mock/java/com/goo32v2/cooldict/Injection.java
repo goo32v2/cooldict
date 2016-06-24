@@ -18,11 +18,11 @@ public class Injection {
 
     public static WordRepository provideWordRepository(@NonNull Context context){
         checkNotNull(context);
-        return WordRepository.getInstance(WordDao.getInstance(context), null);
+        return WordRepository.getInstance(WordDao.getInstance(context));
     }
 
     public static DictionaryRepository provideDictionaryRepository(@NonNull Context context){
         checkNotNull(context);
-        return DictionaryRepository.getInstance(DictionaryDao.getInstance(context), null);
+        return DictionaryRepository.getInstance(DictionaryDao.getInstance(context));
     }
 }

@@ -42,8 +42,13 @@ public class WordDao implements WordDataSource {
         return INSTANCE;
     }
 
+
+    // TODO: 25-Jun-16 implement other query params
     @Override
-    public void get(@NonNull GetListCallback<WordModel> callback) {
+    public void get(@NonNull final GetListCallback<WordModel> callback,
+                    String selection,
+                    String[] selectionArgs) {
+
         List<WordModel> words = new ArrayList<>();
         db = mDatabaseHelper.getReadableDatabase();
 
@@ -55,7 +60,7 @@ public class WordDao implements WordDataSource {
         };
 
         Cursor c = db.query(
-                WordsEntry.TABLE_NAME, projection, null, null, null, null, null
+                WordsEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
         );
 
 
@@ -84,94 +89,6 @@ public class WordDao implements WordDataSource {
     }
 
     @Override
-    public void get(@NonNull String dictionaryId, @NonNull GetListCallback<WordModel> callback) {
-        List<WordModel> words = new ArrayList<>();
-        db = mDatabaseHelper.getReadableDatabase();
-
-        String selection = WordsEntry.COLUMN_DICTIONARY_ID + " LIKE ?";
-
-        String[] selectionArgs = { dictionaryId };
-
-        String[] projection = {
-                WordsEntry.COLUMN_ENTRY_ID,
-                WordsEntry.COLUMN_ORIGINAL_WORD,
-                WordsEntry.COLUMN_TRANSLATED_WORD,
-                WordsEntry.COLUMN_DICTIONARY_ID
-        };
-
-        Cursor c = db.query(
-                WordsEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
-        );
-
-
-        if (c != null && c.getCount() > 0 && c.moveToFirst()){
-            do {
-                String itemId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ENTRY_ID));
-                String origWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ORIGINAL_WORD));
-                String translWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_TRANSLATED_WORD));
-                String dictId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_DICTIONARY_ID));
-
-                WordModel word = new WordModel(itemId, origWord, translWord, dictId);
-                words.add(word);
-            } while (c.moveToNext());
-        }
-
-        if (c != null){
-            c.close();
-        }
-        db.close();
-
-        if (words.isEmpty()){
-            callback.onDataNotAvailable();
-        } else {
-            callback.onLoaded(words);
-        }
-    }
-
-    @Override
-    public void get(@NonNull String wordId, @NonNull GetEntryCallback<WordModel> callback) {
-        db = mDatabaseHelper.getReadableDatabase();
-
-        String selection = WordsEntry.COLUMN_ENTRY_ID + " LIKE ?";
-
-        String[] selectionArgs = { wordId };
-
-        String[] projection = {
-                WordsEntry.COLUMN_ENTRY_ID,
-                WordsEntry.COLUMN_ORIGINAL_WORD,
-                WordsEntry.COLUMN_TRANSLATED_WORD,
-                WordsEntry.COLUMN_DICTIONARY_ID
-        };
-
-        Cursor c = db.query(
-                WordsEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
-        );
-
-        WordModel word = null;
-
-        if (c != null && c.getCount() > 0 && c.moveToFirst()){
-            String itemId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ENTRY_ID));
-            String origWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ORIGINAL_WORD));
-            String translWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_TRANSLATED_WORD));
-            String dictId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_DICTIONARY_ID));
-
-            word = new WordModel(itemId, origWord, translWord, dictId);
-        }
-
-        if (c != null) {
-            c.close();
-        }
-
-        db.close();
-
-        if (word != null){
-            callback.onLoaded(word);
-        } else {
-            callback.onDataNotAvailable();
-        }
-    }
-
-    @Override
     public void save(@NonNull WordModel word) {
         checkNotNull(word);
         db = mDatabaseHelper.getWritableDatabase();
@@ -188,19 +105,14 @@ public class WordDao implements WordDataSource {
     }
 
     @Override
-    public void remove(@NonNull String wordId) {
+    public void remove(@NonNull WordModel word) {
         db = mDatabaseHelper.getWritableDatabase();
 
         String selection = WordsEntry.COLUMN_ENTRY_ID + " LIKE ?";
-        String[] selectionArgs = { wordId };
+        String[] selectionArgs = { word.getId() };
 
         db.delete(WordsEntry.TABLE_NAME, selection, selectionArgs);
         db.close();
-    }
-
-    @Override
-    public void remove(@NonNull WordModel word) {
-        remove(word.getId());
     }
 
     @Override

@@ -41,7 +41,10 @@ public class DictionaryDao implements DictDataSource {
     }
 
     @Override
-    public void get(@NonNull GetListCallback<DictionaryModel> callback) {
+    public void get(@NonNull GetListCallback<DictionaryModel> callback,
+                    String selection,
+                    String[] selectionArgs) {
+
         List<DictionaryModel> dictionaries = new ArrayList<>();
         db = mDatabaseHelper.getReadableDatabase();
 
@@ -51,17 +54,17 @@ public class DictionaryDao implements DictDataSource {
         };
 
         Cursor c = db.query(
-                DictionaryEntry.TABLE_NAME, projection, null, null, null, null, null
+                DictionaryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
         );
 
         if (c != null && c.getCount() > 0 && c.moveToFirst()){
-                do {
-                    String itemId = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_ENTRY_ID));
-                    String title = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_TITLE));
+            do {
+                String itemId = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_ENTRY_ID));
+                String title = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_TITLE));
 
-                    DictionaryModel dictionary = new DictionaryModel(itemId, title);
-                    dictionaries.add(dictionary);
-                } while (c.moveToNext());
+                DictionaryModel dictionary = new DictionaryModel(itemId, title);
+                dictionaries.add(dictionary);
+            } while (c.moveToNext());
         }
 
         if (c != null){
@@ -77,41 +80,6 @@ public class DictionaryDao implements DictDataSource {
     }
 
     @Override
-    public void get(@NonNull String dictionaryId, @NonNull GetEntryCallback<DictionaryModel> callback) {
-        db = mDatabaseHelper.getReadableDatabase();
-
-        String[] projection = {
-                DictionaryEntry.COLUMN_ENTRY_ID,
-                DictionaryEntry.COLUMN_TITLE,
-        };
-
-        String selection = DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
-        String[] selectionArgs = { dictionaryId };
-
-        Cursor c = db.query(
-                DictionaryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
-        );
-
-        DictionaryModel dictionary = null;
-        if (c != null && c.getCount() > 0 && c.moveToFirst()){
-            String itemId = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_ENTRY_ID));
-            String title = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_TITLE));
-            dictionary = new DictionaryModel(itemId, title);
-            }
-
-        if (c != null){
-            c.close();
-        }
-        db.close();
-
-        if (dictionary != null){
-            callback.onLoaded(dictionary);
-        } else {
-            callback.onDataNotAvailable();
-        }
-    }
-
-    @Override
     public void save(@NonNull DictionaryModel dictionary) {
         checkNotNull(dictionary);
         db = mDatabaseHelper.getWritableDatabase();
@@ -122,23 +90,6 @@ public class DictionaryDao implements DictDataSource {
 
         db.insert(DictionaryEntry.TABLE_NAME, null, values);
         db.close();
-    }
-
-    @Override
-    public void remove(@NonNull String dictionaryId) {
-        db = mDatabaseHelper.getWritableDatabase();
-
-        String selection = DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
-        String[] selectionArgs = { dictionaryId };
-
-        db.delete(DictionaryEntry.TABLE_NAME, selection,selectionArgs);
-
-        db.close();
-    }
-
-    @Override
-    public void remove(@NonNull DictionaryModel dictionary) {
-        remove(dictionary.getId());
     }
 
     @Override
@@ -162,57 +113,19 @@ public class DictionaryDao implements DictDataSource {
     }
 
     @Override
-    public void getByTitle(@NonNull String dictionaryTitle, @NonNull GetEntryCallback<DictionaryModel> callback) {
-        db = mDatabaseHelper.getReadableDatabase();
+    public void remove(@NonNull DictionaryModel dictionary) {
+        db = mDatabaseHelper.getWritableDatabase();
 
-        String[] projection = {
-                DictionaryEntry.COLUMN_ENTRY_ID,
-                DictionaryEntry.COLUMN_TITLE,
-        };
+        String selection = DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
+        String[] selectionArgs = { dictionary.getId() };
 
-        String selection = DictionaryEntry.COLUMN_TITLE + " LIKE ?";
-        String[] selectionArgs = { dictionaryTitle };
+        db.delete(DictionaryEntry.TABLE_NAME, selection,selectionArgs);
 
-        Cursor c = db.query(
-                DictionaryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
-        );
-
-        DictionaryModel dictionary = null;
-        if (c != null && c.getCount() > 0 && c.moveToFirst()){
-            String itemId = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_ENTRY_ID));
-            String title = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_TITLE));
-            dictionary = new DictionaryModel(itemId, title);
-        }
-
-        if (c != null){
-            c.close();
-        }
         db.close();
-
-        if (dictionary != null){
-            callback.onLoaded(dictionary);
-        } else {
-            callback.onDataNotAvailable();
-        }
     }
 
     @Override
-    public void getDefaultDictionary(@NonNull final GetEntryCallback<DictionaryModel> callback) {
-        get(SourcesConstants.DEFAULT_DICTIONARY_ID, new GetEntryCallback<DictionaryModel>() {
-            @Override
-            public void onLoaded(DictionaryModel entry) {
-                callback.onLoaded(entry);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                callback.onDataNotAvailable();
-            }
-        });
-    }
-
-    @Override
-    public void deleteAll() {
+    public void removeAll() {
         db = mDatabaseHelper.getWritableDatabase();
         String whereClause = DictionaryEntry.COLUMN_ENTRY_ID + "<> ?";
         String[] whereArgs = { SourcesConstants.DEFAULT_DICTIONARY_ID };
