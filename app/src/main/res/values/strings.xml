@@ -24,6 +24,8 @@
     <string name="word_detail_menu_delete_task_text">Delete word</string>
     <string name="no_data">No Data</string>
 
+    <string name="error_cannotGetDictionaries">Error! Cannot get any dictionaries</string>
+
     <string name="actionbar_title_settings_activity">Settings</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>

@@ -25,5 +25,7 @@ public interface WordPresenterContract extends BasePresenter {
 
     void startWordDetailsActivity(@NonNull WordModel word);
 
+    void showMessage(String msg);
+
     void getAllDictionaries(@NonNull DataSource.GetListCallback<DictionaryModel> callback);
 }

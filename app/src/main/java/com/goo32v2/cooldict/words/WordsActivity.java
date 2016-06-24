@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
-import com.goo32v2.cooldict.utils.ActivityUtils;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
@@ -66,8 +64,6 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
             }
         }
 
-        setNewFragment(null);
-
         if (savedInstanceState != null){
             // TODO: 17-May-16 Get serialized current dictionary from navigation drawer
             savedInstanceState.getSerializable(CURRENT_DICTIONARY);
@@ -77,8 +73,6 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: 24-Jun-16 change to NavDrawer Update
-        // mNavDrawerFragment.update();
         setupDrawerContent();
     }
 
@@ -142,7 +136,8 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
     private void setupView(){
         setContentView(R.layout.activity_words);
         setSupportActionBar(toolbar);
-        setupDrawer(toolbar);
+        // potential bug
+        mNavDrawerFragment.setupNavigationDrawer(toolbar);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,51 +148,38 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
         });
     }
 
-    private void setupDrawer(Toolbar toolbar){
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
-        );
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-    }
-
     private void setupDrawerContent() {
         mWordsPresenter.getAllDictionaries(new DataSource.GetListCallback<DictionaryModel>() {
             @Override
             public void onLoaded(List<DictionaryModel> entry) {
-                mNavDrawerFragment.setupNavigationDrawer(entry);
+                mNavDrawerFragment.update(entry);
             }
 
             @Override
             public void onDataNotAvailable() {
-                // TODO: 24-Jun-16 Implement presenter method with show message
+                 mWordsPresenter.showMessage(getString(R.string.error_cannotGetDictionaries));
             }
         });
     }
 
-    @Deprecated
-    private void setNewFragment(String dictName){
-
-        // TODO: 22-Jun-16 optimize this by checking data not changed
-        WordsFragment fragment = WordsFragment.newInstance();
-        Bundle bundle = new Bundle();
-        bundle.putString(WordsFragment.DICTIONARY_NAME, dictName);
-        fragment.setArguments(bundle);
-
-        if (!isAnyFragmentSetup){
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    fragment,
-                    R.id.contentFrame);
-            isAnyFragmentSetup = true;
-        } else {
-            ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(),
-                    fragment,
-                    R.id.contentFrame);
-        }
-    }
+//    @Deprecated
+//    private void setNewFragment(String dictName){
+//
+//        WordsFragment fragment = WordsFragment.newInstance();
+//        Bundle bundle = new Bundle();
+//        bundle.putString(WordsFragment.DICTIONARY_NAME, dictName);
+//        fragment.setArguments(bundle);
+//
+//        if (!isAnyFragmentSetup){
+//            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+//                    fragment,
+//                    R.id.contentFrame);
+//            isAnyFragmentSetup = true;
+//        } else {
+//            ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(),
+//                    fragment,
+//                    R.id.contentFrame);
+//        }
+//    }
 
 }
