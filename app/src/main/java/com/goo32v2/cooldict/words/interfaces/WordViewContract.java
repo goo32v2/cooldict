@@ -1,9 +1,9 @@
 package com.goo32v2.cooldict.words.interfaces;
 
-import android.os.Bundle;
 import android.view.View;
 
 import com.goo32v2.cooldict.BaseView;
+import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
 
 import java.util.List;
@@ -24,9 +24,9 @@ public interface WordViewContract extends BaseView<WordPresenterContract> {
 
     interface FragmentView {
 
-        void showWords(List<WordModel> words, View.OnClickListener callback);
+        void showWords(List<ModelDTO<WordModel, View.OnClickListener>> words);
 
-        void update(Bundle bundle);
+        void showNoWords();
 
         boolean isActive();
     }

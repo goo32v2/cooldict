@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.goo32v2.cooldict.R;
+import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
-import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 
 import java.util.List;
 
@@ -17,14 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created on 16-Jun-16. (c) CoolDict
  */
 
-public class WordRecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder> {
+public class WordRecycleAdapter extends RecyclerView.Adapter<WordRecycleViewHolder> {
 
-    private List<WordModel> mWords;
-    private WordPresenterContract mPresenter;
+    private List<ModelDTO<WordModel, View.OnClickListener>> modelDTOs;
 
-    WordRecycleAdapter(List<WordModel> w, WordPresenterContract presenter){
-        setList(w);
-        mPresenter = presenter;
+    public WordRecycleAdapter(List<ModelDTO<WordModel, View.OnClickListener>> list) {
+        setList(list);
     }
 
     @Override
@@ -33,33 +31,30 @@ public class WordRecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder> 
     }
 
     @Override
-    public RecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WordRecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_words, parent, false);
-        RecycleViewHolder rvh = new RecycleViewHolder(root, mPresenter);
-        root.setOnClickListener(rvh);
-        return rvh;
+        return new WordRecycleViewHolder(root);
     }
 
     @Override
-    public void onBindViewHolder(RecycleViewHolder holder, int position) {
-        holder.originalWordTV.setText(mWords.get(position).getOriginalWord());
-        holder.translatedWordTV.setText(mWords.get(position).getTranslatedWord());
-        holder.setWordModel(mWords.get(position));
+    public void onBindViewHolder(WordRecycleViewHolder holder, int position) {
+        ModelDTO<WordModel, View.OnClickListener> model = modelDTOs.get(holder.getAdapterPosition());
+        holder.originalWordTV.setText(model.getModel().getOriginalWord());
+        holder.translatedWordTV.setText(model.getModel().getTranslatedWord());
+        holder.setListener(model.getCallback());
     }
 
     @Override
     public int getItemCount() {
-        return mWords.size();
+        return modelDTOs.size();
     }
 
-
-
-    public void replaceData(List<WordModel> words){
-        setList(words);
+    public void replaceData(List<ModelDTO<WordModel, View.OnClickListener>> list){
+        setList(list);
         notifyDataSetChanged();
     }
 
-    public void setList(List<WordModel> list) {
-        this.mWords = checkNotNull(list);
+    private void setList(List<ModelDTO<WordModel, View.OnClickListener>> list) {
+        this.modelDTOs = checkNotNull(list);
     }
 }

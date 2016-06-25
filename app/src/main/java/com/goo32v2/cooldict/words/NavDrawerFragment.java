@@ -3,14 +3,15 @@ package com.goo32v2.cooldict.words;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
+import com.goo32v2.cooldict.data.models.ModelDTO;
 
 import java.util.List;
 
@@ -19,15 +20,25 @@ import java.util.List;
  */
 
 public class NavDrawerFragment extends Fragment {
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+    RecyclerView mRecycleView;
+
+    private List<ModelDTO<DictionaryModel, View.OnClickListener>> modelList;
+    private NavDrawerRecycleAdapter mAdapter;
+    private LinearLayoutManager llm;
+
+    // empty
+    public NavDrawerFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mRecycleView = (RecyclerView) root.findViewById(R.id.dictionary_recycler_view);
+//        ButterKnife.bind(root);
+
+        return root;
     }
 
     @Override
@@ -35,79 +46,32 @@ public class NavDrawerFragment extends Fragment {
         super.onResume();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    //call it from activity
+    public void showDictionaryList(List<ModelDTO<DictionaryModel, View.OnClickListener>> list) {
+
+        if (modelList == null || modelList.size() == list.size()) {
+            this.modelList = list;
+        }
+
+        if (llm == null || mAdapter == null) {
+            setupRecycleView(modelList);
+        } else {
+            update(modelList);
+        }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    private void setupRecycleView(List<ModelDTO<DictionaryModel, View.OnClickListener>> dictionaryModelList) {
+        llm = new LinearLayoutManager(getActivity());
+        mRecycleView.setLayoutManager(llm);
+        mAdapter = new NavDrawerRecycleAdapter(dictionaryModelList);
+        mRecycleView.setAdapter(mAdapter);
     }
 
-    private void setupDrawer(Toolbar toolbar){
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
-        );
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+    public void markCurrentItem(boolean isMarked) {
+        // TODO: 25-Jun-16 implement
     }
 
-    //use for first setup
-    public void setupNavigationDrawer(Toolbar toolbar){
-        //        CallbackHelper callback = new CallbackHelper();
-//        mDictionaryRepository.get(callback);
-//
-//        ArrayAdapter<String> mNavigationAdapter = new ArrayAdapter<>(
-//                this,
-//                android.R.layout.simple_list_item_1,
-//                callback.getModelStrings());
-//        mNavigationLV.setAdapter(mNavigationAdapter);
-//        mNavigationLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                mDrawerLayout.closeDrawers();
-//                setNewFragment(parent.getItemAtPosition(position).toString());
-//            }
-//        });
+    public void update(List<ModelDTO<DictionaryModel, View.OnClickListener>> dictionaryModelList) {
+        mAdapter.replaceData(dictionaryModelList);
     }
-
-    public void markCurrentItem(boolean isMarked){
-
-    }
-
-    public void update(List<DictionaryModel> entries){
-
-    }
-
-//    class CallbackHelper implements DataSource.GetListCallback<DictionaryModel>{
-//
-//        private List<DictionaryModel> models;
-//
-//        @Override
-//        public void onLoaded(List<DictionaryModel> entry) {
-//            this.models = entry;
-//        }
-//
-//        @Override
-//        public void onDataNotAvailable() {
-//            this.models = Collections.emptyList();
-//        }
-//
-//        public List<DictionaryModel> getModels() {
-//            return models;
-//        }
-//
-//        public List<String> getModelStrings(){
-//            List<String> res = new ArrayList<>();
-//            for (DictionaryModel model : models) {
-//                res.add(model.getTitle());
-//            }
-//            return res;
-//        }
-//    }
 }

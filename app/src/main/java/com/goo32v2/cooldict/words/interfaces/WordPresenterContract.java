@@ -13,11 +13,11 @@ import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 
 public interface WordPresenterContract extends BasePresenter {
 
-    void start(String dict);
+    void getWords(@NonNull DataSource.GetListCallback<WordModel> callback);
 
-    void loadWords();
+    void getDictionaries(@NonNull DataSource.GetListCallback<DictionaryModel> callback);
 
-    void loadWords(String dictionaryName);
+    void getWordsByDictionary(String id, @NonNull DataSource.GetListCallback<WordModel> callback);
 
     void startSettingsActivity();
 
@@ -26,6 +26,4 @@ public interface WordPresenterContract extends BasePresenter {
     void startWordDetailsActivity(@NonNull WordModel word);
 
     void showMessage(String msg);
-
-    void getAllDictionaries(@NonNull DataSource.GetListCallback<DictionaryModel> callback);
 }
