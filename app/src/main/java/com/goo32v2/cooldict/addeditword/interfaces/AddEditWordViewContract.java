@@ -8,17 +8,27 @@ import com.goo32v2.cooldict.BaseView;
 
 public interface AddEditWordViewContract extends BaseView<AddEditWordPresenterContract> {
 
-    void showEmptyWordError();
+    void setupAddView();
 
-    void showWordList();
+    void setupEditView();
 
-    boolean isActive();
+    void showMessage(String msg);
 
-    void setWordId(String id);
+    void finishActivity();
 
-    void setOriginalWord(String originalWord);
+    interface Fragment {
 
-    void setTranslatedWord(String translatedWord);
+        void setupAddView();
 
-    void setDictionary(String dictionary);
+        void setupEditView();
+
+        void setWordId(String id);
+
+        void setOriginalWord(String originalWord);
+
+        void setTranslatedWord(String translatedWord);
+
+        void setDictionary(String dictionary);
+
+    }
 }

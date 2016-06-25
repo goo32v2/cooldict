@@ -8,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
+import com.goo32v2.cooldict.addeditword.AddEditWordFragment;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
@@ -103,7 +103,6 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
                     new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i("MYTAG2", "Click!");
                     startWordDetailActivity(wordModel);
                 }
             }));
@@ -119,7 +118,6 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.i("MYTAG", "Click!");
                             mWordsPresenter.getWordsByDictionary(model.getId(), new DataSource.GetListCallback<WordModel>() {
                                 @Override
                                 public void onLoaded(List<WordModel> entries) {
@@ -173,8 +171,8 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     @Override
     public void startAddWordActivity() {
-//        Intent intent = new Intent(this, AddEditWordFragment.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, AddEditWordFragment.class);
+        startActivity(intent);
     }
 
     @Override

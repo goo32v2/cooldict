@@ -21,7 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <activity android:name=".addeditword.AddEditWordActivity" /> -->
+
+         <activity
+             android:name=".addeditword.AddEditWordActivity"
+             android:label="@string/actionbar_title_add_new_word_activity"
+             android:parentActivityName=".words.WordsActivity">
+             <meta-data
+                 android:name="android.support.PARENT_ACTIVITY"
+                 android:value="com.goo32v2.cooldict.words.WordsActivity" />
+         </activity>
+
+
         <!-- <activity android:name=".worddetails.WordDetailActivity" /> -->
 
         <activity
