@@ -1,5 +1,6 @@
 package com.goo32v2.cooldict.words;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
+import com.goo32v2.cooldict.settings.SettingsActivity;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
@@ -165,8 +167,8 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     @Override
     public void startSettingsActivity() {
-//        Intent intent = new Intent(this, SettingsActivity.class);
-//        startActivityForResult(intent, SettingsActivity.REQUEST_SETTINGS);
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @Override
