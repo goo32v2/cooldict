@@ -30,14 +30,6 @@ android {
         }
     }
 
-    productFlavors {
-        mock {
-            applicationIdSuffix = ".mock"
-        }
-        prod {}
-    }
-
-
 
     testOptions.unitTests.all {
         testLogging {
