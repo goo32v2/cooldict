@@ -15,13 +15,16 @@ import com.goo32v2.cooldict.data.models.ModelDTO;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created on 23-Jun-16. (c) CoolDict
  */
 
 public class NavDrawerFragment extends Fragment {
 
-    RecyclerView mRecycleView;
+    @BindView(R.id.dictionary_recycler_view) RecyclerView mRecycleView;
 
     private List<ModelDTO<DictionaryModel, View.OnClickListener>> modelList;
     private NavDrawerRecycleAdapter mAdapter;
@@ -35,8 +38,7 @@ public class NavDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        mRecycleView = (RecyclerView) root.findViewById(R.id.dictionary_recycler_view);
-//        ButterKnife.bind(root);
+        ButterKnife.bind(this, root);
 
         return root;
     }
