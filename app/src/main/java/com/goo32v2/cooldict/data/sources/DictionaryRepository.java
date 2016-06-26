@@ -64,6 +64,7 @@ public class DictionaryRepository implements DictDataSource {
         mDictionaryDao.removeAll();
     }
 
+    @Override
     public void getDictionary(String id, @NonNull GetListCallback<DictionaryModel> callback){
         String selection = DatabasePersistenceContract.DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
         String[] selectionArgs= { id };
@@ -71,6 +72,7 @@ public class DictionaryRepository implements DictDataSource {
 
     }
 
+    @Override
     public void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback){
         get(callback, null, null);
     }

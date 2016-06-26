@@ -63,16 +63,19 @@ public class WordRepository implements WordDataSource {
         mWordDao.update(id, newModel);
     }
 
+    @Override
     public void getWord(String id, final @NonNull GetListCallback<WordModel> callback){
         String selection = DatabasePersistenceContract.WordsEntry.COLUMN_ENTRY_ID + " LIKE ?";
         String[] selectionArgs= { id };
         get(callback, selection, selectionArgs);
     }
 
+    @Override
     public void getWordsList(final @NonNull GetListCallback<WordModel> callback){
         get(callback, null, null);
     }
 
+    @Override
     public void getWordsByDictionary(String id, final @NonNull GetListCallback<WordModel> callback){
         String selection = DatabasePersistenceContract.WordsEntry.COLUMN_DICTIONARY_ID + " LIKE ?";
         String[] selectionArgs= { id };
