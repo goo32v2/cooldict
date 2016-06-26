@@ -78,21 +78,38 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
     @Override
     protected void onResume() {
         super.onResume();
-        mWordsPresenter.start();
 
-        List<WordModel> recentWordModel = mWordsPresenter.getRecentWordModelList();
-        List<DictionaryModel> recentDictionaryModel = mWordsPresenter.getRecentDictionaryModelList();
+        mWordsPresenter.getWords(new DataSource.GetListCallback<WordModel>() {
+            @Override
+            public void onLoaded(List<WordModel> entries) {
+                mWordsFragment.showWords(
+                        convertWordToDTO(entries)
+                );
+            }
 
-        if (!recentWordModel.isEmpty()){
-            mWordsFragment.showWords(
-                    convertWordToDTO(recentWordModel)
-            );
-        }
-        if (!recentDictionaryModel.isEmpty()){
-            mNavDrawerFragment.showDictionaryList(
-                    convertDictionaryToDTO(recentDictionaryModel)
-            );
-        }
+            @Override
+            public void onDataNotAvailable() {
+                mWordsFragment.showWords(
+                        convertWordToDTO(new ArrayList<WordModel>())
+                );
+            }
+        });
+
+        mWordsPresenter.getDictionaries(new DataSource.GetListCallback<DictionaryModel>() {
+            @Override
+            public void onLoaded(List<DictionaryModel> entries) {
+                mNavDrawerFragment.showDictionaryList(
+                        convertDictionaryToDTO(entries)
+                );
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mNavDrawerFragment.showDictionaryList(
+                        convertDictionaryToDTO(new ArrayList<DictionaryModel>())
+                );
+            }
+        });
     }
 
     private List<ModelDTO<WordModel, View.OnClickListener>> convertWordToDTO(List<WordModel> source){

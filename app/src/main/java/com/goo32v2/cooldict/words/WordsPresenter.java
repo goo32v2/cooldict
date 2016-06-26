@@ -12,9 +12,6 @@ import com.goo32v2.cooldict.data.sources.interfaces.WordDataSource;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -26,9 +23,6 @@ public class WordsPresenter implements WordPresenterContract {
     private final WordDataSource mWordsRepository;
     private final DictDataSource mDictionaryRepository;
     private final WordViewContract mWordsView;
-
-    private List<WordModel> wordModelList;
-    private List<DictionaryModel> dictionaryModelList;
 
 
     public WordsPresenter(@NonNull WordRepository wordsRepository,
@@ -44,29 +38,6 @@ public class WordsPresenter implements WordPresenterContract {
     @Override
     public void start() {
 
-        getWords(new DataSource.GetListCallback<WordModel>() {
-            @Override
-            public void onLoaded(List<WordModel> entries) {
-                wordModelList = entries;
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                wordModelList = new ArrayList<>();
-            }
-        });
-
-        getDictionaries(new DataSource.GetListCallback<DictionaryModel>() {
-            @Override
-            public void onLoaded(List<DictionaryModel> entries) {
-                dictionaryModelList = entries;
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                dictionaryModelList = new ArrayList<>();
-            }
-        });
     }
 
     @Override
@@ -103,13 +74,5 @@ public class WordsPresenter implements WordPresenterContract {
     @Override
     public void showMessage(String msg) {
         mWordsView.showMessage(msg);
-    }
-
-    public List<WordModel> getRecentWordModelList() {
-        return wordModelList;
-    }
-
-    public List<DictionaryModel> getRecentDictionaryModelList() {
-        return dictionaryModelList;
     }
 }

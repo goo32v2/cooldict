@@ -26,7 +26,6 @@ public class NavDrawerFragment extends Fragment {
 
     @BindView(R.id.dictionary_recycler_view) RecyclerView mRecycleView;
 
-    private List<ModelDTO<DictionaryModel, View.OnClickListener>> modelList;
     private NavDrawerRecycleAdapter mAdapter;
     private LinearLayoutManager llm;
 
@@ -50,15 +49,10 @@ public class NavDrawerFragment extends Fragment {
 
     //call it from activity
     public void showDictionaryList(List<ModelDTO<DictionaryModel, View.OnClickListener>> list) {
-
-        if (modelList == null || modelList.size() == list.size()) {
-            this.modelList = list;
-        }
-
         if (llm == null || mAdapter == null) {
-            setupRecycleView(modelList);
+            setupRecycleView(list);
         } else {
-            update(modelList);
+            update(list);
         }
     }
 
@@ -75,5 +69,6 @@ public class NavDrawerFragment extends Fragment {
 
     public void update(List<ModelDTO<DictionaryModel, View.OnClickListener>> dictionaryModelList) {
         mAdapter.replaceData(dictionaryModelList);
+        mAdapter.notifyDataSetChanged();
     }
 }
