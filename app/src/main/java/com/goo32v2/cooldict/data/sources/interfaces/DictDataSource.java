@@ -10,8 +10,6 @@ import com.goo32v2.cooldict.data.models.DictionaryModel;
 
 public interface DictDataSource extends DataSource<DictionaryModel> {
 
-    void removeAll();
-
     void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback);
 
     void getDictionary(String id, @NonNull GetListCallback<DictionaryModel> callback);

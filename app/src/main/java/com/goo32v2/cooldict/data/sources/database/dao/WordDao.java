@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
 import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.WordsEntry;
-import com.goo32v2.cooldict.data.sources.interfaces.WordDataSource;
+import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 // TODO: 16-May-16 implement remote data went done with base app
 // TODO: 28-May-16 implement removeAllWordsByDictionary
 
-public class WordDao implements WordDataSource {
+public class WordDao implements DataSource<WordModel> {
 
     private static WordDao INSTANCE;
     private DatabaseHelper mDatabaseHelper;

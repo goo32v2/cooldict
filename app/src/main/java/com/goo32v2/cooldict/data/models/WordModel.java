@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.goo32v2.cooldict.data.sources.SourcesConstants;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,7 +12,7 @@ import java.util.UUID;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public final class WordModel implements Model{
+public final class WordModel implements Model, Serializable{
 
     private final String mId;
     @Nullable private final String mOriginalWord;

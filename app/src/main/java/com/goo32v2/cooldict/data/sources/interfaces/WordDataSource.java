@@ -10,8 +10,6 @@ import com.goo32v2.cooldict.data.models.WordModel;
 
 public interface WordDataSource extends DataSource<WordModel> {
 
-    void removeAll();
-
     void getWord(String id, final @NonNull GetListCallback<WordModel> callback);
 
     void getWordsList(final @NonNull GetListCallback<WordModel> callback);

@@ -25,5 +25,7 @@ public interface DataSource<T> {
 
     void remove(@NonNull T entry);
 
+    void removeAll();
+
     void update(String id, T newModel);
 }

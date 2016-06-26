@@ -10,7 +10,7 @@ import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.sources.SourcesConstants;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
 import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.DictionaryEntry;
-import com.goo32v2.cooldict.data.sources.interfaces.DictDataSource;
+import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created on 16-May-16. (c) CoolDict
  */
 
-public class DictionaryDao implements DictDataSource {
+public class DictionaryDao implements DataSource<DictionaryModel> {
 
     private static DictionaryDao INSTANCE;
     private DatabaseHelper mDatabaseHelper;

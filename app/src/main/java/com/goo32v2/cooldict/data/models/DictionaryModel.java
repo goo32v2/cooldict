@@ -2,6 +2,7 @@ package com.goo32v2.cooldict.data.models;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,7 +10,7 @@ import java.util.UUID;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public final class DictionaryModel implements Model{
+public final class DictionaryModel implements Model, Serializable{
 
     private final String mId;
     @NonNull private final String mTitle;
