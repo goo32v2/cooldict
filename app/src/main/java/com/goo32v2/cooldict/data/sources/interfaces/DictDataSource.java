@@ -14,4 +14,6 @@ public interface DictDataSource extends DataSource<DictionaryModel> {
 
     void getDictionary(String id, @NonNull GetListCallback<DictionaryModel> callback);
 
+    void getDictionaryByName(String name, @NonNull GetListCallback<DictionaryModel> callback);
+
 }

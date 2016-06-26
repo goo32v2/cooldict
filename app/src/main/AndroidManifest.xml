@@ -22,18 +22,16 @@
             </intent-filter>
         </activity>
 
-         <activity
-             android:name=".addeditword.AddEditWordActivity"
-             android:label="@string/actionbar_title_add_new_word_activity"
-             android:parentActivityName=".words.WordsActivity">
-             <meta-data
-                 android:name="android.support.PARENT_ACTIVITY"
-                 android:value="com.goo32v2.cooldict.words.WordsActivity" />
-         </activity>
-
-
         <!-- <activity android:name=".worddetails.WordDetailActivity" /> -->
 
+        <activity
+            android:name=".addword.AddWordActivity"
+            android:label="@string/actionbar_title_add_new_word_activity"
+            android:parentActivityName=".words.WordsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.goo32v2.cooldict.words.WordsActivity" />
+        </activity>
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -42,6 +40,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.goo32v2.cooldict.words.WordsActivity" />
         </activity>
+        <!--<activity-->
+            <!--android:name=".editword.EditWordActivity"-->
+            <!--android:label="@string/actionbar_title_edit_word_activity"-->
+            <!--android:parentActivityName=".words.WordsActivity">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.goo32v2.cooldict.words.WordsActivity" />-->
+        <!--</activity>-->
     </application>
 
 </manifest>

@@ -7,6 +7,8 @@ import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.DictionaryRepository;
 import com.goo32v2.cooldict.data.sources.WordRepository;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
+import com.goo32v2.cooldict.data.sources.interfaces.DictDataSource;
+import com.goo32v2.cooldict.data.sources.interfaces.WordDataSource;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
@@ -21,8 +23,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class WordsPresenter implements WordPresenterContract {
 
-    private final WordRepository mWordsRepository;
-    private final DictionaryRepository mDictionaryRepository;
+    private final WordDataSource mWordsRepository;
+    private final DictDataSource mDictionaryRepository;
     private final WordViewContract mWordsView;
 
     private List<WordModel> wordModelList;

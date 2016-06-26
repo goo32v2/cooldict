@@ -76,4 +76,11 @@ public class DictionaryRepository implements DictDataSource {
     public void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback){
         get(callback, null, null);
     }
+
+    @Override
+    public void getDictionaryByName(String name, @NonNull GetListCallback<DictionaryModel> callback) {
+        String selection = DatabasePersistenceContract.DictionaryEntry.COLUMN_TITLE + " LIKE ?";
+        String[] selectionArgs= { name };
+        get(callback, selection, selectionArgs);
+    }
 }
