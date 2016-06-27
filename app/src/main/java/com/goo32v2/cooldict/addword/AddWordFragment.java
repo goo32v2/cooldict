@@ -1,8 +1,6 @@
 package com.goo32v2.cooldict.addword;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,6 @@ import butterknife.ButterKnife;
 
 public class AddWordFragment extends Fragment {
 
-    @BindView(R.id.fab_changes_done) FloatingActionButton fab;
     @BindView(R.id.ea_original_word) TextView mOriginalWord;
     @BindView(R.id.ea_translated_word) TextView mTranslatedWord;
     @BindView(R.id.ea_dictionary_id) AutoCompleteTextView mDictionary;
@@ -39,9 +36,9 @@ public class AddWordFragment extends Fragment {
         return root;
     }
 
-    public void setFabOnClickListener(@NonNull View.OnClickListener listener) {
-        fab.setOnClickListener(listener);
-    }
+//    public void setFabOnClickListener(@NonNull View.OnClickListener listener) {
+//        fab.setOnClickListener(listener);
+//    }
 
     public void setDictionariesAdapter(List<String> names){
         mDictionary.setAdapter(

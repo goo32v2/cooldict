@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
@@ -37,8 +38,6 @@ public class AddWordActivity extends AppCompatActivity implements AddWordViewCon
             mAddWordFragment = (AddWordFragment) getSupportFragmentManager().getFragments().get(0);
         }
 
-
-
         mPresenter.getDictionaryNames(new DataSource.GetListCallback<String>() {
             @Override
             public void onLoaded(List<String> entries) {
@@ -50,8 +49,23 @@ public class AddWordActivity extends AppCompatActivity implements AddWordViewCon
                 mPresenter.showMessage(getString(R.string.error_cannotGetDictionaries));
             }
         });
+    }
 
-        setFabOnClickListener();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_words, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_add_word) {
+            saveWord();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -60,18 +74,12 @@ public class AddWordActivity extends AppCompatActivity implements AddWordViewCon
         return true;
     }
 
-    @Override
-    public void setFabOnClickListener() {
-        mAddWordFragment.setFabOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String originalText = mAddWordFragment.mOriginalWord.getText().toString();
-                String translatedText = mAddWordFragment.mTranslatedWord.getText().toString();
-                String dictionary = mAddWordFragment.mDictionary.getText().toString();
+    public void saveWord() {
+        String originalText = mAddWordFragment.mOriginalWord.getText().toString();
+        String translatedText = mAddWordFragment.mTranslatedWord.getText().toString();
+        String dictionary = mAddWordFragment.mDictionary.getText().toString();
 
-                mPresenter.createWord(originalText, translatedText, dictionary);
-            }
-        });
+        mPresenter.createWord(originalText, translatedText, dictionary);
     }
 
 

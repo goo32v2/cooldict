@@ -1,6 +1,5 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -34,16 +33,6 @@
             android:hint="@string/add_new_word_edit_text_dictionary_title"
             android:completionThreshold="1"
             />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_changes_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_done"
-            app:fabSize="normal"
-            app:layout_anchor="@id/edit_area_fragment"
-            app:layout_anchorGravity="bottom|right|end" />
 
     </LinearLayout>
 

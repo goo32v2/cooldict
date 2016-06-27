@@ -10,8 +10,6 @@ public interface AddWordViewContract extends BaseView<AddWordPresenterContract> 
 
     void showMessage(String msg);
 
-    void setFabOnClickListener();
-
     void finishActivity();
 
 }
