@@ -14,22 +14,31 @@
 
         <EditText
             android:id="@+id/ea_original_word"
+            android:inputType="textAutoCorrect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:selectAllOnFocus="true"
             android:hint="@string/add_new_word_edit_text_original_word"
             android:singleLine="true" />
 
         <EditText
             android:id="@+id/ea_translated_word"
+            android:inputType="textAutoCorrect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:selectAllOnFocus="true"
             android:hint="@string/add_new_word_edit_text_translated_word"
             android:singleLine="true" />
 
         <AutoCompleteTextView
             android:id="@+id/ea_dictionary_id"
+            android:inputType="textAutoComplete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:imeOptions="actionSend"
             android:hint="@string/add_new_word_edit_text_dictionary_title"
             android:completionThreshold="1"
             />

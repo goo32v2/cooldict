@@ -33,14 +33,37 @@ public class AddWordFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_add_word, container, false);
         ButterKnife.bind(this, root);
 
+        setValidation();
         return root;
     }
 
-//    public void setFabOnClickListener(@NonNull View.OnClickListener listener) {
-//        fab.setOnClickListener(listener);
-//    }
+    private void setValidation() {
+        mOriginalWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+               @Override
+               public void onFocusChange(View v, boolean hasFocus) {
+                   if (!hasFocus && mOriginalWord.getText().length() == 0) {
+                       mOriginalWord.setError(getString(R.string.empty_original_word_field));
+                   }
+               }
+           }
+        );
 
-    public void setDictionariesAdapter(List<String> names){
+        mDictionary.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+               @Override
+               public void onFocusChange(View v, boolean hasFocus) {
+                   if (!hasFocus && mDictionary.getText().length() == 0) {
+                       mDictionary.setError(getString(R.string.empty_dictionary_field));
+                   }
+               }
+           }
+        );
+    }
+
+    public void setImeAction(TextView.OnEditorActionListener listener){
+        mDictionary.setOnEditorActionListener(listener);
+    }
+
+    public void setDictionariesAdapter(List<String> names) {
         mDictionary.setAdapter(
                 new ArrayAdapter<>(
                         getActivity(),

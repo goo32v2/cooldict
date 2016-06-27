@@ -88,6 +88,9 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="loading_error">Unexpected error when loading data!</string>
     <string name="action_add_word">Add new word</string>
+    <string name="empty_original_word_field">Original word field must be filled</string>
+    <string name="empty_dictionary_field">Dictionary field must be filled</string>
+    <string name="empty_fields_error">Please, fill empty fields</string>
 
 
 </resources>

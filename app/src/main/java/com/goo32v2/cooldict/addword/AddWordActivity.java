@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
@@ -49,6 +52,18 @@ public class AddWordActivity extends AppCompatActivity implements AddWordViewCon
                 mPresenter.showMessage(getString(R.string.error_cannotGetDictionaries));
             }
         });
+
+        mAddWordFragment.setImeAction(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    saveWord();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
     }
 
     @Override
@@ -79,7 +94,13 @@ public class AddWordActivity extends AppCompatActivity implements AddWordViewCon
         String translatedText = mAddWordFragment.mTranslatedWord.getText().toString();
         String dictionary = mAddWordFragment.mDictionary.getText().toString();
 
-        mPresenter.createWord(originalText, translatedText, dictionary);
+    // translatedText can be empty
+        if (originalText.isEmpty() || dictionary.isEmpty()){
+            mPresenter.showMessage(getString(R.string.empty_fields_error));
+        } else {
+            mPresenter.createWord(originalText, translatedText, dictionary);
+
+        }
     }
 
 
