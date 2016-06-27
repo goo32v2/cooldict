@@ -1,37 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
-
-    <!--<ListView-->
-        <!--android:id="@+id/navList"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginTop="160dp" />-->
-
-<!--</android.support.design.widget.CoordinatorLayout>-->
-
-<android.support.design.widget.CoordinatorLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/coordinator_layout"
-android:layout_width="match_parent"
-android:layout_height="match_parent" >
-
-<RelativeLayout
-    android:id="@+id/dictionary_relative_container"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/dictionary_recycler_view"
-        android:orientation="vertical"
+    <RelativeLayout
+        android:id="@+id/dictionary_relative_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="160dp" >
+        android:orientation="vertical">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dictionary_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="160dp"
+            android:orientation="vertical">
 
-</RelativeLayout>
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

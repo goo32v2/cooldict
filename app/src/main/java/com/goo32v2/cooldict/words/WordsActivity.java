@@ -21,6 +21,7 @@ import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 import com.goo32v2.cooldict.settings.SettingsActivity;
+import com.goo32v2.cooldict.worddetails.WordDetailActivity;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
@@ -194,9 +195,9 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     @Override
     public void startWordDetailActivity(WordModel word) {
-//        Intent intent = new Intent(getContext(), WordDetailActivity.class);
-//        intent.putExtra(WordDetailActivity.EXTRA_WORD_ID, word.getId());
-//        startActivity(intent);
+        Intent intent = new Intent(this, WordDetailActivity.class);
+        intent.putExtra(WordDetailActivity.EXTRA_WORD_ID, word);
+        startActivity(intent);
     }
 
     @Override

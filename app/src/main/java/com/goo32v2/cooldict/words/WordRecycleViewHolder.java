@@ -20,6 +20,7 @@ public class WordRecycleViewHolder extends RecyclerView.ViewHolder implements Vi
         super(itemView);
         originalWordTV = (TextView) itemView.findViewById(R.id.original_word);
         translatedWordTV = (TextView) itemView.findViewById(R.id.translated_word);
+        itemView.setOnClickListener(this);
     }
 
     public void setListener(View.OnClickListener listener) {

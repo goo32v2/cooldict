@@ -19,7 +19,7 @@
     <string name="add_new_word_edit_text_translated_word">Translated</string>
     <string name="add_new_word_edit_text_dictionary_title">Dictionary</string>
     <string name="show_empty_word_error_text">Word cannot be empty</string>
-    <string name="word_detail_menu_delete_task_text">Delete word</string>
+    <string name="word_detail_menu_delete">Delete</string>
     <string name="no_data">No Data</string>
 
     <string name="error_cannotGetDictionaries">Error! Cannot get any dictionaries</string>
@@ -91,6 +91,8 @@
     <string name="empty_original_word_field">Original word field must be filled</string>
     <string name="empty_dictionary_field">Dictionary field must be filled</string>
     <string name="empty_fields_error">Please, fill empty fields</string>
+    <string name="word_detail_menu_edit">Edit</string>
+    <string name="actionbar_title_word_detail">Word Detail</string>
 
 
 </resources>
