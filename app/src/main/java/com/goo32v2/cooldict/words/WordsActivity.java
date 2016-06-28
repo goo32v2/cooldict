@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.addword.AddWordActivity;
+import com.goo32v2.cooldict.addword.WordManagerActivity;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
@@ -189,7 +189,7 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     @Override
     public void startAddWordActivity() {
-        Intent intent = new Intent(this, AddWordActivity.class);
+        Intent intent = new Intent(this, WordManagerActivity.class);
         startActivity(intent);
     }
 

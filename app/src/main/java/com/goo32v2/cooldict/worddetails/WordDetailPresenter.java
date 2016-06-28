@@ -20,8 +20,8 @@ public class WordDetailPresenter implements WordDetailPresenterContract{
 
     private final WordRepository mWordRepository;
 
-    private final WordDetailViewContract mViewContract;
-    private final DictionaryRepository dictionaryRepository;
+    private final WordDetailViewContract mView;
+    private final DictionaryRepository mDictionaryRepository;
 
     private WordModel mWord;
 
@@ -30,31 +30,31 @@ public class WordDetailPresenter implements WordDetailPresenterContract{
                                @NonNull WordDetailViewContract viewContract,
                                @NonNull WordModel word){
         this.mWordRepository = checkNotNull(wordRepository);
-        this.dictionaryRepository = checkNotNull(dictionaryRepository);
-        this.mViewContract = checkNotNull(viewContract);
+        this.mDictionaryRepository = checkNotNull(dictionaryRepository);
+        this.mView = checkNotNull(viewContract);
         this.mWord = word;
 
-        mViewContract.setPresenter(this);
+        mView.setPresenter(this);
     }
 
     @Override
     public void startEditWordActivity() {
-        mViewContract.startEditWordActivity();
+        mView.startEditWordActivity();
     }
 
     @Override
     public void actionDeleteWord() {
         mWordRepository.remove(mWord);
-        mViewContract.finishActivity();
+        mView.finishActivity();
     }
 
     @Override
     public void getDictionary(String id, DataSource.GetListCallback<DictionaryModel> callback) {
-        dictionaryRepository.getDictionary(id, callback);
+        mDictionaryRepository.getDictionary(id, callback);
     }
 
     @Override
     public void start() {
-        mViewContract.populate();
+        mView.populate();
     }
 }

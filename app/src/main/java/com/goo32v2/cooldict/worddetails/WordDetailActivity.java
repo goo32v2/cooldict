@@ -12,11 +12,11 @@ import android.view.MenuItem;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
+import com.goo32v2.cooldict.addword.WordManagerActivity;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.models.WordWithDictionaryDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
+import com.goo32v2.cooldict.data.models.WordWithDictionaryDTO;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
-import com.goo32v2.cooldict.editword.EditWordActivity;
 import com.goo32v2.cooldict.utils.ActivityUtils;
 import com.goo32v2.cooldict.worddetails.interfaces.WordDetailPresenterContract;
 import com.goo32v2.cooldict.worddetails.interfaces.WordDetailViewContract;
@@ -127,8 +127,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
 
     @Override
     public void startEditWordActivity() {
-        Intent intent = new Intent(this, EditWordActivity.class);
-        intent.putExtra(EditWordActivity.ARGUMENT_EDIT_WORD, extraWord);
+        Intent intent = new Intent(this, WordManagerActivity.class);
+        intent.putExtra(WordManagerActivity.ARGUMENT_EDIT_WORD, extraWord);
         startActivityForResult(intent, 1);
     }
 

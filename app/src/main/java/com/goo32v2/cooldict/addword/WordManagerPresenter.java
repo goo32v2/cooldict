@@ -2,9 +2,10 @@ package com.goo32v2.cooldict.addword;
 
 import android.support.annotation.NonNull;
 
-import com.goo32v2.cooldict.addword.interfaces.AddWordPresenterContract;
+import com.goo32v2.cooldict.addword.interfaces.WordManagerPresenterContract;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
+import com.goo32v2.cooldict.data.sources.SourcesConstants;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 import com.goo32v2.cooldict.data.sources.interfaces.DictDataSource;
 import com.goo32v2.cooldict.data.sources.interfaces.WordDataSource;
@@ -18,22 +19,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created on 26-Jun-16. (c) CoolDict
  */
 
-public class AddWordPresenter implements AddWordPresenterContract {
+public class WordManagerPresenter implements WordManagerPresenterContract {
 
     @NonNull private final WordDataSource mWordRepository;
 
     @NonNull final DictDataSource mDictionaryRepository;
 
-    @NonNull private final AddWordActivity mAddWordView;
+    @NonNull private final WordManagerActivity mView;
 
-    public AddWordPresenter(@NonNull WordDataSource wordRepository,
-                            @NonNull DictDataSource dictionaryRepository,
-                            @NonNull AddWordActivity addWordActivity) {
-        mAddWordView = checkNotNull(addWordActivity);
+    public WordManagerPresenter(@NonNull WordDataSource wordRepository,
+                                @NonNull DictDataSource dictionaryRepository,
+                                @NonNull WordManagerActivity addWordActivity) {
+        mView = checkNotNull(addWordActivity);
         mWordRepository = checkNotNull(wordRepository);
         mDictionaryRepository = checkNotNull(dictionaryRepository);
 
-        mAddWordView.setPresenter(this);
+        mView.setPresenter(this);
     }
 
 
@@ -62,11 +63,11 @@ public class AddWordPresenter implements AddWordPresenterContract {
 
     @Override
     public void showMessage(String msg) {
-        mAddWordView.showMessage(msg);
+        mView.showMessage(msg);
     }
 
     @Override
-    public void createWord(String originalWord, String translatedWord, final String dictionary) {
+    public void create(String originalWord, String translatedWord, final String dictionary) {
         final DictionaryModel[] model = new DictionaryModel[1];
         mDictionaryRepository.getDictionaryByName(dictionary, new DataSource.GetListCallback<DictionaryModel>() {
             @Override
@@ -86,7 +87,51 @@ public class AddWordPresenter implements AddWordPresenterContract {
                 translatedWord,
                 model[0].getId());
         mWordRepository.save(wordModel);
-        mAddWordView.finishActivity();
+        mView.finishActivity();
+    }
+
+    @Override
+    public void update(String id, String originalText, String translatedText, final String dictionary) {
+        final DictionaryModel[] model = new DictionaryModel[1];
+        mDictionaryRepository.getDictionaryByName(dictionary, new DataSource.GetListCallback<DictionaryModel>() {
+            @Override
+            public void onLoaded(List<DictionaryModel> entries) {
+                model[0] = entries.get(0);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                model[0] = new DictionaryModel(dictionary);
+                mDictionaryRepository.save(model[0]);
+            }
+        });
+        WordModel wordModel = new WordModel(id, originalText, translatedText, model[0].getId());
+        mWordRepository.update(id, wordModel);
+        mView.finishActivity();
+    }
+
+    @Override
+    public void populate(WordModel wordModel) {
+        final DictionaryModel[] dictionary = new DictionaryModel[1];
+        mDictionaryRepository.getDictionary(wordModel.getDictionaryID(),
+                new DataSource.GetListCallback<DictionaryModel>() {
+            @Override
+            public void onLoaded(List<DictionaryModel> entries) {
+                dictionary[0] = entries.get(0);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                dictionary[0] = new DictionaryModel(SourcesConstants.DEFAULT_DICTIONARY_NAME);
+            }
+        });
+
+        mView.populateWord(
+                wordModel.getId(),
+                wordModel.getOriginalWord(),
+                wordModel.getTranslatedWord(),
+                dictionary[0].getTitle()
+        );
     }
 
     @Override

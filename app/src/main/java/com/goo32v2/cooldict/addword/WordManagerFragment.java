@@ -17,20 +17,21 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddWordFragment extends Fragment {
+public class WordManagerFragment extends Fragment {
 
+    @BindView(R.id.ea_word_id) TextView mWordId;
     @BindView(R.id.ea_original_word) TextView mOriginalWord;
     @BindView(R.id.ea_translated_word) TextView mTranslatedWord;
     @BindView(R.id.ea_dictionary_id) AutoCompleteTextView mDictionary;
 
-    public AddWordFragment() {
+    public WordManagerFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_add_word, container, false);
+        View root = inflater.inflate(R.layout.fragment_word_manager, container, false);
         ButterKnife.bind(this, root);
 
         setValidation();
@@ -71,5 +72,44 @@ public class AddWordFragment extends Fragment {
                         new ArrayList<>(names)
                 )
         );
+    }
+
+    public String getOriginalWord() {
+        return mOriginalWord.getText().toString();
+    }
+
+    public void setOriginalWord(String text) {
+        this.mOriginalWord.setText(text);
+    }
+
+    public String getTranslatedWord() {
+        return mTranslatedWord.getText().toString();
+    }
+
+    public void setTranslatedWord(String text) {
+        this.mTranslatedWord.setText(text);
+    }
+
+    public String getDictionary() {
+        return mDictionary.getText().toString();
+    }
+
+    public void setDictionary(String text) {
+        this.mDictionary.setText(text);
+    }
+
+    public String getWordId() {
+        return mWordId.getText().toString();
+    }
+
+    public void setWordId(String text) {
+        this.mWordId.setText(text);
+    }
+
+    public void populate(String id, String originalWord, String translatedWrd, String dictionary) {
+        setWordId(id);
+        setOriginalWord(originalWord);
+        setTranslatedWord(translatedWrd);
+        setDictionary(dictionary);
     }
 }
