@@ -79,6 +79,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        this.finish();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

@@ -45,6 +45,12 @@ public class WordDetailFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        getFragmentManager().beginTransaction().remove(this).commit();
+    }
+
     public void populate() {
         if (getArguments().containsKey(ARGUMENT_WORD_ID)){
             WordModel word = (WordModel) getArguments().getSerializable(ARGUMENT_WORD_ID);
