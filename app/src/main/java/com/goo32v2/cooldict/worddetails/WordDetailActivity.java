@@ -1,8 +1,10 @@
 package com.goo32v2.cooldict.worddetails;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -97,11 +99,30 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
             return true;
         }
         if (id == R.id.action_delete) {
-            mPresenter.actionDeleteWord();
+            askConfirmation().show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private AlertDialog askConfirmation(){
+        return new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_delete_confirmation_dialog))
+                .setMessage(getString(R.string.message_delete_confirmation_dialog))
+                .setPositiveButton(getString(R.string.positive_delete_confirmation_dialog), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.actionDeleteWord();
+                    }
+                })
+                .setNegativeButton(getString(R.string.negative_delete_confirmation_dialog), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
     }
 
     @Override

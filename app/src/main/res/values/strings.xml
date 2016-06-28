@@ -93,6 +93,10 @@
     <string name="empty_fields_error">Please, fill empty fields</string>
     <string name="word_detail_menu_edit">Edit</string>
     <string name="actionbar_title_word_detail">Word Detail</string>
+    <string name="title_delete_confirmation_dialog">Delete</string>
+    <string name="message_delete_confirmation_dialog">Do you want to delete?</string>
+    <string name="positive_delete_confirmation_dialog">Delete</string>
+    <string name="negative_delete_confirmation_dialog">Cancel</string>
 
 
 </resources>
