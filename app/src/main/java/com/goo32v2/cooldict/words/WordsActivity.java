@@ -3,11 +3,13 @@ package com.goo32v2.cooldict.words;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,15 +17,14 @@ import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.dictionarymanager.DictionaryManagerActivity;
-import com.goo32v2.cooldict.dictionarymanager.DictionaryManagerFragment;
-import com.goo32v2.cooldict.wordmanager.WordManagerActivity;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
+import com.goo32v2.cooldict.dictionarymanager.DictionaryManagerActivity;
 import com.goo32v2.cooldict.settings.SettingsActivity;
 import com.goo32v2.cooldict.worddetails.WordDetailActivity;
+import com.goo32v2.cooldict.wordmanager.WordManagerActivity;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
@@ -33,12 +34,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WordsActivity extends AppCompatActivity implements WordViewContract{
+public class WordsActivity extends AppCompatActivity implements WordViewContract,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private WordsPresenter mWordsPresenter;
     private WordsFragment mWordsFragment;
-    private DictionaryManagerFragment mDictionaryManagerFragment;
 
+    @BindView(R.id.nav_view) NavigationView mNavigationView;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton floatingActionButton;
@@ -60,11 +62,8 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
         // get all created fragments and assign it to vars
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof WordsFragment){
+            if (fragment instanceof WordsFragment) {
                 this.mWordsFragment = (WordsFragment) fragment;
-            }
-            if (fragment instanceof DictionaryManagerFragment){
-                this.mDictionaryManagerFragment = (DictionaryManagerFragment) fragment;
             }
         }
 
@@ -72,7 +71,7 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
         setupView();
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             // TODO: 17-May-16 Get serialized current dictionary from navigation drawer
             savedInstanceState.getSerializable(CURRENT_DICTIONARY);
         }
@@ -101,55 +100,31 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
         mWordsPresenter.getDictionaries(new DataSource.GetListCallback<DictionaryModel>() {
             @Override
             public void onLoaded(List<DictionaryModel> entries) {
-                mDictionaryManagerFragment.showDictionaryList(
-                        convertDictionaryToDTO(entries)
-                );
+                setMenu(entries);
             }
 
             @Override
             public void onDataNotAvailable() {
-                mDictionaryManagerFragment.showDictionaryList(
-                        convertDictionaryToDTO(new ArrayList<DictionaryModel>())
-                );
+                setMenu(new ArrayList<DictionaryModel>());
             }
         });
     }
 
-    private List<ModelDTO<WordModel, View.OnClickListener>> convertWordToDTO(List<WordModel> source){
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mNavigationView.getMenu().clear();
+    }
+
+    private List<ModelDTO<WordModel, View.OnClickListener>> convertWordToDTO(List<WordModel> source) {
         List<ModelDTO<WordModel, View.OnClickListener>> result = new ArrayList<>();
         for (final WordModel wordModel : source) {
             result.add(new ModelDTO<WordModel, View.OnClickListener>(
                     wordModel,
                     new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startWordDetailActivity(wordModel);
-                }
-            }));
-        }
-        return result;
-    }
-
-    private List<ModelDTO<DictionaryModel, View.OnClickListener>> convertDictionaryToDTO(List<DictionaryModel> source){
-        List<ModelDTO<DictionaryModel, View.OnClickListener>> result = new ArrayList<>();
-        for (final DictionaryModel model : source) {
-            result.add(new ModelDTO<DictionaryModel, View.OnClickListener>(
-                    model,
-                    new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mWordsPresenter.getWordsByDictionary(model.getId(), new DataSource.GetListCallback<WordModel>() {
-                                @Override
-                                public void onLoaded(List<WordModel> entries) {
-                                    mWordsFragment.showWords(convertWordToDTO(entries));
-                                }
-
-                                @Override
-                                public void onDataNotAvailable() {
-                                    mWordsFragment.showNoWords();
-                                }
-                            });
-                            mDrawerLayout.closeDrawers();
+                            startWordDetailActivity(wordModel);
                         }
                     }));
         }
@@ -243,5 +218,31 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
                 mWordsPresenter.startAddNewWordActivity();
             }
         });
+        mNavigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void setMenu(List<DictionaryModel> entries) {
+        Menu m = mNavigationView.getMenu();
+        for (DictionaryModel item : entries) {
+            m.add(item.getTitle());
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        Log.i("he", "hhh");
+        mWordsPresenter.getWordsByDictionaryName(item.getTitle().toString(), new DataSource.GetListCallback<WordModel>() {
+            @Override
+            public void onLoaded(List<WordModel> entries) {
+                mWordsFragment.showWords(convertWordToDTO(entries));
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mWordsFragment.showNoWords();
+            }
+        });
+        mDrawerLayout.closeDrawers();
+        return true;
     }
 }

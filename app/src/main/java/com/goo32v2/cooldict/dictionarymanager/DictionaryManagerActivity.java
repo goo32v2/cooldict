@@ -34,6 +34,7 @@ public class DictionaryManagerActivity extends AppCompatActivity implements Dict
 
         new DictionaryManagerPresenter(
                 Injection.provideDictionaryRepository(this),
+                Injection.provideWordRepository(this),
                 this
         );
 
@@ -90,6 +91,7 @@ public class DictionaryManagerActivity extends AppCompatActivity implements Dict
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mPresenter.remove(model);
+                        onResume();
                     }
                 })
                 .setNegativeButton(getString(R.string.negative_delete_confirmation_dialog), new DialogInterface.OnClickListener() {

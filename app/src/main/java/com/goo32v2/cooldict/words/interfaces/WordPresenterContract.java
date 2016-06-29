@@ -17,7 +17,7 @@ public interface WordPresenterContract extends BasePresenter {
 
     void getDictionaries(@NonNull DataSource.GetListCallback<DictionaryModel> callback);
 
-    void getWordsByDictionary(String id, @NonNull DataSource.GetListCallback<WordModel> callback);
+    void getWordsByDictionaryName(String name, @NonNull DataSource.GetListCallback<WordModel> callback);
 
     void startSettingsActivity();
 

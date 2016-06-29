@@ -12,6 +12,8 @@ import com.goo32v2.cooldict.data.sources.interfaces.WordDataSource;
 import com.goo32v2.cooldict.words.interfaces.WordPresenterContract;
 import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -51,8 +53,18 @@ public class WordsPresenter implements WordPresenterContract {
     }
 
     @Override
-    public void getWordsByDictionary(final String id, @NonNull DataSource.GetListCallback<WordModel> callback) {
-        mWordsRepository.getWordsByDictionary(id, callback);
+    public void getWordsByDictionaryName(final String name, @NonNull final DataSource.GetListCallback<WordModel> callback) {
+        mDictionaryRepository.getDictionaryByName(name, new DataSource.GetListCallback<DictionaryModel>() {
+            @Override
+            public void onLoaded(List<DictionaryModel> entries) {
+                mWordsRepository.getWordsByDictionary(entries.get(0).getId(), callback);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                showMessage("Problem!");
+            }
+        });
     }
 
     @Override

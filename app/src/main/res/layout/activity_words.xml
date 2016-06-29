@@ -18,18 +18,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header">
-
-        <fragment
-            android:id="@+id/navigation_fragment"
-            android:name="com.goo32v2.cooldict.words.NavDrawerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:layout="@layout/fragment_navigation_drawer"
-            />
-
-    </android.support.design.widget.NavigationView>
-
+        app:headerLayout="@layout/nav_header" />
 
 </android.support.v4.widget.DrawerLayout>
