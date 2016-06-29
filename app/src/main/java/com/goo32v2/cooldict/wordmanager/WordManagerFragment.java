@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.addword;
+package com.goo32v2.cooldict.wordmanager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

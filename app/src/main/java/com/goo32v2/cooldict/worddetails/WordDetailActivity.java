@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.addword.WordManagerActivity;
+import com.goo32v2.cooldict.wordmanager.WordManagerActivity;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.models.WordWithDictionaryDTO;

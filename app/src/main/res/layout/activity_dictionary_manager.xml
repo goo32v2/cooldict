@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".wordmanager.WordManagerActivity">
+    android:layout_height="match_parent">
 
     <fragment
-        android:id="@+id/edit_area_fragment"
-        android:name="com.goo32v2.cooldict.wordmanager.WordManagerFragment"
+        android:id="@+id/navigation_fragment"
+        android:name="com.goo32v2.cooldict.dictionarymanager.DictionaryManagerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_word_manager" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/fragment_navigation_drawer" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,8 +1,8 @@
-package com.goo32v2.cooldict.addword;
+package com.goo32v2.cooldict.wordmanager;
 
 import android.support.annotation.NonNull;
 
-import com.goo32v2.cooldict.addword.interfaces.WordManagerPresenterContract;
+import com.goo32v2.cooldict.wordmanager.interfaces.WordManagerPresenterContract;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.SourcesConstants;

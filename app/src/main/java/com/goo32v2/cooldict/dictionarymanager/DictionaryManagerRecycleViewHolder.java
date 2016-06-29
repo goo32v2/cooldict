@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.words;
+package com.goo32v2.cooldict.dictionarymanager;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,12 +10,12 @@ import com.goo32v2.cooldict.R;
  * Created on 25-Jun-16. (c) CoolDict
  */
 
-public class NavDrawerRecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class DictionaryManagerRecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     public TextView textView;
     private View.OnClickListener listener;
 
-    public NavDrawerRecycleViewHolder(View itemView) {
+    public DictionaryManagerRecycleViewHolder(View itemView) {
         super(itemView);
         this.textView = (TextView) itemView.findViewById(R.id.dictionary_name);
         itemView.setOnClickListener(this);

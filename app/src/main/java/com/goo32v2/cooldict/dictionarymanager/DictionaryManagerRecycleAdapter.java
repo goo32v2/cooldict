@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.words;
+package com.goo32v2.cooldict.dictionarymanager;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,11 +17,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created on 25-Jun-16. (c) CoolDict
  */
 
-public class NavDrawerRecycleAdapter extends RecyclerView.Adapter<NavDrawerRecycleViewHolder> {
+public class DictionaryManagerRecycleAdapter extends RecyclerView.Adapter<DictionaryManagerRecycleViewHolder> {
 
     private List<ModelDTO<DictionaryModel, View.OnClickListener>> modelDTOs;
 
-    public NavDrawerRecycleAdapter(List<ModelDTO<DictionaryModel, View.OnClickListener>> list) {
+    public DictionaryManagerRecycleAdapter(List<ModelDTO<DictionaryModel, View.OnClickListener>> list) {
         setList(list);
     }
 
@@ -31,15 +31,15 @@ public class NavDrawerRecycleAdapter extends RecyclerView.Adapter<NavDrawerRecyc
     }
 
     @Override
-    public NavDrawerRecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DictionaryManagerRecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_navigation_drawer, parent, false);
-        return new NavDrawerRecycleViewHolder(root);
+        return new DictionaryManagerRecycleViewHolder(root);
     }
 
 
 
     @Override
-    public void onBindViewHolder(NavDrawerRecycleViewHolder holder, int position) {
+    public void onBindViewHolder(DictionaryManagerRecycleViewHolder holder, int position) {
         ModelDTO<DictionaryModel, View.OnClickListener> model = modelDTOs.get(holder.getAdapterPosition());
         holder.setListener(model.getCallback());
         holder.textView.setText(model.getModel().getTitle());

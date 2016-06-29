@@ -72,6 +72,11 @@ public class WordsPresenter implements WordPresenterContract {
     }
 
     @Override
+    public void startDictionaryManagerActivity() {
+        mWordsView.startDictionaryManagerActivity();
+    }
+
+    @Override
     public void showMessage(String msg) {
         mWordsView.showMessage(msg);
     }

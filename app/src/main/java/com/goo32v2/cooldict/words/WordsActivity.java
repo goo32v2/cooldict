@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.addword.WordManagerActivity;
+import com.goo32v2.cooldict.dictionarymanager.DictionaryManagerActivity;
+import com.goo32v2.cooldict.dictionarymanager.DictionaryManagerFragment;
+import com.goo32v2.cooldict.wordmanager.WordManagerActivity;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
@@ -35,7 +37,7 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     private WordsPresenter mWordsPresenter;
     private WordsFragment mWordsFragment;
-    private NavDrawerFragment mNavDrawerFragment;
+    private DictionaryManagerFragment mDictionaryManagerFragment;
 
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -61,8 +63,8 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
             if (fragment instanceof WordsFragment){
                 this.mWordsFragment = (WordsFragment) fragment;
             }
-            if (fragment instanceof NavDrawerFragment){
-                this.mNavDrawerFragment = (NavDrawerFragment) fragment;
+            if (fragment instanceof DictionaryManagerFragment){
+                this.mDictionaryManagerFragment = (DictionaryManagerFragment) fragment;
             }
         }
 
@@ -99,14 +101,14 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
         mWordsPresenter.getDictionaries(new DataSource.GetListCallback<DictionaryModel>() {
             @Override
             public void onLoaded(List<DictionaryModel> entries) {
-                mNavDrawerFragment.showDictionaryList(
+                mDictionaryManagerFragment.showDictionaryList(
                         convertDictionaryToDTO(entries)
                 );
             }
 
             @Override
             public void onDataNotAvailable() {
-                mNavDrawerFragment.showDictionaryList(
+                mDictionaryManagerFragment.showDictionaryList(
                         convertDictionaryToDTO(new ArrayList<DictionaryModel>())
                 );
             }
@@ -177,6 +179,9 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
             mWordsPresenter.startSettingsActivity();
             return true;
         }
+        if (id == R.id.action_dictionary_manager) {
+            mWordsPresenter.startDictionaryManagerActivity();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -197,6 +202,12 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
     public void startWordDetailActivity(WordModel word) {
         Intent intent = new Intent(this, WordDetailActivity.class);
         intent.putExtra(WordDetailActivity.EXTRA_WORD_ID, word);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startDictionaryManagerActivity() {
+        Intent intent = new Intent(this, DictionaryManagerActivity.class);
         startActivity(intent);
     }
 

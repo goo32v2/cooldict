@@ -23,6 +23,8 @@ public interface WordPresenterContract extends BasePresenter {
 
     void startAddNewWordActivity();
 
+    void startDictionaryManagerActivity();
+
     void startWordDetailsActivity(@NonNull WordModel word);
 
     void showMessage(String msg);

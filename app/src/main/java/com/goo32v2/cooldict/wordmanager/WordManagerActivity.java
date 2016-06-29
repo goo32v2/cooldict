@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.addword;
+package com.goo32v2.cooldict.wordmanager;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.addword.interfaces.WordManagerPresenterContract;
-import com.goo32v2.cooldict.addword.interfaces.WordManagerViewContract;
+import com.goo32v2.cooldict.wordmanager.interfaces.WordManagerPresenterContract;
+import com.goo32v2.cooldict.wordmanager.interfaces.WordManagerViewContract;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 

@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.addword.interfaces;
+package com.goo32v2.cooldict.wordmanager.interfaces;
 
 import android.support.annotation.NonNull;
 

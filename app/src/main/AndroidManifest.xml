@@ -33,7 +33,7 @@
         </activity>
 
         <activity
-            android:name=".addword.WordManagerActivity"
+            android:name=".wordmanager.WordManagerActivity"
             android:label="@string/actionbar_title_add_new_word_activity"
             android:parentActivityName=".words.WordsActivity">
             <meta-data
@@ -44,6 +44,15 @@
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:parentActivityName=".words.WordsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.goo32v2.cooldict.words.WordsActivity" />
+        </activity>
+
+        <activity
+            android:name=".dictionarymanager.DictionaryManagerActivity"
+            android:label="@string/title_activity_dictionary_manager"
             android:parentActivityName=".words.WordsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

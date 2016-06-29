@@ -20,6 +20,8 @@ public interface WordViewContract extends BaseView<WordPresenterContract> {
 
     void startWordDetailActivity(WordModel word);
 
+    void startDictionaryManagerActivity();
+
     void showMessage(String msg);
 
     interface FragmentView {

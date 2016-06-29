@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.words;
+package com.goo32v2.cooldict.dictionarymanager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,15 +22,14 @@ import butterknife.ButterKnife;
  * Created on 23-Jun-16. (c) CoolDict
  */
 
-public class NavDrawerFragment extends Fragment {
+public class DictionaryManagerFragment extends Fragment {
 
     @BindView(R.id.dictionary_recycler_view) RecyclerView mRecycleView;
-
-    private NavDrawerRecycleAdapter mAdapter;
+    private DictionaryManagerRecycleAdapter mAdapter;
     private LinearLayoutManager llm;
 
     // empty
-    public NavDrawerFragment() {
+    public DictionaryManagerFragment() {
     }
 
     @Nullable
@@ -59,7 +58,7 @@ public class NavDrawerFragment extends Fragment {
     private void setupRecycleView(List<ModelDTO<DictionaryModel, View.OnClickListener>> dictionaryModelList) {
         llm = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(llm);
-        mAdapter = new NavDrawerRecycleAdapter(dictionaryModelList);
+        mAdapter = new DictionaryManagerRecycleAdapter(dictionaryModelList);
         mRecycleView.setAdapter(mAdapter);
     }
 

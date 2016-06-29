@@ -97,6 +97,8 @@
     <string name="message_delete_confirmation_dialog">Do you want to delete?</string>
     <string name="positive_delete_confirmation_dialog">Delete</string>
     <string name="negative_delete_confirmation_dialog">Cancel</string>
+    <string name="action_dictionary_manager">Dictionary Manager</string>
+    <string name="title_activity_dictionary_manager">Dictionary Manager</string>
 
 
 </resources>
