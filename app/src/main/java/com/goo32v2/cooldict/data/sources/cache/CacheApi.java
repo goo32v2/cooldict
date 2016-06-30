@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface CacheApi<T> {
 
-    void init(List<T> entries);
+    void add(List<T> entries);
 
-    void push(String id, T object);
+    void add(String id, T object);
 
     Model get(String id);
 

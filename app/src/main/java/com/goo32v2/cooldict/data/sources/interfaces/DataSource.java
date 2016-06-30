@@ -14,28 +14,18 @@ public interface DataSource<T> {
     // For list
     interface GetListCallback<T> {
 
-        void onLoaded(List<T> entry);
+        void onLoaded(List<T> entries);
 
         void onDataNotAvailable();
     }
 
-    // For single row
-    interface GetEntryCallback<T> {
-
-        void onLoaded(T entry);
-
-        void onDataNotAvailable();
-    }
-
-    void get(@NonNull final GetListCallback<T> callback);
-
-    void get(@NonNull String id, @NonNull final GetEntryCallback<T> callback);
+    void get(@NonNull final GetListCallback<T> callback, String selection, String[] selectionArgs);
 
     void save(@NonNull T entry);
 
-    void remove(@NonNull String entry);
-
     void remove(@NonNull T entry);
+
+    void removeAll();
 
     void update(String id, T newModel);
 }

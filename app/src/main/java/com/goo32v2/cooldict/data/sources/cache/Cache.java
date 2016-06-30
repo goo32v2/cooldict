@@ -18,14 +18,14 @@ public class Cache<T extends Model> implements CacheApi<T> {
     }
 
     @Override
-    public void init(List<T> entries) {
+    public void add(List<T> entries) {
         for (T model : entries) {
             cache.put(model.getId(), model);
         }
     }
 
     @Override
-    public void push(String id, T object) {
+    public void add(String id, T object) {
         cache.put(id, object);
     }
 

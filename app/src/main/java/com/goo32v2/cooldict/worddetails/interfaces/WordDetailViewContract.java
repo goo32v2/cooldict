@@ -8,23 +8,10 @@ import com.goo32v2.cooldict.BaseView;
 
 public interface WordDetailViewContract extends BaseView<WordDetailPresenterContract> {
 
-    void showLoadingIndicator(boolean active);
+    void populate();
 
-    boolean isActive();
+    void finishActivity();
 
-    void showEditWord(String id);
+    void startEditWordActivity();
 
-    void showDeleteWord();
-
-    void showMissingWord();
-
-    void showOriginalWord(String entry);
-
-    void hideOriginalWord();
-
-    void showTranslatedWord(String entry);
-
-    void hideTranslatedWord();
-
-    void showDictionaryId(String dictionaryId);
 }

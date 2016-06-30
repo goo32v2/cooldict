@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.goo32v2.cooldict.BasePresenter;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
+import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 
 /**
  * Created on 14-May-16. (c) CoolDict
@@ -12,17 +13,19 @@ import com.goo32v2.cooldict.data.models.WordModel;
 
 public interface WordPresenterContract extends BasePresenter {
 
-    void start(String dict);
+    void getWords(@NonNull DataSource.GetListCallback<WordModel> callback);
 
-    void result(int requestCode, int resultCode);
+    void getDictionaries(@NonNull DataSource.GetListCallback<DictionaryModel> callback);
 
-    void loadWords(boolean showLoadingUi);
+    void getWordsByDictionaryName(String name, @NonNull DataSource.GetListCallback<WordModel> callback);
 
-    void loadWords(String dictionaryName,boolean showLoadingUi);
+    void startSettingsActivity();
 
-    void addNewWord();
+    void startAddNewWordActivity();
 
-    void openWordDetail(@NonNull WordModel word);
+    void startDictionaryManagerActivity();
 
-    DictionaryModel getCurrentDictionary();
+    void startWordDetailsActivity(@NonNull WordModel word);
+
+    void showMessage(String msg);
 }

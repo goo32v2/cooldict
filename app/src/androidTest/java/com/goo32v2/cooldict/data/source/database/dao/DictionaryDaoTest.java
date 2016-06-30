@@ -41,7 +41,7 @@ public class DictionaryDaoTest {
 
     @After
     public void cleanUp(){
-        mDictionaryDao.deleteAll();
+        mDictionaryDao.removeAll();
     }
 
     @Test

@@ -5,40 +5,19 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".words.WordsActivity"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <LinearLayout
+    <include
+        layout="@layout/activity_words_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent" />
 
-        <include layout="@layout/toolbar" />
-
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/coordinatorLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
-                android:id="@+id/contentFrame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <!-- why there?!?! -->
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_add_new_word"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_add"
-                android:layout_gravity="right|bottom"
-                app:fabSize="normal" />
-
-        </android.support.design.widget.CoordinatorLayout>
-    </LinearLayout>
-
-    <include layout="@layout/navigation_drawer" />
-
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header" />
 
 </android.support.v4.widget.DrawerLayout>

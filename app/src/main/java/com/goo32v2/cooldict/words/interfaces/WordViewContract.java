@@ -1,6 +1,9 @@
 package com.goo32v2.cooldict.words.interfaces;
 
+import android.view.View;
+
 import com.goo32v2.cooldict.BaseView;
+import com.goo32v2.cooldict.data.models.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
 
 import java.util.List;
@@ -11,19 +14,22 @@ import java.util.List;
 
 public interface WordViewContract extends BaseView<WordPresenterContract> {
 
-    void setLoadingIndicator(boolean active);
+    void startAddWordActivity();
 
-    void showWords(List<WordModel> words);
+    void startSettingsActivity();
 
-    void showAddWord();
+    void startWordDetailActivity(WordModel word);
 
-    void showWordDetailUi(WordModel word);
+    void startDictionaryManagerActivity();
 
     void showMessage(String msg);
 
-    void showError(String msg);
+    interface FragmentView {
 
-    void showNoWords();
+        void showWords(List<ModelDTO<WordModel, View.OnClickListener>> words);
 
-    boolean isActive();
+        void showNoWords();
+
+        boolean isActive();
+    }
 }
