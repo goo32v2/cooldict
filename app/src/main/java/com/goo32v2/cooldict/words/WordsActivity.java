@@ -230,7 +230,6 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Log.i("he", "hhh");
         mWordsPresenter.getWordsByDictionaryName(item.getTitle().toString(), new DataSource.GetListCallback<WordModel>() {
             @Override
             public void onLoaded(List<WordModel> entries) {

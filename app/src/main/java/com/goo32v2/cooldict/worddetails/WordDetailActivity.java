@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.goo32v2.cooldict.Injection;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.wordmanager.WordManagerActivity;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.models.WordWithDictionaryDTO;
@@ -20,6 +18,7 @@ import com.goo32v2.cooldict.data.sources.interfaces.DataSource;
 import com.goo32v2.cooldict.utils.ActivityUtils;
 import com.goo32v2.cooldict.worddetails.interfaces.WordDetailPresenterContract;
 import com.goo32v2.cooldict.worddetails.interfaces.WordDetailViewContract;
+import com.goo32v2.cooldict.wordmanager.WordManagerActivity;
 
 import java.util.List;
 
@@ -59,7 +58,6 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
                 @Override
                 public void onDataNotAvailable() {
                     // TODO: 28-Jun-16 Have word with dictionary those we haven't got in database
-                    Log.i("hello", "nu mlya");
                 }
             });
 

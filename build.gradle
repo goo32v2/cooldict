@@ -22,10 +22,10 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVer = 23
-    buildToolsVer = '23.0.3'
+    compileSdkVer = 24
+    buildToolsVer = '24.0.0'
     minSdkVer = 19
-    targetSdkVer = 23
+    targetSdkVer = 24
 
 // App dependencies versions
     supportLibraryVer = '24.0.0'
