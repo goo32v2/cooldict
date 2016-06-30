@@ -35,7 +35,7 @@ public class DictionaryManagerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View root = inflater.inflate(R.layout.fragment_dictionary_manager, container, false);
         ButterKnife.bind(this, root);
 
         return root;

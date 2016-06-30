@@ -99,6 +99,7 @@
     <string name="negative_delete_confirmation_dialog">Cancel</string>
     <string name="action_dictionary_manager">Dictionary Manager</string>
     <string name="title_activity_dictionary_manager">Dictionary Manager</string>
+    <string name="show_all_words">All</string>
 
 
 </resources>

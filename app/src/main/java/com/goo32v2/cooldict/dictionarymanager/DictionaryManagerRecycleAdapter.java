@@ -32,7 +32,7 @@ public class DictionaryManagerRecycleAdapter extends RecyclerView.Adapter<Dictio
 
     @Override
     public DictionaryManagerRecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_navigation_drawer, parent, false);
+        View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dictionary_manager, parent, false);
         return new DictionaryManagerRecycleViewHolder(root);
     }
 

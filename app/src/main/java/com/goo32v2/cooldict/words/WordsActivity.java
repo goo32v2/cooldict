@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +29,7 @@ import com.goo32v2.cooldict.words.interfaces.WordViewContract;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +44,9 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton floatingActionButton;
+
+    private DictionaryModel activeDictionary;
+    private List<WordModel> activeWordList;
 
     private static final String CURRENT_DICTIONARY = "CURRENT_DICTIONARY";
 
@@ -223,24 +226,64 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     private void setMenu(List<DictionaryModel> entries) {
         Menu m = mNavigationView.getMenu();
+        m.add(R.string.show_all_words);
         for (DictionaryModel item : entries) {
             m.add(item.getTitle());
         }
     }
 
+
+    public DictionaryModel getActiveDictionary() {
+        return activeDictionary;
+    }
+
+    public void setActiveDictionary(DictionaryModel activeDictionary) {
+        this.activeDictionary = activeDictionary;
+    }
+
+    public List<WordModel> getActiveWordList() {
+        return activeWordList;
+    }
+
+    public void setActiveWordList(List<WordModel> activeWordList) {
+        this.activeWordList = activeWordList;
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        mWordsPresenter.getWordsByDictionaryName(item.getTitle().toString(), new DataSource.GetListCallback<WordModel>() {
-            @Override
-            public void onLoaded(List<WordModel> entries) {
-                mWordsFragment.showWords(convertWordToDTO(entries));
-            }
+        if (Objects.equals(item.getTitle().toString(), getString(R.string.show_all_words))) {
+            mWordsPresenter.getWords(new DataSource.GetListCallback<WordModel>() {
+                @Override
+                public void onLoaded(List<WordModel> entries) {
+                    setActiveWordList(entries);
+                }
 
-            @Override
-            public void onDataNotAvailable() {
-                mWordsFragment.showNoWords();
-            }
-        });
+                @Override
+                public void onDataNotAvailable() {
+                    setActiveWordList(null);
+                }
+            });
+        } else {
+            mWordsPresenter.getWordsByDictionaryName(item.getTitle().toString(), new DataSource.GetListCallback<WordModel>() {
+                @Override
+                public void onLoaded(List<WordModel> entries) {
+                    setActiveWordList(entries);
+//                setActiveDictionary();
+//                Get dictionary model
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                    setActiveWordList(null);
+                }
+            });
+        }
+
+        if (getActiveWordList().isEmpty()) {
+            mWordsFragment.showNoWords();
+        } else {
+            mWordsFragment.showWords(convertWordToDTO(getActiveWordList()));
+        }
         mDrawerLayout.closeDrawers();
         return true;
     }
