@@ -213,6 +213,7 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     private void setupView() {
         setSupportActionBar(toolbar);
+        setTitle(getString(R.string.show_all_words));
         setupDrawerLayout();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,6 +252,7 @@ public class WordsActivity extends AppCompatActivity implements WordViewContract
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        setTitle(item.getTitle());
         if (Objects.equals(item.getTitle().toString(), getString(R.string.show_all_words))) {
             mWordsPresenter.getWords(new DataSource.GetListCallback<WordModel>() {
                 @Override
