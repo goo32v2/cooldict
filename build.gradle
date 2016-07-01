@@ -20,21 +20,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-ext {
-    compileSdkVer = 24
-    buildToolsVer = '24.0.0'
-    minSdkVer = 19
-    targetSdkVer = 24
-
-// App dependencies versions
-    supportLibraryVer = '24.0.0'
-    guavaVer = '19.0'
-    junitVer = '4.12'
-    espressoVer = '2.2.2'
-    mockitoVer = '2.0.52-beta'
-    hamcrestVer = '1.3'
-    runnerVer = '0.5'
-    dexmakerVer = '1.2'
-    butterKnifeVer = '8.1.0'
-}
