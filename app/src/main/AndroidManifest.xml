@@ -4,6 +4,7 @@
     package="com.goo32v2.cooldict">
 
     <application
+        android:name=".CoolDictApp"
         android:allowBackup="false"
         android:allowClearUserData="true"
         android:icon="@mipmap/ic_launcher"

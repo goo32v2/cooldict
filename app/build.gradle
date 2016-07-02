@@ -56,10 +56,12 @@ ext {
     hamcrestVer = '1.3'
     runnerVer = '0.5'
     dexmakerVer = '1.2'
+    duggerVer = '2.5'
 }
 
 dependencies {
     apt "com.jakewharton:butterknife-compiler:$butterKnifeVer"
+    apt "com.google.dagger:dagger-compiler:$duggerVer"
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:$supportLibraryVer",
@@ -67,9 +69,12 @@ dependencies {
             "com.android.support:recyclerview-v7:$supportLibraryVer",
             "com.android.support:design:$supportLibraryVer",
             "com.android.support:support-v4:$supportLibraryVer",
+            "com.google.dagger:dagger:$duggerVer",
             "com.google.guava:guava:$guavaVer",
             "com.jakewharton:butterknife:$butterKnifeVer",
             "com.android.support.test.espresso:espresso-idling-resource:$espressoVer"
+
+    provided 'javax.annotation:jsr250-api:1.0'
 
     testCompile "junit:junit:$junitVer",
                 "org.mockito:mockito-core:$mockitoVer",

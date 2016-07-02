@@ -11,16 +11,20 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.goo32v2.cooldict.Injection;
+import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.presenter.WordManagerPresenterContract;
-import com.goo32v2.cooldict.view.WordManagerViewContract;
-import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.DataSource;
-import com.goo32v2.cooldict.view.fragments.WordManagerFragment;
+import com.goo32v2.cooldict.data.models.WordModel;
+import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
+import com.goo32v2.cooldict.data.repositories.WordRepository;
+import com.goo32v2.cooldict.presenter.WordManagerPresenterContract;
 import com.goo32v2.cooldict.presenter.impl.WordManagerPresenter;
+import com.goo32v2.cooldict.view.WordManagerViewContract;
+import com.goo32v2.cooldict.view.fragments.WordManagerFragment;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class WordManagerActivity extends AppCompatActivity implements WordManagerViewContract {
 
@@ -29,16 +33,23 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
     private WordManagerFragment mFragment;
     private WordManagerPresenterContract mPresenter;
 
+    @Inject
+    protected DictionaryRepository dictionaryRepository;
+
+    @Inject
+    protected WordRepository wordRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_manage);
+        CoolDictApp.getComponent().inject(this);
 
         setupActionBar();
 
         new WordManagerPresenter(
-                Injection.provideWordRepository(this),
-                Injection.provideDictionaryRepository(this),
+                wordRepository,
+                dictionaryRepository,
                 this
         );
 

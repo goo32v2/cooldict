@@ -8,18 +8,22 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.goo32v2.cooldict.Injection;
+import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
 import com.goo32v2.cooldict.data.DataSource;
-import com.goo32v2.cooldict.view.fragments.DictionaryManagerFragment;
-import com.goo32v2.cooldict.presenter.impl.DictionaryManagerPresenter;
+import com.goo32v2.cooldict.data.dtos.ModelDTO;
+import com.goo32v2.cooldict.data.models.DictionaryModel;
+import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
+import com.goo32v2.cooldict.data.repositories.WordRepository;
 import com.goo32v2.cooldict.presenter.DictionaryManagerPresenterContract;
+import com.goo32v2.cooldict.presenter.impl.DictionaryManagerPresenter;
 import com.goo32v2.cooldict.view.DictionaryManagerViewContract;
+import com.goo32v2.cooldict.view.fragments.DictionaryManagerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created on 29-Jun-16. (c) CoolDict
@@ -30,13 +34,20 @@ public class DictionaryManagerActivity extends AppCompatActivity implements Dict
     private DictionaryManagerPresenterContract mPresenter;
     private DictionaryManagerFragment mFragment;
 
+    @Inject
+    protected DictionaryRepository dictionaryRepository;
+
+    @Inject
+    protected WordRepository wordRepository;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CoolDictApp.getComponent().inject(this);
 
         new DictionaryManagerPresenter(
-                Injection.provideDictionaryRepository(this),
-                Injection.provideWordRepository(this),
+                dictionaryRepository,
+                wordRepository,
                 this
         );
 

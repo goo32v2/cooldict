@@ -10,7 +10,7 @@ import com.goo32v2.cooldict.data.DataSource;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public interface WordPresenterContract extends BasePresenter {
+public interface WordListPresenterContract extends BasePresenter {
 
     void getWords(@NonNull DataSource.GetListCallback<WordModel> callback);
 

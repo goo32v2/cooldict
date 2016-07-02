@@ -9,19 +9,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.goo32v2.cooldict.Injection;
+import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
+import com.goo32v2.cooldict.data.DataSource;
+import com.goo32v2.cooldict.data.dtos.WordWithDictionaryDTO;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
-import com.goo32v2.cooldict.data.dtos.WordWithDictionaryDTO;
-import com.goo32v2.cooldict.data.DataSource;
-import com.goo32v2.cooldict.utils.ActivityUtils;
+import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
+import com.goo32v2.cooldict.data.repositories.WordRepository;
 import com.goo32v2.cooldict.presenter.WordDetailPresenterContract;
+import com.goo32v2.cooldict.presenter.impl.WordDetailPresenter;
+import com.goo32v2.cooldict.utils.ActivityUtils;
 import com.goo32v2.cooldict.view.WordDetailViewContract;
 import com.goo32v2.cooldict.view.fragments.WordDetailFragment;
-import com.goo32v2.cooldict.presenter.impl.WordDetailPresenter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class WordDetailActivity extends AppCompatActivity implements WordDetailViewContract{
 
@@ -30,10 +34,17 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
     private WordDetailPresenterContract mPresenter;
     private WordModel extraWord;
 
+    @Inject
+    protected DictionaryRepository dictionaryRepository;
+
+    @Inject
+    protected WordRepository wordRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_detail);
+        CoolDictApp.getComponent().inject(this);
 
         WordDetailFragment wordDetailFragment = (WordDetailFragment)
                 getSupportFragmentManager().findFragmentById(R.id.contentFrame);
@@ -43,8 +54,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
         modelsDTO.setWord(extraWord);
 
         new WordDetailPresenter(
-                Injection.provideWordRepository(this),
-                Injection.provideDictionaryRepository(this),
+                wordRepository,
+                dictionaryRepository,
                 this,
                 extraWord
         );

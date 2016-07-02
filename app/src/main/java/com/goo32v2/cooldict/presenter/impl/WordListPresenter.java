@@ -9,7 +9,7 @@ import com.goo32v2.cooldict.data.repositories.WordRepository;
 import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.DictDataSource;
 import com.goo32v2.cooldict.data.WordDataSource;
-import com.goo32v2.cooldict.presenter.WordPresenterContract;
+import com.goo32v2.cooldict.presenter.WordListPresenterContract;
 import com.goo32v2.cooldict.view.WordListViewContract;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public class WordListPresenter implements WordPresenterContract {
+public class WordListPresenter implements WordListPresenterContract {
 
     private final WordDataSource mWordsRepository;
     private final DictDataSource mDictionaryRepository;

@@ -14,20 +14,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.goo32v2.cooldict.Injection;
+import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
-import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.DataSource;
+import com.goo32v2.cooldict.data.dtos.ModelDTO;
+import com.goo32v2.cooldict.data.models.DictionaryModel;
+import com.goo32v2.cooldict.data.models.WordModel;
+import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
+import com.goo32v2.cooldict.data.repositories.WordRepository;
+import com.goo32v2.cooldict.presenter.WordListPresenterContract;
 import com.goo32v2.cooldict.presenter.impl.WordListPresenter;
-import com.goo32v2.cooldict.presenter.WordPresenterContract;
 import com.goo32v2.cooldict.view.WordListViewContract;
 import com.goo32v2.cooldict.view.fragments.WordListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +50,12 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
     private DictionaryModel activeDictionary;
     private List<WordModel> activeWordList;
 
+    @Inject
+    protected DictionaryRepository dictionaryRepository;
+
+    @Inject
+    protected WordRepository wordRepository;
+
     private static final String CURRENT_DICTIONARY = "CURRENT_DICTIONARY";
 
 
@@ -54,11 +64,12 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words);
+        CoolDictApp.getComponent().inject(this);
         ButterKnife.bind(this);
 
         new WordListPresenter(
-                Injection.provideWordRepository(getApplicationContext()),
-                Injection.provideDictionaryRepository(getApplicationContext()),
+                wordRepository,
+                dictionaryRepository,
                 this
         );
 
@@ -192,7 +203,7 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
     }
 
     @Override
-    public void setPresenter(WordPresenterContract presenter) {
+    public void setPresenter(WordListPresenterContract presenter) {
         this.mWordListPresenter = (WordListPresenter) presenter;
     }
 
