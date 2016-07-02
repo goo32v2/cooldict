@@ -1,6 +1,6 @@
 package com.goo32v2.cooldict.data.sources.cache;
 
-import com.goo32v2.cooldict.data.models.Model;
+import com.goo32v2.cooldict.data.models.BaseModel;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ public interface CacheApi<T> {
 
     void add(String id, T object);
 
-    Model get(String id);
+    BaseModel get(String id);
 
     LinkedHashMap<String, T> getAll();
 

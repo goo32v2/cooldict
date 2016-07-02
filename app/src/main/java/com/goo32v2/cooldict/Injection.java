@@ -3,10 +3,10 @@ package com.goo32v2.cooldict;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.goo32v2.cooldict.data.sources.DictionaryRepository;
-import com.goo32v2.cooldict.data.sources.WordRepository;
-import com.goo32v2.cooldict.data.sources.database.dao.DictionaryDao;
-import com.goo32v2.cooldict.data.sources.database.dao.WordDao;
+import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
+import com.goo32v2.cooldict.data.repositories.WordRepository;
+import com.goo32v2.cooldict.data.daos.DictionaryDao;
+import com.goo32v2.cooldict.data.daos.WordDao;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

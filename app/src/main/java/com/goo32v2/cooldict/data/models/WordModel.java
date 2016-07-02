@@ -2,7 +2,7 @@ package com.goo32v2.cooldict.data.models;
 
 import android.support.annotation.Nullable;
 
-import com.goo32v2.cooldict.data.sources.SourcesConstants;
+import com.goo32v2.cooldict.Constants;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,7 +12,7 @@ import java.util.UUID;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public final class WordModel implements Model, Serializable{
+public final class WordModel implements BaseModel, Serializable{
 
     private final String mId;
     @Nullable private final String mOriginalWord;
@@ -61,7 +61,7 @@ public final class WordModel implements Model, Serializable{
         this.mId = UUID.randomUUID().toString();
         this.mOriginalWord = mOriginalWord;
         this.mTranslatedWord = mTranslatedWord;
-        this.mDictionary = SourcesConstants.DEFAULT_DICTIONARY_ID;
+        this.mDictionary = Constants.DEFAULT_DICTIONARY_ID;
     }
 
     @Override

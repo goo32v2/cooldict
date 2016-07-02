@@ -10,7 +10,7 @@ import java.util.UUID;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public final class DictionaryModel implements Model, Serializable{
+public final class DictionaryModel implements BaseModel, Serializable{
 
     private final String mId;
     @NonNull private final String mTitle;

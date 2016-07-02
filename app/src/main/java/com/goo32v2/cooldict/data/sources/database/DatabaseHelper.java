@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.goo32v2.cooldict.data.sources.SourcesConstants;
+import com.goo32v2.cooldict.Constants;
 
 /**
  * Created on 14-May-16. (c) CoolDict
@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_DEFAULT_DICTIONARY = "INSERT INTO " +
             DatabasePersistenceContract.DictionaryEntry.TABLE_NAME + " VALUES ('" +
-            SourcesConstants.DEFAULT_DICTIONARY_ID + "', '" + SourcesConstants.DEFAULT_DICTIONARY_NAME + "')";
+            Constants.DEFAULT_DICTIONARY_ID + "', '" + Constants.DEFAULT_DICTIONARY_NAME + "')";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

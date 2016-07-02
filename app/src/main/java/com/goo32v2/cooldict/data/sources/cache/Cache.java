@@ -1,6 +1,6 @@
 package com.goo32v2.cooldict.data.sources.cache;
 
-import com.goo32v2.cooldict.data.models.Model;
+import com.goo32v2.cooldict.data.models.BaseModel;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * Created on 22-May-16. (c) CoolDict
  */
 
-public class Cache<T extends Model> implements CacheApi<T> {
+public class Cache<T extends BaseModel> implements CacheApi<T> {
 
     private LinkedHashMap<String, T> cache;
 
@@ -30,7 +30,7 @@ public class Cache<T extends Model> implements CacheApi<T> {
     }
 
     @Override
-    public Model get(String id) {
+    public BaseModel get(String id) {
         return cache.get(id);
     }
 
