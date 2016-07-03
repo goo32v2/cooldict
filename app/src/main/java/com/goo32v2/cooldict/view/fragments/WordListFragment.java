@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.data.dtos.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
-import com.goo32v2.cooldict.view.WordListViewContract;
 import com.goo32v2.cooldict.view.adapters.WordListRecycleAdapter;
 
 import java.util.List;
@@ -26,7 +25,8 @@ import butterknife.ButterKnife;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public class WordListFragment extends Fragment implements WordListViewContract.FragmentView {
+public class WordListFragment extends Fragment {
+//public class WordListFragment extends Fragment implements WordListViewContract.FragmentView {
 
     private WordListRecycleAdapter mWordAdapter;
     private LinearLayoutManager llm;
@@ -49,7 +49,7 @@ public class WordListFragment extends Fragment implements WordListViewContract.F
         return root;
     }
 
-    @Override
+//    @Override
     public void showWords(List<ModelDTO<WordModel, View.OnClickListener>> words) {
         mNoWordsView.setVisibility(View.GONE);
         mWordRecycleView.setVisibility(View.VISIBLE);
@@ -62,7 +62,7 @@ public class WordListFragment extends Fragment implements WordListViewContract.F
         }
     }
 
-    @Override
+//    @Override
     public void showNoWords() {
         mWordRecycleView.setVisibility(View.GONE);
         mNoWordsView.setVisibility(View.VISIBLE);
@@ -70,10 +70,10 @@ public class WordListFragment extends Fragment implements WordListViewContract.F
         mNoWordsTextView.setText(getString(R.string.no_word_text));
     }
 
-    @Override
-    public boolean isActive() {
-        return isAdded();
-    }
+//    @Override
+//    public boolean isActive() {
+//        return isAdded();
+//    }
 
     private void setupRecycleView(List<ModelDTO<WordModel, View.OnClickListener>> words){
         llm = new LinearLayoutManager(getActivity());

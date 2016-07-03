@@ -19,21 +19,13 @@ import butterknife.ButterKnife;
 
 public class WordDetailFragment extends Fragment {
 
-    public static final String ARGUMENT_WORD_ID = "WORD";
-    public static final String ARGUMENT_DICTIONARY = "DICTIONARY";
-
     @BindView(R.id.original_word) TextView mOriginalWord;
     @BindView(R.id.translated_word) TextView mTranslatedWord;
     @BindView(R.id.dictionary_id) TextView mDictionaryId;
 
 
-    public static WordDetailFragment newInstance(WordWithDictionaryDTO<WordModel, DictionaryModel> modelsDTO) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ARGUMENT_WORD_ID, modelsDTO.getWord());
-        bundle.putSerializable(ARGUMENT_DICTIONARY, modelsDTO.getDictionary());
-        WordDetailFragment fragment = new WordDetailFragment();
-        fragment.setArguments(bundle);
-        return fragment;
+    public static WordDetailFragment newInstance() {
+        return new WordDetailFragment();
     }
 
     @Nullable
@@ -51,24 +43,19 @@ public class WordDetailFragment extends Fragment {
         getFragmentManager().beginTransaction().remove(this).commit();
     }
 
-    public void populate() {
-        if (getArguments().containsKey(ARGUMENT_WORD_ID)){
-            WordModel word = (WordModel) getArguments().getSerializable(ARGUMENT_WORD_ID);
-            if (word != null) {
-                mOriginalWord.setText(word.getOriginalWord());
-                mTranslatedWord.setText(word.getTranslatedWord());
+    public void populate(WordWithDictionaryDTO<WordModel, DictionaryModel> dto) {
+        WordModel word = dto.getWord();
+        DictionaryModel dictionary = dto.getDictionary();
+        if (word != null) {
+            mOriginalWord.setText(word.getOriginalWord());
+            mTranslatedWord.setText(word.getTranslatedWord());
 
-                if (getArguments().containsKey(ARGUMENT_DICTIONARY)){
-                    DictionaryModel dict = (DictionaryModel) getArguments().getSerializable(ARGUMENT_DICTIONARY);
-                    if (dict != null) {
-                        mDictionaryId.setText(dict.getTitle());
-                    }
-                } else {
-                    // we have word, that assign to dictionary, that we haven't got
-                    mDictionaryId.setText(word.getDictionaryID());
-                }
+            if (dictionary != null) {
+                mDictionaryId.setText(dictionary.getTitle());
+            } else {
+                // we have word, that assign to dictionary, that we haven't got
+                mDictionaryId.setText(word.getDictionaryID());
             }
         }
-
     }
 }

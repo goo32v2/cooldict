@@ -1,20 +1,19 @@
 package com.goo32v2.cooldict.presenter.impl;
 
 import android.support.annotation.NonNull;
+import android.view.View;
 
+import com.goo32v2.cooldict.data.converters.DTOConverters;
+import com.goo32v2.cooldict.data.dtos.ModelDTO;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
-import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
-import com.goo32v2.cooldict.data.repositories.WordRepository;
-import com.goo32v2.cooldict.data.DataSource;
-import com.goo32v2.cooldict.data.DictDataSource;
-import com.goo32v2.cooldict.data.WordDataSource;
+import com.goo32v2.cooldict.model.impl.WordListModel;
 import com.goo32v2.cooldict.presenter.WordListPresenterContract;
+import com.goo32v2.cooldict.utils.Navigator;
 import com.goo32v2.cooldict.view.WordListViewContract;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created on 14-May-16. (c) CoolDict
@@ -22,19 +21,76 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class WordListPresenter implements WordListPresenterContract {
 
-    private final WordDataSource mWordsRepository;
-    private final DictDataSource mDictionaryRepository;
-    private final WordListViewContract mWordsView;
+    private WordListViewContract mView;
+    private WordListModel model;
+
+    private Navigator navigator;
+//    @Inject protected Navigator navigator;
 
 
-    public WordListPresenter(@NonNull WordRepository wordsRepository,
-                             @NonNull DictionaryRepository dictionaryRepository,
-                             @NonNull WordListViewContract wordsView) {
-        mWordsRepository = checkNotNull(wordsRepository, "wordsRepository cannot be null!");
-        mDictionaryRepository = checkNotNull(dictionaryRepository, "dictionaryRepository cannot be null!");
-        mWordsView = checkNotNull(wordsView, "wordsView cannot be null!");
+    public WordListPresenter(Navigator navigator, WordListModel model) {
+        this.navigator = navigator;
+        this.model = model;
 
-        mWordsView.setPresenter(this);
+        // TODO: 03-Jul-16 maybe inject it?
+//        model = new WordListModel();
+    }
+
+    @Override
+    public void start(String dictionary) {
+        getDictionaries();
+        getWordsBy(dictionary);
+    }
+
+    @Override
+    public void getDictionaries() {
+        List<DictionaryModel> dictionaryModels = model.getDictionaryList();
+        mView.setMenu(dictionaryModels);
+    }
+
+    @Override
+    public void getWordsBy(String dictionary) {
+        List<WordModel> wordModels = model.getWordListBy(dictionary);
+        List<ModelDTO<WordModel, View.OnClickListener>> res = new ArrayList<>();
+
+        if (wordModels != null && !wordModels.isEmpty()){
+            for (final WordModel word : wordModels) {
+                res.add(DTOConverters.convertWordToDTO(word, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        navigateToWordDetailActivity(word);
+                    }
+                }));
+            }
+            mView.showList(res);
+        } else {
+            mView.showNoWords();
+        }
+    }
+
+    @Override
+    public void navigateToSettingsActivity() {
+        navigator.navigateToSettingsActivity();
+    }
+
+    @Override
+    public void navigateToWordManagerActivity() {
+        navigator.navigateToWordManagerActivity(null);
+    }
+
+    @Override
+    public void navigateToWordDetailActivity(@NonNull WordModel word) {
+        navigator.navigateToWordDetailActivity(word);
+    }
+
+    @Override
+    public void navigateToDictionaryManagerActivity() {
+        navigator.navigateToDictionaryManagerActivity();
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        mView.showMessage(msg);
     }
 
     @Override
@@ -43,53 +99,7 @@ public class WordListPresenter implements WordListPresenterContract {
     }
 
     @Override
-    public void getWords(@NonNull DataSource.GetListCallback<WordModel> callback) {
-        mWordsRepository.getWordsList(callback);
-    }
-
-    @Override
-    public void getDictionaries(@NonNull DataSource.GetListCallback<DictionaryModel> callback) {
-        mDictionaryRepository.getDictionaryList(callback);
-    }
-
-    @Override
-    public void getWordsByDictionaryName(final String name, @NonNull final DataSource.GetListCallback<WordModel> callback) {
-        mDictionaryRepository.getDictionaryByName(name, new DataSource.GetListCallback<DictionaryModel>() {
-            @Override
-            public void onLoaded(List<DictionaryModel> entries) {
-                mWordsRepository.getWordsByDictionary(entries.get(0).getId(), callback);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                showMessage("Problem!");
-            }
-        });
-    }
-
-    @Override
-    public void startSettingsActivity() {
-        mWordsView.startSettingsActivity();
-    }
-
-    @Override
-    public void startAddNewWordActivity() {
-        mWordsView.startAddWordActivity();
-    }
-
-    @Override
-    public void startWordDetailsActivity(@NonNull WordModel word) {
-        checkNotNull(word);
-        mWordsView.startWordDetailActivity(word);
-    }
-
-    @Override
-    public void startDictionaryManagerActivity() {
-        mWordsView.startDictionaryManagerActivity();
-    }
-
-    @Override
-    public void showMessage(String msg) {
-        mWordsView.showMessage(msg);
+    public void setView(WordListViewContract view) {
+        mView = view;
     }
 }

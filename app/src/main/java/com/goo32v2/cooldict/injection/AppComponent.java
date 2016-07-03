@@ -13,11 +13,28 @@ import dagger.Component;
  * Created on 02-Jul-16. (c) CoolDict
  */
 
-@Component(modules = AppModule.class)
+@Component(modules = {
+        AppModule.class,
+        MVPModelModule.class,
+        PresenterModule.class,
+        RepositoryModule.class,
+        UtilsModule.class
+})
 @Singleton
 public interface AppComponent {
+
+    // activities
     void inject(WordListActivity wordListActivity);
     void inject(WordDetailActivity wordDetailActivity);
     void inject(WordManagerActivity wordManagerActivity);
     void inject(DictionaryManagerActivity dictionaryManagerActivity);
+//
+//    // presenters
+//    void inject(WordListPresenter wordListPresenter);
+//
+//    // models
+//    void inject(WordListModel wordListModel);
+//
+//    // utils
+//    void inject(Navigator navigator);
 }

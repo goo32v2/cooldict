@@ -1,6 +1,8 @@
 package com.goo32v2.cooldict.view.activities;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +20,6 @@ import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
 import com.goo32v2.cooldict.data.repositories.WordRepository;
 import com.goo32v2.cooldict.presenter.WordManagerPresenterContract;
-import com.goo32v2.cooldict.presenter.impl.WordManagerPresenter;
 import com.goo32v2.cooldict.view.WordManagerViewContract;
 import com.goo32v2.cooldict.view.fragments.WordManagerFragment;
 
@@ -47,11 +48,11 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
 
         setupActionBar();
 
-        new WordManagerPresenter(
-                wordRepository,
-                dictionaryRepository,
-                this
-        );
+//        new WordManagerPresenter(
+//                wordRepository,
+//                dictionaryRepository,
+//                this
+//        );
 
         if (getSupportFragmentManager().getFragments().get(0) instanceof WordManagerFragment){
             mFragment = (WordManagerFragment) getSupportFragmentManager().getFragments().get(0);
@@ -167,8 +168,17 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
         mFragment.populate(id, originalWord, translatedWrd, dictionary);
     }
 
-    @Override
-    public void setPresenter(WordManagerPresenterContract presenter) {
-        this.mPresenter = presenter;
+//    @Override
+//    public void setPresenter(WordManagerPresenterContract presenter) {
+//        this.mPresenter = presenter;
+//    }
+
+    public static void startActivity(Context context, WordModel model) {
+        Intent intent = new Intent(context, WordManagerActivity.class);
+        if (model != null) {
+            intent.putExtra(ARGUMENT_EDIT_WORD, model);
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

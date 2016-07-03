@@ -89,6 +89,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     };
 
+    public static void startActivity(Context context){
+        Intent intent = new Intent(context, SettingsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
     /**
      * Helper method to determine if the device has an extra-large screen. For
      * example, 10" tablets are extra-large.

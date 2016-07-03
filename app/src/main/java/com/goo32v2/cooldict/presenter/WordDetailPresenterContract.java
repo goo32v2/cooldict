@@ -1,17 +1,15 @@
 package com.goo32v2.cooldict.presenter;
 
-import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.DataSource;
+import com.goo32v2.cooldict.data.models.WordModel;
+import com.goo32v2.cooldict.view.WordDetailViewContract;
 
 /**
  * Created on 15-Jun-16. (c) CoolDict
  */
 
-public interface WordDetailPresenterContract extends BasePresenter {
+public interface WordDetailPresenterContract extends BasePresenter<WordDetailViewContract> {
 
-    void startEditWordActivity();
+    void actionDeleteWord(WordModel word);
 
-    void actionDeleteWord();
-
-    void getDictionary(String id, DataSource.GetListCallback<DictionaryModel> callback);
+    void navigateToWordManagerActivity(WordModel word);
 }

@@ -1,6 +1,7 @@
 package com.goo32v2.cooldict.view.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,34 +12,26 @@ import android.view.MenuItem;
 
 import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.dtos.WordWithDictionaryDTO;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
-import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
-import com.goo32v2.cooldict.data.repositories.WordRepository;
-import com.goo32v2.cooldict.presenter.WordDetailPresenterContract;
 import com.goo32v2.cooldict.presenter.impl.WordDetailPresenter;
 import com.goo32v2.cooldict.utils.ActivityUtils;
 import com.goo32v2.cooldict.view.WordDetailViewContract;
+import com.goo32v2.cooldict.view.dialogs.DialogFabric;
 import com.goo32v2.cooldict.view.fragments.WordDetailFragment;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
-public class WordDetailActivity extends AppCompatActivity implements WordDetailViewContract{
+//public class WordDetailActivity {
+public class WordDetailActivity extends AppCompatActivity implements WordDetailViewContract {
 
     public static final String EXTRA_WORD_ID = "WORD_ID";
+
     private WordDetailFragment mFragment;
-    private WordDetailPresenterContract mPresenter;
     private WordModel extraWord;
 
-    @Inject
-    protected DictionaryRepository dictionaryRepository;
-
-    @Inject
-    protected WordRepository wordRepository;
+    @Inject protected WordDetailPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,40 +39,40 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
         setContentView(R.layout.activity_word_detail);
         CoolDictApp.getComponent().inject(this);
 
-        WordDetailFragment wordDetailFragment = (WordDetailFragment)
-                getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        mPresenter.setView(this);
 
-        final WordWithDictionaryDTO<WordModel, DictionaryModel> modelsDTO = new WordWithDictionaryDTO<>();
-        extraWord = (WordModel) getIntent().getSerializableExtra(EXTRA_WORD_ID);
-        modelsDTO.setWord(extraWord);
+//        WordDetailFragment wordDetailFragment = (WordDetailFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
-        new WordDetailPresenter(
-                wordRepository,
-                dictionaryRepository,
-                this,
-                extraWord
-        );
+//        final WordWithDictionaryDTO<WordModel, DictionaryModel> modelsDTO = new WordWithDictionaryDTO<>();
+//        extraWord = (WordModel) getIntent().getSerializableExtra(EXTRA_WORD_ID);
+//        modelsDTO.setWord(extraWord);
+//
+//        if (wordDetailFragment == null) {
+//            mPresenter.getDictionary(extraWord.getDictionaryID(), new DataSource.GetListCallback<DictionaryModel>() {
+//                @Override
+//                public void onLoaded(List<DictionaryModel> entries) {
+//                    modelsDTO.setDictionary(entries.get(0));
+//                }
+//
+//                @Override
+//                public void onDataNotAvailable() {
+//                    // TODO: 28-Jun-16 Have word with dictionary those we haven't got in database
+//                }
+//            });
 
-        if (wordDetailFragment == null) {
-            mPresenter.getDictionary(extraWord.getDictionaryID(), new DataSource.GetListCallback<DictionaryModel>() {
-                @Override
-                public void onLoaded(List<DictionaryModel> entries) {
-                    modelsDTO.setDictionary(entries.get(0));
-                }
-
-                @Override
-                public void onDataNotAvailable() {
-                    // TODO: 28-Jun-16 Have word with dictionary those we haven't got in database
-                }
-            });
-
-            mFragment = WordDetailFragment.newInstance(modelsDTO);
+            mFragment = WordDetailFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(),
                     mFragment,
                     R.id.contentFrame);
 
-        }
+    }
+
+    @Override
+    public WordModel getExtraWord() {
+        extraWord = (WordModel) getIntent().getSerializableExtra(EXTRA_WORD_ID);
+        return extraWord;
     }
 
     @Override
@@ -111,7 +104,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
         int id = item.getItemId();
 
         if (id == R.id.action_edit) {
-            mPresenter.startEditWordActivity();
+            mPresenter.navigateToWordManagerActivity(extraWord);
             return true;
         }
         if (id == R.id.action_delete) {
@@ -123,34 +116,28 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
     }
 
     private AlertDialog askConfirmation(){
-        return new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_delete_confirmation_dialog))
-                .setMessage(getString(R.string.message_delete_confirmation_dialog))
-                .setPositiveButton(getString(R.string.positive_delete_confirmation_dialog), new DialogInterface.OnClickListener() {
+        return DialogFabric.getDeleteConfirnationDialog(this,
+                getString(R.string.title_delete_confirmation_dialog),
+                getString(R.string.message_delete_confirmation_dialog),
+                getString(R.string.positive_delete_confirmation_dialog),
+                getString(R.string.negative_delete_confirmation_dialog),
+                new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.actionDeleteWord();
+                        mPresenter.actionDeleteWord(extraWord);
                     }
-                })
-                .setNegativeButton(getString(R.string.negative_delete_confirmation_dialog), new DialogInterface.OnClickListener() {
+                },
+                new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                })
-                .create();
+                });
     }
 
     @Override
-    public void startEditWordActivity() {
-        Intent intent = new Intent(this, WordManagerActivity.class);
-        intent.putExtra(WordManagerActivity.ARGUMENT_EDIT_WORD, extraWord);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void populate() {
-        mFragment.populate();
+    public void populate(WordWithDictionaryDTO<WordModel, DictionaryModel> dto) {
+        mFragment.populate(dto);
     }
 
     @Override
@@ -159,8 +146,10 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
         this.finish();
     }
 
-    @Override
-    public void setPresenter(WordDetailPresenterContract presenter) {
-        mPresenter = presenter;
+    public static void startActivity(Context context, WordModel model) {
+        Intent intent = new Intent(context, WordDetailActivity.class);
+        intent.putExtra(WordDetailActivity.EXTRA_WORD_ID, model);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

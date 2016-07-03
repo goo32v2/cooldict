@@ -33,14 +33,14 @@
                 android:value=".view.activities.WordListActivity" />
         </activity>
 
-        <activity
-            android:name=".view.activities.WordManagerActivity"
-            android:label="@string/actionbar_title_add_new_word_activity"
-            android:parentActivityName=".view.activities.WordListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.activities.WordListActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".view.activities.WordManagerActivity"-->
+            <!--android:label="@string/actionbar_title_add_new_word_activity"-->
+            <!--android:parentActivityName=".view.activities.WordListActivity">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".view.activities.WordListActivity" />-->
+        <!--</activity>-->
 
         <activity
             android:name=".view.activities.SettingsActivity"
@@ -51,14 +51,14 @@
                 android:value=".view.activities.WordListActivity" />
         </activity>
 
-        <activity
-            android:name=".view.activities.DictionaryManagerActivity"
-            android:label="@string/title_activity_dictionary_manager"
-            android:parentActivityName=".view.activities.WordListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.activities.WordListActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".view.activities.DictionaryManagerActivity"-->
+            <!--android:label="@string/title_activity_dictionary_manager"-->
+            <!--android:parentActivityName=".view.activities.WordListActivity">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".view.activities.WordListActivity" />-->
+        <!--</activity>-->
     </application>
 
 </manifest>
