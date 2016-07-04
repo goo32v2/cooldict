@@ -64,7 +64,7 @@ public class WordManagerFragment extends Fragment {
         mDictionary.setOnEditorActionListener(listener);
     }
 
-    public void setDictionariesAdapter(List<String> names) {
+    public void setDictionaryAdapter(List<String> names) {
         mDictionary.setAdapter(
                 new ArrayAdapter<>(
                         getActivity(),

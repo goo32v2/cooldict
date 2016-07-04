@@ -15,11 +15,8 @@ import android.widget.Toast;
 
 import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.models.WordModel;
-import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
-import com.goo32v2.cooldict.data.repositories.WordRepository;
-import com.goo32v2.cooldict.presenter.WordManagerPresenterContract;
+import com.goo32v2.cooldict.presenter.impl.WordManagerPresenter;
 import com.goo32v2.cooldict.view.WordManagerViewContract;
 import com.goo32v2.cooldict.view.fragments.WordManagerFragment;
 
@@ -31,14 +28,10 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
 
     public static final String ARGUMENT_EDIT_WORD = "EDIT_WORD_ID";
 
+    @Inject protected WordManagerPresenter mPresenter;
     private WordManagerFragment mFragment;
-    private WordManagerPresenterContract mPresenter;
 
-    @Inject
-    protected DictionaryRepository dictionaryRepository;
-
-    @Inject
-    protected WordRepository wordRepository;
+    private WordModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,33 +39,21 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
         setContentView(R.layout.activity_word_manage);
         CoolDictApp.getComponent().inject(this);
 
-        setupActionBar();
-
-//        new WordManagerPresenter(
-//                wordRepository,
-//                dictionaryRepository,
-//                this
-//        );
+//        setupActionBar();
 
         if (getSupportFragmentManager().getFragments().get(0) instanceof WordManagerFragment){
             mFragment = (WordManagerFragment) getSupportFragmentManager().getFragments().get(0);
         }
 
         if (getIntent().hasExtra(ARGUMENT_EDIT_WORD)){
-            mPresenter.populate((WordModel) getIntent().getSerializableExtra(ARGUMENT_EDIT_WORD));
+            model = (WordModel) getIntent().getSerializableExtra(ARGUMENT_EDIT_WORD);
         }
 
-        mPresenter.getDictionaryNames(new DataSource.GetListCallback<String>() {
-            @Override
-            public void onLoaded(List<String> entries) {
-                mFragment.setDictionariesAdapter(entries);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                mPresenter.showMessage(getString(R.string.error_cannotGetDictionaries));
-            }
-        });
+        if (getIntent().hasExtra(ARGUMENT_EDIT_WORD)) {
+            setupActionBar(R.string.actionbar_title_edit_word_activity);
+        } else {
+            setupActionBar(R.string.actionbar_title_add_new_word_activity);
+        }
 
         mFragment.setImeAction(new TextView.OnEditorActionListener() {
             @Override
@@ -85,6 +66,18 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
                 return handled;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.setView(this);
+        mPresenter.start(model);
+    }
+
+    @Override
+    public void setupDictionaryAdapter(List<String> dictionaryNames) {
+        mFragment.setDictionaryAdapter(dictionaryNames);
     }
 
     @Override
@@ -110,44 +103,44 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
         return true;
     }
 
+    @Override
     public void submit() {
         String wordId = mFragment.getWordId();
         String originalText = mFragment.getOriginalWord();
         String translatedText = mFragment.getTranslatedWord();
         String dictionary = mFragment.getDictionary();
 
+        mPresenter.formSubmit(wordId, originalText, translatedText, dictionary);
+    }
+
     // translatedText can be empty
-        if (getIntent().hasExtra(ARGUMENT_EDIT_WORD)){
-            update(wordId, originalText, translatedText, dictionary);
-        } else {
-            create(originalText, translatedText, dictionary);
-        }
-    }
+//        if (getIntent().hasExtra(ARGUMENT_EDIT_WORD)){
+//            update(wordId, originalText, translatedText, dictionary);
+//        } else {
+//            create(originalText, translatedText, dictionary);
+//        }
+//    }
 
-    private void update(String id, String originalText, String translatedText, String dictionary){
-        if (originalText.isEmpty() || dictionary.isEmpty()){
-            mPresenter.showMessage(getString(R.string.empty_fields_error));
-        } else {
-            mPresenter.update(id, originalText, translatedText, dictionary);
-        }
-    }
+//    private void update(String id, String originalText, String translatedText, String dictionary){
+//        if (originalText.isEmpty() || dictionary.isEmpty()){
+//            mPresenter.showMessage(getString(R.string.empty_fields_error));
+//        } else {
+//            mPresenter.update(id, originalText, translatedText, dictionary);
+//        }
+//    }
+//
+//    private void create(String originalText, String translatedText, String dictionary){
+//        if (originalText.isEmpty() || dictionary.isEmpty()){
+//            mPresenter.showMessage(getString(R.string.empty_fields_error));
+//        } else {
+//            mPresenter.create(originalText, translatedText, dictionary);
+//        }
+//    }
 
-    private void create(String originalText, String translatedText, String dictionary){
-        if (originalText.isEmpty() || dictionary.isEmpty()){
-            mPresenter.showMessage(getString(R.string.empty_fields_error));
-        } else {
-            mPresenter.create(originalText, translatedText, dictionary);
-        }
-    }
-
-    private void setupActionBar(){
+    private void setupActionBar(int stringRes){
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            if (getIntent().hasExtra(ARGUMENT_EDIT_WORD)) {
-                actionBar.setTitle(R.string.actionbar_title_edit_word_activity);
-            } else {
-                actionBar.setTitle(R.string.actionbar_title_add_new_word_activity);
-            }
+            actionBar.setTitle(stringRes);
         }
 
     }
@@ -167,11 +160,6 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
     public void populateWord(String id, String originalWord, String translatedWrd, String dictionary) {
         mFragment.populate(id, originalWord, translatedWrd, dictionary);
     }
-
-//    @Override
-//    public void setPresenter(WordManagerPresenterContract presenter) {
-//        this.mPresenter = presenter;
-//    }
 
     public static void startActivity(Context context, WordModel model) {
         Intent intent = new Intent(context, WordManagerActivity.class);

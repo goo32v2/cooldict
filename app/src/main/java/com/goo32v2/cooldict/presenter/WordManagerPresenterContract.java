@@ -1,23 +1,27 @@
 package com.goo32v2.cooldict.presenter;
 
-import android.support.annotation.NonNull;
-
 import com.goo32v2.cooldict.data.models.WordModel;
-import com.goo32v2.cooldict.data.DataSource;
+import com.goo32v2.cooldict.view.WordManagerViewContract;
+
+import java.util.List;
 
 /**
  * Created on 26-Jun-16. (c) CoolDict
  */
 
-public interface WordManagerPresenterContract extends BasePresenter {
+public interface WordManagerPresenterContract extends BasePresenter<WordManagerViewContract> {
 
-    void getDictionaryNames(@NonNull DataSource.GetListCallback<String> callback);
-
-    void showMessage(String msg);
+    List<String> getDictionaryNames();
 
     void create(String originalWord, String translatedWord, String dictionaryId);
 
     void update(String id, String originalText, String translatedText, String dictionary);
 
+    void showMessage(String msg);
+
     void populate(WordModel wordModel);
+
+    void start(WordModel model);
+
+    void formSubmit(String wordId, String originalText, String translatedText, String dictionary);
 }

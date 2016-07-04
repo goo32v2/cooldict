@@ -90,7 +90,7 @@
     <string name="action_add_word">Add new word</string>
     <string name="empty_original_word_field">Original word field must be filled</string>
     <string name="empty_dictionary_field">Dictionary field must be filled</string>
-    <string name="empty_fields_error">Please, fill empty fields</string>
+    <!--<string name="empty_fields_error"></string>-->
     <string name="word_detail_menu_edit">Edit</string>
     <string name="actionbar_title_word_detail">Word Detail</string>
     <string name="title_delete_confirmation_dialog">Delete</string>
