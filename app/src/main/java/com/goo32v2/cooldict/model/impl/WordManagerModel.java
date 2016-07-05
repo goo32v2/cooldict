@@ -54,26 +54,20 @@ public class WordManagerModel implements WordManagerModelContract {
     @Override
     public void create(String originalWord, String translatedWord, final String dictionary) {
         DictionaryModel dictionaryModel = getDictionaryByName(dictionary);
-        if (dictionaryModel == null){
-            dictionaryModel = new DictionaryModel(dictionary);
-        }
         WordModel wordModel = new WordModel(originalWord, translatedWord, dictionaryModel.getId());
+
         mWordRepository.save(wordModel);
     }
 
     @Override
     public void update(String id, String originalText, String translatedText, final String dictionary) {
         DictionaryModel dictionaryModel = getDictionaryByName(dictionary);
-        if (dictionaryModel == null){
-            dictionaryModel = new DictionaryModel(dictionary);
-        }
         WordModel wordModel = new WordModel(id, originalText, translatedText, dictionaryModel.getId());
 
         mWordRepository.update(id, wordModel);
     }
 
     @Override
-    @Nullable
     public DictionaryModel getDictionaryByName(final String name) {
         final DictionaryModel[] model = new DictionaryModel[1];
         mDictionaryRepository.getDictionaryByName(name, new DataSource.GetListCallback<DictionaryModel>() {
@@ -84,7 +78,8 @@ public class WordManagerModel implements WordManagerModelContract {
 
             @Override
             public void onDataNotAvailable() {
-                saveDictionary(new DictionaryModel(name));
+                model[0] = new DictionaryModel(name);
+                saveDictionary(model[0]);
             }
         });
         return model[0];

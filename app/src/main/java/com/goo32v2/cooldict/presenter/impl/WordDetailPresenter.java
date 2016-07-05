@@ -39,7 +39,7 @@ public class WordDetailPresenter implements WordDetailPresenterContract {
     @Override
     public void start() {
         WordModel word = mView.getExtraWord();
-        DictionaryModel dictionary = mModel.getDictionary(word.getId());
+        DictionaryModel dictionary = mModel.getDictionary(word.getDictionaryID());
 
         mView.populate(DTOConverters.convertModelToModelDTO(word, dictionary));
     }
