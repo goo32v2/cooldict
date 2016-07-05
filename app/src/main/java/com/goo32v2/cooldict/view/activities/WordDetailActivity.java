@@ -41,31 +41,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
 
         mPresenter.setView(this);
 
-//        WordDetailFragment wordDetailFragment = (WordDetailFragment)
-//                getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-
-//        final WordWithDictionaryDTO<WordModel, DictionaryModel> modelsDTO = new WordWithDictionaryDTO<>();
-//        extraWord = (WordModel) getIntent().getSerializableExtra(EXTRA_WORD_ID);
-//        modelsDTO.setWord(extraWord);
-//
-//        if (wordDetailFragment == null) {
-//            mPresenter.getDictionary(extraWord.getDictionaryID(), new DataSource.GetListCallback<DictionaryModel>() {
-//                @Override
-//                public void onLoaded(List<DictionaryModel> entries) {
-//                    modelsDTO.setDictionary(entries.get(0));
-//                }
-//
-//                @Override
-//                public void onDataNotAvailable() {
-//                    // TODO: 28-Jun-16 Have word with dictionary those we haven't got in database
-//                }
-//            });
-
-            mFragment = WordDetailFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(),
-                    mFragment,
-                    R.id.contentFrame);
+        mFragment = WordDetailFragment.newInstance();
+        ActivityUtils.addFragmentToActivity(
+                getSupportFragmentManager(),
+                mFragment,
+                R.id.contentFrame);
 
     }
 

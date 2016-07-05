@@ -23,9 +23,9 @@ public class WordManagerModel implements WordManagerModelContract {
 
     private List<String> dictionaryModelList;
 
-    public WordManagerModel(DictionaryRepository mDictionaryRepository, WordRepository mWordRepository) {
-        this.mDictionaryRepository = mDictionaryRepository;
+    public WordManagerModel(WordRepository mWordRepository, DictionaryRepository mDictionaryRepository) {
         this.mWordRepository = mWordRepository;
+        this.mDictionaryRepository = mDictionaryRepository;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.goo32v2.cooldict.utils;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.view.activities.DictionaryManagerActivity;
@@ -23,8 +22,7 @@ public class Navigator {
     }
 
     public void navigateToDictionaryManagerActivity(){
-        Intent intent = new Intent(context, DictionaryManagerActivity.class);
-        context.startActivity(intent);
+        DictionaryManagerActivity.startActivity(context);
     }
 
     public void navigateToSettingsActivity() {

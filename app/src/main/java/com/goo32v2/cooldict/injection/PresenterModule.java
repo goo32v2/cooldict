@@ -1,8 +1,10 @@
 package com.goo32v2.cooldict.injection;
 
+import com.goo32v2.cooldict.model.impl.DictionaryManagerModel;
 import com.goo32v2.cooldict.model.impl.WordDetailModel;
 import com.goo32v2.cooldict.model.impl.WordListModel;
 import com.goo32v2.cooldict.model.impl.WordManagerModel;
+import com.goo32v2.cooldict.presenter.impl.DictionaryManagerPresenter;
 import com.goo32v2.cooldict.presenter.impl.WordDetailPresenter;
 import com.goo32v2.cooldict.presenter.impl.WordListPresenter;
 import com.goo32v2.cooldict.presenter.impl.WordManagerPresenter;
@@ -37,5 +39,11 @@ public class PresenterModule {
     @Singleton
     public WordManagerPresenter provideWordManagerPresenter(WordManagerModel model){
         return new WordManagerPresenter(model);
+    }
+
+    @Provides
+    @Singleton
+    public DictionaryManagerPresenter provideDictionaryManagerPresenter(DictionaryManagerModel model){
+        return new DictionaryManagerPresenter(model);
     }
 }

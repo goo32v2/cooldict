@@ -2,6 +2,7 @@ package com.goo32v2.cooldict.injection;
 
 import com.goo32v2.cooldict.data.repositories.DictionaryRepository;
 import com.goo32v2.cooldict.data.repositories.WordRepository;
+import com.goo32v2.cooldict.model.impl.DictionaryManagerModel;
 import com.goo32v2.cooldict.model.impl.WordDetailModel;
 import com.goo32v2.cooldict.model.impl.WordListModel;
 import com.goo32v2.cooldict.model.impl.WordManagerModel;
@@ -28,6 +29,12 @@ public class MVPModelModule {
 
     @Provides
     public WordManagerModel provideWordManagerModel(WordRepository wordRepository, DictionaryRepository dictionaryRepository){
-        return new WordManagerModel(dictionaryRepository, wordRepository);
+        return new WordManagerModel(wordRepository, dictionaryRepository);
     }
+
+    @Provides
+    public DictionaryManagerModel provideDictionaryManagerModel(WordRepository wordRepository, DictionaryRepository dictionaryRepository){
+        return new DictionaryManagerModel(wordRepository, dictionaryRepository);
+    }
+
 }

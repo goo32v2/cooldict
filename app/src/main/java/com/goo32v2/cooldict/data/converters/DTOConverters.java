@@ -22,4 +22,9 @@ public class DTOConverters {
     public static WordWithDictionaryDTO<WordModel, DictionaryModel> convertModelToModelDTO(WordModel word, DictionaryModel dictionary){
         return new WordWithDictionaryDTO<>(word, dictionary);
     }
+
+    public static ModelDTO<DictionaryModel, View.OnClickListener> convertDictionaryToDTO(
+            DictionaryModel source, View.OnClickListener listener) {
+        return new ModelDTO<>(source, listener);
+    }
 }
