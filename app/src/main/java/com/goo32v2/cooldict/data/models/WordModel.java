@@ -12,6 +12,7 @@ import java.util.UUID;
  * Created on 14-May-16. (c) CoolDict
  */
 
+// TODO: 06-Jul-16 make model mutable
 public final class WordModel implements BaseModel, Serializable{
 
     private final String mId;

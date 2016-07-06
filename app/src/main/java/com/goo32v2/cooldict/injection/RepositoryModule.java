@@ -13,8 +13,6 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Created on 03-Jul-16. (c) CoolDict
  */
@@ -25,14 +23,12 @@ public class RepositoryModule {
     @Provides
     @Singleton
     public WordRepository provideWordRepository(@NonNull Context context){
-        checkNotNull(context);
         return WordRepository.getInstance(WordDao.getInstance(context));
     }
 
     @Provides
     @Singleton
     public DictionaryRepository provideDictionaryRepository(@NonNull Context context){
-        checkNotNull(context);
         return DictionaryRepository.getInstance(DictionaryDao.getInstance(context));
     }
 }

@@ -11,6 +11,7 @@ import com.goo32v2.cooldict.data.models.WordModel;
  * Created on 03-Jul-16. (c) CoolDict
  */
 
+// TODO: 03-Jul-16 more abstract!!!
 public class DTOConverters {
 
     public static ModelDTO<WordModel, View.OnClickListener> convertWordToDTO(
@@ -18,7 +19,6 @@ public class DTOConverters {
         return new ModelDTO<>(source, listener);
     }
 
-    // TODO: 03-Jul-16 more abstract!!!
     public static WordWithDictionaryDTO<WordModel, DictionaryModel> convertModelToModelDTO(WordModel word, DictionaryModel dictionary){
         return new WordWithDictionaryDTO<>(word, dictionary);
     }

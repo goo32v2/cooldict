@@ -23,7 +23,6 @@ import com.goo32v2.cooldict.view.fragments.WordDetailFragment;
 
 import javax.inject.Inject;
 
-//public class WordDetailActivity {
 public class WordDetailActivity extends AppCompatActivity implements WordDetailViewContract {
 
     public static final String EXTRA_WORD_ID = "WORD_ID";
@@ -41,7 +40,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
 
         mPresenter.setView(this);
 
-        mFragment = WordDetailFragment.newInstance();
+        this.mFragment = WordDetailFragment.newInstance();
         ActivityUtils.addFragmentToActivity(
                 getSupportFragmentManager(),
                 mFragment,
@@ -51,7 +50,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
 
     @Override
     public WordModel getExtraWord() {
-        extraWord = (WordModel) getIntent().getSerializableExtra(EXTRA_WORD_ID);
+        this.extraWord = (WordModel) getIntent().getSerializableExtra(EXTRA_WORD_ID);
         return extraWord;
     }
 

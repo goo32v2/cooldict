@@ -29,7 +29,6 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
     private SQLiteDatabase db;
 
     private DictionaryDao(@NonNull Context context){
-        checkNotNull(context);
         mDatabaseHelper = new DatabaseHelper(context);
     }
 
@@ -81,7 +80,6 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
 
     @Override
     public void save(@NonNull DictionaryModel dictionary) {
-        checkNotNull(dictionary);
         db = mDatabaseHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -92,6 +90,7 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
         db.close();
     }
 
+    // TODO: 06-Jul-16 rewrite with mutable model
     @Override
     public void update(String id, DictionaryModel newModel) {
         if (!Objects.equals(newModel.getId(), id)) {
@@ -127,9 +126,12 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
     @Override
     public void removeAll() {
         db = mDatabaseHelper.getWritableDatabase();
+
         String whereClause = DictionaryEntry.COLUMN_ENTRY_ID + "<> ?";
         String[] whereArgs = { Constants.DEFAULT_DICTIONARY_ID };
+
         db.delete(DictionaryEntry.TABLE_NAME, whereClause, whereArgs);
+
         db.close();
     }
 }

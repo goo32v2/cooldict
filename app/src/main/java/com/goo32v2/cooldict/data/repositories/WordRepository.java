@@ -28,10 +28,6 @@ public class WordRepository implements WordDataSource {
         return INSTANCE;
     }
 
-    public static void destroyInstance(){
-        INSTANCE = null;
-    }
-
     @Override
     public void removeAll() {
         mWordDao.removeAll();

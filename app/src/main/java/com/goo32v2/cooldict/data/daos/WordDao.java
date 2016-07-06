@@ -6,23 +6,20 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
+import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
 import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.WordsEntry;
-import com.goo32v2.cooldict.data.DataSource;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created on 15-May-16. (c) CoolDict
  */
 
 // TODO: 16-May-16 implement remote data went done with base app
-// TODO: 28-May-16 implement removeAllWordsByDictionary
 
 public class WordDao implements DataSource<WordModel> {
 
@@ -31,7 +28,6 @@ public class WordDao implements DataSource<WordModel> {
     private SQLiteDatabase db;
 
     private WordDao(@NonNull Context context){
-        checkNotNull(context);
         mDatabaseHelper = new DatabaseHelper(context);
     }
 
@@ -43,7 +39,7 @@ public class WordDao implements DataSource<WordModel> {
     }
 
 
-    // TODO: 25-Jun-16 implement other query params
+    // TODO: 25-Jun-16 implement other query params like sort
     @Override
     public void get(@NonNull final GetListCallback<WordModel> callback,
                     String selection,
@@ -90,7 +86,6 @@ public class WordDao implements DataSource<WordModel> {
 
     @Override
     public void save(@NonNull WordModel word) {
-        checkNotNull(word);
         db = mDatabaseHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -121,8 +116,6 @@ public class WordDao implements DataSource<WordModel> {
         if (!Objects.equals(newModel.getId(), id)) {
             throw new IllegalArgumentException("ID an newModel.getId() must equals");
         }
-        checkNotNull(id);
-        checkNotNull(newModel);
 
         String whereClause = WordsEntry.COLUMN_ENTRY_ID + "= ?";
         String[] whereArgs = { id };
