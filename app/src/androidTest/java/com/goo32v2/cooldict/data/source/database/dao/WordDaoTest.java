@@ -83,14 +83,14 @@ public class WordDaoTest {
 //    @Test
 //    public void update(){
 //        mWordDao.save(wordOne);
-//        mWordDao.update(wordOne.getId(), new WordModel(wordOne.getId(), "test", "тест", wordOne.getDictionaryID()));
+//        mWordDao.update(wordOne.getId(), new WordModel(wordOne.getId(), "test", "тест", wordOne.getDictionaryById()));
 //        mWordDao.get(wordOne.getId(), new DataSource.GetEntryCallback<WordModel>() {
 //            @Override
 //            public void onLoaded(WordModel entry) {
 //                assertThat(entry.getId(), is(wordOne.getId()));
 //                assertThat(entry.getOriginalWord(), is("test"));
 //                assertThat(entry.getTranslatedWord(), is("тест"));
-//                assertThat(entry.getDictionaryID(), is(wordOne.getDictionaryID()));
+//                assertThat(entry.getDictionaryById(), is(wordOne.getDictionaryById()));
 //            }
 //
 //            @Override
@@ -103,7 +103,7 @@ public class WordDaoTest {
 //    @Test
 //    public void getAllByDictionary(){
 //        mWordDao.save(wordThree);
-//        mWordDao.getAllWordsByDictionary(wordThree.getDictionaryID(), new DataSource.GetListCallback<WordModel>() {
+//        mWordDao.getAllWordsByDictionary(wordThree.getDictionaryById(), new DataSource.GetListCallback<WordModel>() {
 //            @Override
 //            public void onLoaded(List<WordModel> entry) {
 //                assertThat(entry.size(), is(1));

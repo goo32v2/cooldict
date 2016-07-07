@@ -31,7 +31,7 @@ public class WordDetailModel implements WordDetailModelContract {
     @Override
     public DictionaryModel getDictionary(String id) {
         final DictionaryModel[] res = new DictionaryModel[1];
-        mDictionaryRepository.getDictionary(id, new DataSource.GetListCallback<DictionaryModel>() {
+        mDictionaryRepository.getDictionaryById(id, new DataSource.GetListCallback<DictionaryModel>() {
             @Override
             public void onLoaded(List<DictionaryModel> entries) {
                 res[0] = entries.get(0);

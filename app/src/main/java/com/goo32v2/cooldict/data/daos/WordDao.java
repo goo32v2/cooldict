@@ -9,19 +9,23 @@ import android.support.annotation.NonNull;
 import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
+import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.DictionaryEntry;
 import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.WordsEntry;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created on 15-May-16. (c) CoolDict
  */
-
-// TODO: 16-May-16 implement remote data went done with base app
-
 public class WordDao implements DataSource<WordModel> {
+
+    // TODO: 07.07.16 make query fabric
+    // TODO: 07.07.16 use query with join and new model
+    // TODO: 07.07.16 update app, remove old code
+    // TODO: 07.07.16 dao and repository must implement the same interface
+    // TODO: 07.07.16 update cache source
+    // TODO: 07.07.16 create new private method for populating model
 
     private static WordDao INSTANCE;
     private DatabaseHelper mDatabaseHelper;
@@ -38,12 +42,44 @@ public class WordDao implements DataSource<WordModel> {
         return INSTANCE;
     }
 
+    public void get(@NonNull GetListCallback<WordModel> callback, @NonNull String query) {
+        List<WordModel> words = new ArrayList<>();
+        db = mDatabaseHelper.getReadableDatabase();
 
-    // TODO: 25-Jun-16 implement other query params like sort
+        Cursor c = db.rawQuery(query, null);
+
+        if (c != null && c.getCount() > 0 && c.moveToFirst()){
+            do {
+                String itemId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ENTRY_ID));
+                String origWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ORIGINAL_WORD));
+                String translWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_TRANSLATED_WORD));
+                String dictId = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_ENTRY_ID));
+                String dictTitle = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_TITLE));
+
+                WordModel word = new WordModel(itemId, origWord, translWord, dictId, dictTitle);
+                words.add(word);
+            } while (c.moveToNext());
+        }
+
+        if (c != null){
+            c.close();
+        }
+        db.close();
+
+        if (words.isEmpty()){
+            callback.onDataNotAvailable();
+        } else {
+            callback.onLoaded(words);
+        }
+    }
+
     @Override
     public void get(@NonNull final GetListCallback<WordModel> callback,
                     String selection,
-                    String[] selectionArgs) {
+                    String[] selectionArgs,
+                    String orderBy,
+                    String groupBy,
+                    String having) {
 
         List<WordModel> words = new ArrayList<>();
         db = mDatabaseHelper.getReadableDatabase();
@@ -56,20 +92,26 @@ public class WordDao implements DataSource<WordModel> {
         };
 
         Cursor c = db.query(
-                WordsEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
+                WordsEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                groupBy,
+                having,
+                orderBy
         );
 
 
         if (c != null && c.getCount() > 0 && c.moveToFirst()){
-                do {
-                    String itemId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ENTRY_ID));
-                    String origWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ORIGINAL_WORD));
-                    String translWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_TRANSLATED_WORD));
-                    String dictId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_DICTIONARY_ID));
+            do {
+                String itemId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ENTRY_ID));
+                String origWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_ORIGINAL_WORD));
+                String translWord = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_TRANSLATED_WORD));
+                String dictId = c.getString(c.getColumnIndexOrThrow(WordsEntry.COLUMN_DICTIONARY_ID));
 
-                    WordModel word = new WordModel(itemId, origWord, translWord, dictId);
-                    words.add(word);
-                } while (c.moveToNext());
+                WordModel word = new WordModel(itemId, origWord, translWord, dictId);
+                words.add(word);
+            } while (c.moveToNext());
         }
 
         if (c != null){
@@ -92,7 +134,7 @@ public class WordDao implements DataSource<WordModel> {
         values.put(WordsEntry.COLUMN_ENTRY_ID, word.getId());
         values.put(WordsEntry.COLUMN_ORIGINAL_WORD, word.getOriginalWord());
         values.put(WordsEntry.COLUMN_TRANSLATED_WORD, word.getTranslatedWord());
-        values.put(WordsEntry.COLUMN_DICTIONARY_ID, word.getDictionaryID());
+        values.put(WordsEntry.COLUMN_DICTIONARY_ID, word.getDictionary());
 
         db.insert(WordsEntry.TABLE_NAME, null, values);
 
@@ -111,19 +153,16 @@ public class WordDao implements DataSource<WordModel> {
     }
 
     @Override
-    public void update(String id, WordModel newModel) {
+    public void update(@NonNull WordModel model) {
         db = mDatabaseHelper.getWritableDatabase();
-        if (!Objects.equals(newModel.getId(), id)) {
-            throw new IllegalArgumentException("ID an newModel.getId() must equals");
-        }
 
         String whereClause = WordsEntry.COLUMN_ENTRY_ID + "= ?";
-        String[] whereArgs = { id };
+        String[] whereArgs = { model.getId() };
 
         ContentValues values = new ContentValues();
-        values.put(WordsEntry.COLUMN_ORIGINAL_WORD, newModel.getOriginalWord());
-        values.put(WordsEntry.COLUMN_TRANSLATED_WORD, newModel.getTranslatedWord());
-        values.put(WordsEntry.COLUMN_DICTIONARY_ID, newModel.getDictionaryID());
+        values.put(WordsEntry.COLUMN_ORIGINAL_WORD, model.getOriginalWord());
+        values.put(WordsEntry.COLUMN_TRANSLATED_WORD, model.getTranslatedWord());
+        values.put(WordsEntry.COLUMN_DICTIONARY_ID, model.getDictionary());
 
         db.update(WordsEntry.TABLE_NAME, values, whereClause, whereArgs);
         db.close();

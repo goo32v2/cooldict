@@ -8,7 +8,6 @@ import java.util.List;
  * Created on 14-May-16. (c) CoolDict
  */
 
-// TODO: 23-May-16 remove all method needed? or delete only selected?
 public interface DataSource<T> {
 
     // For list
@@ -19,7 +18,7 @@ public interface DataSource<T> {
         void onDataNotAvailable();
     }
 
-    void get(@NonNull final GetListCallback<T> callback, String selection, String[] selectionArgs);
+    void get(@NonNull GetListCallback<T> callback, String selection, String[] selectionArgs, String orderBy, String groupBy, String having);
 
     void save(@NonNull T entry);
 
@@ -27,5 +26,5 @@ public interface DataSource<T> {
 
     void removeAll();
 
-    void update(String id, T newModel);
+    void update(@NonNull T model);
 }

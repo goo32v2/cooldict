@@ -100,7 +100,7 @@ public class WordRepositoryTest {
 //    public void update() {
 //        WordModel oldModel = modelList.get(0);
 //        WordModel newModel = new WordModel(oldModel.getId(), "TestWord1",
-//                "ТестСлово1", oldModel.getDictionaryID());
+//                "ТестСлово1", oldModel.getDictionaryById());
 //        saveEntry(oldModel);
 //
 //        wordRepository.update(oldModel.getId(), newModel);

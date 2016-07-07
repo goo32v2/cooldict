@@ -54,7 +54,7 @@ public class WordDetailFragment extends Fragment {
                 mDictionaryId.setText(dictionary.getTitle());
             } else {
                 // we have word, that assign to dictionary, that we haven't got
-                mDictionaryId.setText(word.getDictionaryID());
+                mDictionaryId.setText(word.getDictionary());
             }
         }
     }

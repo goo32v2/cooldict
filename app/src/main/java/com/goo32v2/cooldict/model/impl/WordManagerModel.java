@@ -1,7 +1,5 @@
 package com.goo32v2.cooldict.model.impl;
 
-import android.support.annotation.Nullable;
-
 import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
@@ -60,11 +58,11 @@ public class WordManagerModel implements WordManagerModelContract {
     }
 
     @Override
-    public void update(String id, String originalText, String translatedText, final String dictionary) {
-        DictionaryModel dictionaryModel = getDictionaryByName(dictionary);
+    public void update(String id, String originalText, String translatedText, String dictionaryName) {
+        DictionaryModel dictionaryModel = getDictionaryByName(dictionaryName);
         WordModel wordModel = new WordModel(id, originalText, translatedText, dictionaryModel.getId());
 
-        mWordRepository.update(id, wordModel);
+        mWordRepository.update(wordModel);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class WordManagerModel implements WordManagerModelContract {
     @Override
     public DictionaryModel getDictionary(String dictionaryID) {
         final DictionaryModel[] model = new DictionaryModel[1];
-        mDictionaryRepository.getDictionary(dictionaryID, new DataSource.GetListCallback<DictionaryModel>() {
+        mDictionaryRepository.getDictionaryById(dictionaryID, new DataSource.GetListCallback<DictionaryModel>() {
             @Override
             public void onLoaded(List<DictionaryModel> entries) {
                 model[0] = entries.get(0);

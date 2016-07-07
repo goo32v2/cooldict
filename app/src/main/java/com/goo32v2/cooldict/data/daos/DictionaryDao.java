@@ -6,17 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.Constants;
+import com.goo32v2.cooldict.data.DataSource;
+import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
 import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.DictionaryEntry;
-import com.goo32v2.cooldict.data.DataSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created on 16-May-16. (c) CoolDict
@@ -42,7 +39,10 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
     @Override
     public void get(@NonNull GetListCallback<DictionaryModel> callback,
                     String selection,
-                    String[] selectionArgs) {
+                    String[] selectionArgs,
+                    String orderBy,
+                    String groupBy,
+                    String having) {
 
         List<DictionaryModel> dictionaries = new ArrayList<>();
         db = mDatabaseHelper.getReadableDatabase();
@@ -53,7 +53,13 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
         };
 
         Cursor c = db.query(
-                DictionaryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
+                DictionaryEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                groupBy,
+                having,
+                orderBy
         );
 
         if (c != null && c.getCount() > 0 && c.moveToFirst()){
@@ -90,22 +96,15 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
         db.close();
     }
 
-    // TODO: 06-Jul-16 rewrite with mutable model
     @Override
-    public void update(String id, DictionaryModel newModel) {
-        if (!Objects.equals(newModel.getId(), id)) {
-            throw new IllegalArgumentException("ID an newModel.getId() must equals");
-        }
-        checkNotNull(id);
-        checkNotNull(newModel);
-
+    public void update(@NonNull DictionaryModel model) {
         db = mDatabaseHelper.getWritableDatabase();
 
         String whereClause = DictionaryEntry.COLUMN_ENTRY_ID + "= ?";
-        String[] whereArgs = { id };
+        String[] whereArgs = { model.getId() };
 
         ContentValues values = new ContentValues();
-        values.put(DictionaryEntry.COLUMN_TITLE, newModel.getTitle());
+        values.put(DictionaryEntry.COLUMN_TITLE, model.getTitle());
 
         db.update(DictionaryEntry.TABLE_NAME, values, whereClause, whereArgs);
         db.close();
@@ -118,7 +117,7 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
         String selection = DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
         String[] selectionArgs = { dictionary.getId() };
 
-        db.delete(DictionaryEntry.TABLE_NAME, selection,selectionArgs);
+        db.delete(DictionaryEntry.TABLE_NAME, selection, selectionArgs);
 
         db.close();
     }

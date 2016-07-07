@@ -30,9 +30,12 @@ public class DictionaryRepository implements DictDataSource {
     @Override
     public void get(@NonNull GetListCallback<DictionaryModel> callback,
                     String selection,
-                    String[] selectionArgs) {
+                    String[] selectionArgs,
+                    String orderBy,
+                    String groupBy,
+                    String having) {
 
-        mDictionaryDao.get(callback, selection, selectionArgs);
+        mDictionaryDao.get(callback, selection, selectionArgs, orderBy, groupBy, having);
     }
 
     @Override
@@ -41,8 +44,8 @@ public class DictionaryRepository implements DictDataSource {
     }
 
     @Override
-    public void update(String id, DictionaryModel newModel) {
-        mDictionaryDao.update(id, newModel);
+    public void update(@NonNull DictionaryModel model) {
+        mDictionaryDao.update(model);
     }
 
     @Override
@@ -56,22 +59,23 @@ public class DictionaryRepository implements DictDataSource {
     }
 
     @Override
-    public void getDictionary(String id, @NonNull GetListCallback<DictionaryModel> callback){
+    public void getDictionaryById(String id, @NonNull GetListCallback<DictionaryModel> callback){
         String selection = DatabasePersistenceContract.DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
         String[] selectionArgs= { id };
-        get(callback, selection, selectionArgs);
+        get(callback, selection, selectionArgs, null, null, null);
 
     }
 
     @Override
     public void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback){
-        get(callback, null, null);
+        String orderBy = DatabasePersistenceContract.DictionaryEntry.COLUMN_TITLE + " ASC";
+        get(callback, null, null, orderBy, null, null);
     }
 
     @Override
     public void getDictionaryByName(String name, @NonNull GetListCallback<DictionaryModel> callback) {
         String selection = DatabasePersistenceContract.DictionaryEntry.COLUMN_TITLE + " LIKE ?";
         String[] selectionArgs= { name };
-        get(callback, selection, selectionArgs);
+        get(callback, selection, selectionArgs, null, null, null);
     }
 }

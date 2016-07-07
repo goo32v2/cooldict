@@ -5,5 +5,5 @@ package com.goo32v2.cooldict.data.models;
  */
 
 public interface BaseModel {
-    String getId();
+
 }
