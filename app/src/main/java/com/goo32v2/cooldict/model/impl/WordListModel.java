@@ -41,6 +41,7 @@ public class WordListModel implements WordListModelContract {
             }
         };
 
+        // first get dictionary by name, than find all words assign to find id
         if (dictionary != null && !dictionary.equals("")){
             mDictionaryRepository.getDictionaryByName(dictionary, new DataSource.GetListCallback<DictionaryModel>() {
                 @Override

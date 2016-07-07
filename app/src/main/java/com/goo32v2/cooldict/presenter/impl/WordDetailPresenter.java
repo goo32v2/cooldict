@@ -1,7 +1,5 @@
 package com.goo32v2.cooldict.presenter.impl;
 
-import com.goo32v2.cooldict.data.converters.DTOConverters;
-import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.model.impl.WordDetailModel;
 import com.goo32v2.cooldict.presenter.WordDetailPresenterContract;
@@ -38,10 +36,11 @@ public class WordDetailPresenter implements WordDetailPresenterContract {
 
     @Override
     public void start() {
+        // after implementation of wordModel changes, it can be removed
+//        DictionaryModel dictionary = mModel.getDictionary(word.getDictionaryId());
+//        mView.populate(DTOConverters.convertModelToModelDTO(word, dictionary));
         WordModel word = mView.getExtraWord();
-        DictionaryModel dictionary = mModel.getDictionary(word.getDictionary());
-
-        mView.populate(DTOConverters.convertModelToModelDTO(word, dictionary));
+        mView.populate(word);
     }
 
     @Override

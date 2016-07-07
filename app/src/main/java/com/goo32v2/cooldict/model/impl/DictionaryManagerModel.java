@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by aleste on 05.07.16.
+ * Created on 05.07.16. (c) CoolDict
  */
 
 public class DictionaryManagerModel implements DictionaryManagerModelContract {
@@ -49,16 +49,21 @@ public class DictionaryManagerModel implements DictionaryManagerModelContract {
 
     @Override
     public void remove(DictionaryModel model) {
+        // remove all words assign to removing dictionary
         mWordRepository.getWordsByDictionary(model.getId(), new DataSource.GetListCallback<WordModel>() {
             @Override
             public void onLoaded(List<WordModel> entries) {
+                // TODO: 07-Jul-16 optimize
+
                 for (WordModel entry : entries) {
                     mWordRepository.remove(entry);
                 }
             }
 
             @Override
-            public void onDataNotAvailable() {}
+            public void onDataNotAvailable() {
+                // dictionary is empty
+            }
         });
 
         mDictionaryRepository.remove(model);

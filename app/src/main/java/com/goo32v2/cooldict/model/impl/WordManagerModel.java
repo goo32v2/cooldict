@@ -35,32 +35,36 @@ public class WordManagerModel implements WordManagerModelContract {
             }
 
             @Override
-            public void onDataNotAvailable() {}
+            public void onDataNotAvailable() {
+                dictionaryModelList = new ArrayList<>();
+            }
         });
 
         return dictionaryModelList;
     }
 
-    private List<String> getNames(List<DictionaryModel> target){
+    private List<String> getNames(List<DictionaryModel> source){
         List<String> names = new ArrayList<>();
-        for (DictionaryModel model : target) {
+        for (DictionaryModel model : source) {
             names.add(model.getTitle());
         }
         return names;
     }
 
     @Override
-    public void create(String originalWord, String translatedWord, final String dictionary) {
-        DictionaryModel dictionaryModel = getDictionaryByName(dictionary);
-        WordModel wordModel = new WordModel(originalWord, translatedWord, dictionaryModel.getId());
+    public void create(String originalWord, String translatedWord, String dictionaryName) {
+        // get dictionary or create new if not exist
+        DictionaryModel dictionaryModel = getDictionaryByName(dictionaryName);
+        WordModel wordModel = new WordModel(originalWord, translatedWord, dictionaryModel);
 
         mWordRepository.save(wordModel);
     }
 
     @Override
     public void update(String id, String originalText, String translatedText, String dictionaryName) {
+        // get dictionary or create new if not exist
         DictionaryModel dictionaryModel = getDictionaryByName(dictionaryName);
-        WordModel wordModel = new WordModel(id, originalText, translatedText, dictionaryModel.getId());
+        WordModel wordModel = new WordModel(id, originalText, translatedText, dictionaryModel);
 
         mWordRepository.update(wordModel);
     }

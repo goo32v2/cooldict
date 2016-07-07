@@ -16,7 +16,7 @@ public final class WordModel implements BaseModel, Serializable{
     @NonNull private String id;
     @NonNull private String originalWord;
     @Nullable private String translatedWord;
-    @Nullable private String dictionary;
+    @Nullable private String dictionaryId;
     @Nullable private String dictionaryTitle;
 
 
@@ -25,14 +25,34 @@ public final class WordModel implements BaseModel, Serializable{
      *
      * @param originalWord - Original word
      * @param translatedWord - Translated word
-     * @param dictionary - DictionaryEntry
+     * @param dictionaryId - DictionaryEntry
      */
-    public WordModel(@NonNull String originalWord, @Nullable String translatedWord,
-                     @Nullable String dictionary) {
+    public WordModel(@NonNull String originalWord,
+                     @Nullable String translatedWord,
+                     @Nullable String dictionaryId) {
         this.id = UUID.randomUUID().toString();
         this.originalWord = originalWord;
         this.translatedWord = translatedWord;
-        this.dictionary = dictionary;
+        this.dictionaryId = dictionaryId;
+    }
+
+    /**
+     * Use this constructor to create new Word.
+     *
+     * @param originalWord - Original word
+     * @param translatedWord - Translated word
+     * @param dictionary - DictionaryEntry
+     */
+    public WordModel(@NonNull String originalWord,
+                     @Nullable String translatedWord,
+                     @Nullable DictionaryModel dictionary) {
+        this.id = UUID.randomUUID().toString();
+        this.originalWord = originalWord;
+        this.translatedWord = translatedWord;
+        if (dictionary != null){
+            this.dictionaryId = dictionary.getId();
+            this.dictionaryTitle = dictionary.getTitle();
+        }
     }
 
     /**
@@ -41,26 +61,39 @@ public final class WordModel implements BaseModel, Serializable{
      * @param mId - Id
      * @param originalWord - Original word
      * @param translatedWord - Translated word
-     * @param dictionary - DictionaryEntry
+     * @param dictionaryId - DictionaryEntry
      */
-    public WordModel(@NonNull String mId, @NonNull String originalWord, @Nullable String translatedWord,
-                     @Nullable String dictionary) {
+    public WordModel(@NonNull String mId,
+                     @NonNull String originalWord,
+                     @Nullable String translatedWord,
+                     @Nullable String dictionaryId,
+                     @Nullable String dictionaryTitle) {
         this.id = mId;
         this.originalWord = originalWord;
         this.translatedWord = translatedWord;
-        this.dictionary = dictionary;
+        this.dictionaryId = dictionaryId;
+        this.dictionaryTitle = dictionaryTitle;
     }
 
+    /**
+     * Use this constructor to populate Word from repository.
+     *
+     * @param id - Id
+     * @param originalWord - Original word
+     * @param translatedWord - Translated word
+     * @param dictionary - DictionaryEntry
+     */
     public WordModel(@NonNull String id,
                      @NonNull String originalWord,
                      @Nullable String translatedWord,
-                     @Nullable String dictionary,
-                     @Nullable String dictionaryTitle) {
+                     @Nullable DictionaryModel dictionary) {
         this.id = id;
         this.originalWord = originalWord;
         this.translatedWord = translatedWord;
-        this.dictionary = dictionary;
-        this.dictionaryTitle = dictionaryTitle;
+        if (dictionary != null){
+            this.dictionaryId = dictionary.getId();
+            this.dictionaryTitle = dictionary.getTitle();
+        }
     }
 
     @NonNull
@@ -79,8 +112,8 @@ public final class WordModel implements BaseModel, Serializable{
     }
 
     @Nullable
-    public String getDictionary() {
-        return dictionary;
+    public String getDictionaryId() {
+        return dictionaryId;
     }
 
     public void setId(@NonNull String id) {
@@ -95,8 +128,8 @@ public final class WordModel implements BaseModel, Serializable{
         this.translatedWord = translatedWord;
     }
 
-    public void setDictionary(@Nullable String dictionary) {
-        this.dictionary = dictionary;
+    public void setDictionaryId(@Nullable String dictionaryId) {
+        this.dictionaryId = dictionaryId;
     }
 
     @Nullable
@@ -126,6 +159,6 @@ public final class WordModel implements BaseModel, Serializable{
         return Objects.equals(getId(), wordModel.getId()) &&
                 Objects.equals(getOriginalWord(), wordModel.getOriginalWord()) &&
                 Objects.equals(getTranslatedWord(), wordModel.getTranslatedWord()) &&
-                Objects.equals(getDictionary(), wordModel.getDictionary());
+                Objects.equals(getDictionaryId(), wordModel.getDictionaryId());
     }
 }

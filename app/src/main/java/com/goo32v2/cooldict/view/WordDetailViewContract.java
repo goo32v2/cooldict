@@ -1,7 +1,5 @@
 package com.goo32v2.cooldict.view;
 
-import com.goo32v2.cooldict.data.dtos.WordWithDictionaryDTO;
-import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 
 /**
@@ -10,7 +8,8 @@ import com.goo32v2.cooldict.data.models.WordModel;
 
 public interface WordDetailViewContract extends BaseView {
 
-    void populate(WordWithDictionaryDTO<WordModel, DictionaryModel> dto);
+//    void populate(WordWithDictionaryDTO<WordModel, DictionaryModel> dto);
+    void populate(WordModel model);
 
     void finishActivity();
 

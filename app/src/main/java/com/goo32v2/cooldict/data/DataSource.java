@@ -1,6 +1,7 @@
 package com.goo32v2.cooldict.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.List;
 
@@ -10,7 +11,6 @@ import java.util.List;
 
 public interface DataSource<T> {
 
-    // For list
     interface GetListCallback<T> {
 
         void onLoaded(List<T> entries);
@@ -18,7 +18,7 @@ public interface DataSource<T> {
         void onDataNotAvailable();
     }
 
-    void get(@NonNull GetListCallback<T> callback, String selection, String[] selectionArgs, String orderBy, String groupBy, String having);
+    void get(@NonNull GetListCallback<T> callback, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy);
 
     void save(@NonNull T entry);
 

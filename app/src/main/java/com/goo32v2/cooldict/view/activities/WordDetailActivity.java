@@ -12,8 +12,6 @@ import android.view.MenuItem;
 
 import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.dtos.WordWithDictionaryDTO;
-import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.presenter.impl.WordDetailPresenter;
 import com.goo32v2.cooldict.utils.ActivityUtils;
@@ -115,8 +113,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
     }
 
     @Override
-    public void populate(WordWithDictionaryDTO<WordModel, DictionaryModel> dto) {
-        mFragment.populate(dto);
+    public void populate(WordModel model) {
+        mFragment.populate(model);
     }
 
     @Override

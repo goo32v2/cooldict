@@ -1,6 +1,5 @@
 package com.goo32v2.cooldict.model;
 
-import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 
 /**
@@ -11,5 +10,5 @@ public interface WordDetailModelContract {
 
     void actionDeleteWord(WordModel word);
 
-    DictionaryModel getDictionary(String id);
+//    DictionaryModel getDictionary(String id);
 }

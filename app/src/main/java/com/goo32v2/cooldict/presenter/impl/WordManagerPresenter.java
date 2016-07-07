@@ -48,7 +48,7 @@ public class WordManagerPresenter implements WordManagerPresenterContract {
     // TODO: 04-Jul-16 separate
     @Override
     public void populate(WordModel wordModel) {
-        DictionaryModel dictionary = mModel.getDictionary(wordModel.getDictionary());
+        DictionaryModel dictionary = mModel.getDictionary(wordModel.getDictionaryId());
 
         if (dictionary != null){
             mView.populateWord(
