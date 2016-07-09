@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
+import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.presenter.impl.DictionaryManagerPresenter;
 import com.goo32v2.cooldict.view.DictionaryManagerViewContract;
@@ -53,7 +53,7 @@ public class DictionaryManagerActivity extends AppCompatActivity implements Dict
     }
 
     @Override
-    public void showDictionaries(List<ModelDTO<DictionaryModel, View.OnClickListener>> list) {
+    public void showDictionaries(List<Pair<DictionaryModel, View.OnClickListener>> list) {
         mFragment.showDictionaryList(list);
     }
 

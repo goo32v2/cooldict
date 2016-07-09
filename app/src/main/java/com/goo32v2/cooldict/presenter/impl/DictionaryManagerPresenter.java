@@ -2,8 +2,8 @@ package com.goo32v2.cooldict.presenter.impl;
 
 import android.view.View;
 
-import com.goo32v2.cooldict.data.converters.DTOConverters;
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
+import com.goo32v2.cooldict.data.converters.Converters;
+import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.model.impl.DictionaryManagerModel;
 import com.goo32v2.cooldict.presenter.DictionaryManagerPresenterContract;
@@ -41,13 +41,13 @@ public class DictionaryManagerPresenter implements DictionaryManagerPresenterCon
     }
 
     @Override
-    public ModelDTO<DictionaryModel, View.OnClickListener> convert(DictionaryModel model, View.OnClickListener listener) {
-        return DTOConverters.convertDictionaryToDTO(model, listener);
+    public Pair<DictionaryModel, View.OnClickListener> convert(DictionaryModel model, View.OnClickListener listener) {
+        return Converters.uniteDictionaryWithListener(model, listener);
     }
 
     @Override
     public void start() {
-        List<ModelDTO<DictionaryModel, View.OnClickListener>> res = new ArrayList<>();
+        List<Pair<DictionaryModel, View.OnClickListener>> res = new ArrayList<>();
 
         List<DictionaryModel> dictionaries = get();
         for (final DictionaryModel dictionary : dictionaries) {

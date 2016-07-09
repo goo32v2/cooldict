@@ -8,7 +8,6 @@ import com.goo32v2.cooldict.data.models.WordModel;
 
 public interface WordDetailViewContract extends BaseView {
 
-//    void populate(WordWithDictionaryDTO<WordModel, DictionaryModel> dto);
     void populate(WordModel model);
 
     void finishActivity();

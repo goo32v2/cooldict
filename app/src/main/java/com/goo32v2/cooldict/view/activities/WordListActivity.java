@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.presenter.impl.WordListPresenter;
@@ -110,6 +109,7 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
         return super.onOptionsItemSelected(item);
     }
 
+    // TODO: 08-Jul-16 create map and add keys only
     @Override
     public void setMenu(List<DictionaryModel> entries) {
         Menu m = mNavigationView.getMenu();
@@ -125,7 +125,7 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
     }
 
     @Override
-    public void showList(List<ModelDTO<WordModel, View.OnClickListener>> words) {
+    public void showList(List<WordModel> words) {
         mFragment.showWords(words);
     }
 
@@ -167,10 +167,10 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
         if (Objects.equals(item.getTitle().toString(), getString(R.string.show_all_words))) {
             // get all words
             activeDictionary = null;
-            mPresenter.getWordsBy(null);
+            mPresenter.getWords(null);
         } else {
             activeDictionary = item.getTitle().toString();
-            mPresenter.getWordsBy(activeDictionary);
+            mPresenter.getWords(activeDictionary);
         }
         mDrawerLayout.closeDrawers();
         return true;

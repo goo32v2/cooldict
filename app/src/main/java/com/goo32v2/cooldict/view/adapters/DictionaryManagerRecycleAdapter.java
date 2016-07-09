@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
+import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.view.viewholders.DictionaryManagerRecycleViewHolder;
 
 import java.util.List;
@@ -20,9 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DictionaryManagerRecycleAdapter extends RecyclerView.Adapter<DictionaryManagerRecycleViewHolder> {
 
-    private List<ModelDTO<DictionaryModel, View.OnClickListener>> modelDTOs;
+    private List<Pair<DictionaryModel, View.OnClickListener>> pairs;
 
-    public DictionaryManagerRecycleAdapter(List<ModelDTO<DictionaryModel, View.OnClickListener>> list) {
+    public DictionaryManagerRecycleAdapter(List<Pair<DictionaryModel, View.OnClickListener>> list) {
         setList(list);
     }
 
@@ -41,22 +41,22 @@ public class DictionaryManagerRecycleAdapter extends RecyclerView.Adapter<Dictio
 
     @Override
     public void onBindViewHolder(DictionaryManagerRecycleViewHolder holder, int position) {
-        ModelDTO<DictionaryModel, View.OnClickListener> model = modelDTOs.get(holder.getAdapterPosition());
-        holder.setListener(model.getCallback());
-        holder.textView.setText(model.getModel().getTitle());
+        Pair<DictionaryModel, View.OnClickListener> model = pairs.get(holder.getAdapterPosition());
+        holder.setListener(model.getElement1());
+        holder.textView.setText(model.getElement0().getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return modelDTOs.size();
+        return pairs.size();
     }
 
-    public void replaceData(List<ModelDTO<DictionaryModel, View.OnClickListener>> list){
+    public void replaceData(List<Pair<DictionaryModel, View.OnClickListener>> list){
         setList(list);
         notifyDataSetChanged();
     }
 
-    private void setList(List<ModelDTO<DictionaryModel, View.OnClickListener>> list) {
-        this.modelDTOs = checkNotNull(list);
+    private void setList(List<Pair<DictionaryModel, View.OnClickListener>> list) {
+        this.pairs = checkNotNull(list);
     }
 }

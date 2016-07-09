@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
+import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.view.adapters.DictionaryManagerRecycleAdapter;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class DictionaryManagerFragment extends Fragment {
     }
 
     //call it from activity
-    public void showDictionaryList(List<ModelDTO<DictionaryModel, View.OnClickListener>> list) {
+    public void showDictionaryList(List<Pair<DictionaryModel, View.OnClickListener>> list) {
         if (llm == null || mAdapter == null) {
             setupRecycleView(list);
         } else {
@@ -56,7 +56,7 @@ public class DictionaryManagerFragment extends Fragment {
         }
     }
 
-    private void setupRecycleView(List<ModelDTO<DictionaryModel, View.OnClickListener>> dictionaryModelList) {
+    private void setupRecycleView(List<Pair<DictionaryModel, View.OnClickListener>> dictionaryModelList) {
         llm = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(llm);
         mAdapter = new DictionaryManagerRecycleAdapter(dictionaryModelList);
@@ -67,7 +67,7 @@ public class DictionaryManagerFragment extends Fragment {
         // TODO: 25-Jun-16 implement
     }
 
-    public void update(List<ModelDTO<DictionaryModel, View.OnClickListener>> dictionaryModelList) {
+    public void update(List<Pair<DictionaryModel, View.OnClickListener>> dictionaryModelList) {
         mAdapter.replaceData(dictionaryModelList);
         mAdapter.notifyDataSetChanged();
     }

@@ -1,8 +1,5 @@
 package com.goo32v2.cooldict.view;
 
-import android.view.View;
-
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 
@@ -18,7 +15,7 @@ public interface WordListViewContract extends BaseView {
 
     void showMessage(String msg);
 
-    void showList(List<ModelDTO<WordModel, View.OnClickListener>> words);
+    void showList(List<WordModel> words);
 
     void showNoWords();
 }

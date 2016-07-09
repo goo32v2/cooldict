@@ -9,13 +9,11 @@ import com.goo32v2.cooldict.view.WordListViewContract;
 
 public interface WordListPresenterContract extends BasePresenter<WordListViewContract> {
 
-//    void getWords(@NonNull DataSource.GetListCallback<WordModel> callback);
-//
     void start(String dictionary);
 
     void getDictionaries();
 
-    void getWordsBy(String dictionary);
+    void getWords(String dictionary);
 
     void navigateToDictionaryManagerActivity();
 

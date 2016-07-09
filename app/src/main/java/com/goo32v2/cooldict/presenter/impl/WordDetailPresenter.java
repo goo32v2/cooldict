@@ -38,7 +38,7 @@ public class WordDetailPresenter implements WordDetailPresenterContract {
     public void start() {
         // after implementation of wordModel changes, it can be removed
 //        DictionaryModel dictionary = mModel.getDictionary(word.getDictionaryId());
-//        mView.populate(DTOConverters.convertModelToModelDTO(word, dictionary));
+//        mView.populate(Converters.convertModelToModelDTO(word, dictionary));
         WordModel word = mView.getExtraWord();
         mView.populate(word);
     }
