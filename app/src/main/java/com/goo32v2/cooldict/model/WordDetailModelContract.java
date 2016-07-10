@@ -9,6 +9,4 @@ import com.goo32v2.cooldict.data.models.WordModel;
 public interface WordDetailModelContract {
 
     void actionDeleteWord(WordModel word);
-
-//    DictionaryModel getDictionary(String id);
 }

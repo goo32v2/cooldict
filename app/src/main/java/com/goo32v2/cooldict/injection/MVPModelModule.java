@@ -23,8 +23,8 @@ public class MVPModelModule {
     }
 
     @Provides
-    public WordDetailModel provideWordDetailModel(WordRepository wordRepository, DictionaryRepository dictionaryRepository){
-        return new WordDetailModel(wordRepository, dictionaryRepository);
+    public WordDetailModel provideWordDetailModel(WordRepository wordRepository){
+        return new WordDetailModel(wordRepository);
     }
 
     @Provides

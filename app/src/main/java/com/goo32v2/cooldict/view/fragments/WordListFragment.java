@@ -4,7 +4,6 @@ package com.goo32v2.cooldict.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.view.adapters.WordListRecycleAdapter;
 
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +48,7 @@ public class WordListFragment extends Fragment {
         return root;
     }
 
-    public void showWords(List<WordModel> words) {
+    public void showWords(List<Pair<WordModel, View.OnClickListener>> words) {
         mNoWordsView.setVisibility(View.GONE);
         mWordRecycleView.setVisibility(View.VISIBLE);
 
@@ -69,14 +67,14 @@ public class WordListFragment extends Fragment {
         mNoWordsTextView.setText(getString(R.string.no_word_text));
     }
 
-    private void setupRecycleView(List<WordModel> words){
+    private void setupRecycleView(List<Pair<WordModel, View.OnClickListener>> words){
         llm = new LinearLayoutManager(getActivity());
         mWordAdapter = new WordListRecycleAdapter(words);
         mWordRecycleView.setLayoutManager(llm);
         mWordRecycleView.setAdapter(mWordAdapter);
     }
 
-    private void update(List<WordModel> words) {
+    private void update(List<Pair<WordModel, View.OnClickListener>> words) {
         mWordAdapter.replaceData(words);
     }
 }

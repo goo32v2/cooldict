@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface WordListModelContract {
 
-    List<WordModel> getWordListBy(String dictionary);
+    List<WordModel> getWordListBy(DictionaryModel dictionary);
 
     List<DictionaryModel> getDictionaryList();
 

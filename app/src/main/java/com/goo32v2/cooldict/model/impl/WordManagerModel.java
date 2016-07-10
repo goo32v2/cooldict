@@ -1,5 +1,7 @@
 package com.goo32v2.cooldict.model.impl;
 
+import android.support.annotation.Nullable;
+
 import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
@@ -52,50 +54,20 @@ public class WordManagerModel implements WordManagerModelContract {
     }
 
     @Override
-    public void create(String originalWord, String translatedWord, String dictionaryName) {
-        // get dictionary or create new if not exist
-        DictionaryModel dictionaryModel = getDictionaryByName(dictionaryName);
-        WordModel wordModel = new WordModel(originalWord, translatedWord, dictionaryModel);
-
-        mWordRepository.save(wordModel);
+    public void create(WordModel model) {
+        mWordRepository.save(model);
     }
 
     @Override
-    public void update(String id, String originalText, String translatedText, String dictionaryName) {
-        // get dictionary or create new if not exist
-        DictionaryModel dictionaryModel = getDictionaryByName(dictionaryName);
-        WordModel wordModel = new WordModel(id, originalText, translatedText, dictionaryModel);
-
-        mWordRepository.update(wordModel);
+    public void update(WordModel model) {
+        mWordRepository.update(model);
     }
 
     @Override
+    @Nullable
     public DictionaryModel getDictionaryByName(final String name) {
         final DictionaryModel[] model = new DictionaryModel[1];
         mDictionaryRepository.getDictionaryByName(name, new DataSource.GetListCallback<DictionaryModel>() {
-            @Override
-            public void onLoaded(List<DictionaryModel> entries) {
-                model[0] = entries.get(0);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                model[0] = new DictionaryModel(name);
-                saveDictionary(model[0]);
-            }
-        });
-        return model[0];
-    }
-
-    @Override
-    public void saveDictionary(DictionaryModel model){
-        mDictionaryRepository.save(model);
-    }
-
-    @Override
-    public DictionaryModel getDictionary(String dictionaryID) {
-        final DictionaryModel[] model = new DictionaryModel[1];
-        mDictionaryRepository.getDictionaryById(dictionaryID, new DataSource.GetListCallback<DictionaryModel>() {
             @Override
             public void onLoaded(List<DictionaryModel> entries) {
                 model[0] = entries.get(0);
@@ -108,4 +80,26 @@ public class WordManagerModel implements WordManagerModelContract {
         });
         return model[0];
     }
+
+    @Override
+    public void saveDictionary(DictionaryModel model){
+        mDictionaryRepository.save(model);
+    }
+
+//    @Override
+//    public DictionaryModel getDictionary(String dictionaryID) {
+//        final DictionaryModel[] model = new DictionaryModel[1];
+//        mDictionaryRepository.getDictionaryById(dictionaryID, new DataSource.GetListCallback<DictionaryModel>() {
+//            @Override
+//            public void onLoaded(List<DictionaryModel> entries) {
+//                model[0] = entries.get(0);
+//            }
+//
+//            @Override
+//            public void onDataNotAvailable() {
+//                model[0] = null;
+//            }
+//        });
+//        return model[0];
+//    }
 }

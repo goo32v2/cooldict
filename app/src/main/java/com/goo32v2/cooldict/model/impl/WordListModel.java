@@ -28,7 +28,7 @@ public class WordListModel implements WordListModelContract {
     }
 
     @Override
-    public List<WordModel> getWordListBy(final String dictionary) {
+    public List<WordModel> getWordListBy(DictionaryModel dictionary) {
         final DataSource.GetListCallback<WordModel> callback = new DataSource.GetListCallback<WordModel>() {
             @Override
             public void onLoaded(List<WordModel> entries) {
@@ -42,15 +42,16 @@ public class WordListModel implements WordListModelContract {
         };
 
         // first get dictionary by name, than find all words assign to find id
-        if (dictionary != null && !dictionary.equals("")){
-            mDictionaryRepository.getDictionaryByName(dictionary, new DataSource.GetListCallback<DictionaryModel>() {
-                @Override
-                public void onLoaded(List<DictionaryModel> entries) {
-                    mWordRepository.getWordsByDictionary(entries.get(0).getId(), callback);
-                }
-
-                @Override public void onDataNotAvailable() {}
-            });
+        if (dictionary != null){
+//            mDictionaryRepository.getDictionaryByName(dictionary, new DataSource.GetListCallback<DictionaryModel>() {
+//                @Override
+//                public void onLoaded(List<DictionaryModel> entries) {
+//                    mWordRepository.getWordsByDictionary(entries.get(0).getId(), callback);
+//                }
+//
+//                @Override public void onDataNotAvailable() {}
+//            });
+            mWordRepository.getWordsByDictionary(dictionary.getId(), callback);
         } else {
             mWordRepository.getWordsList(callback);
         }

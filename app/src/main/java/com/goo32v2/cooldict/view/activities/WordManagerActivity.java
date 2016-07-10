@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 public class WordManagerActivity extends AppCompatActivity implements WordManagerViewContract {
 
-    public static final String ARGUMENT_EDIT_WORD = "EDIT_WORD_ID";
+    public static final String ARGUMENT_EDIT_WORD = "EDIT_WORD";
 
     @Inject protected WordManagerPresenter mPresenter;
     private WordManagerFragment mFragment;
@@ -38,8 +38,6 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_manage);
         CoolDictApp.getComponent().inject(this);
-
-//        setupActionBar();
 
         if (getSupportFragmentManager().getFragments().get(0) instanceof WordManagerFragment){
             mFragment = (WordManagerFragment) getSupportFragmentManager().getFragments().get(0);
@@ -157,8 +155,8 @@ public class WordManagerActivity extends AppCompatActivity implements WordManage
     }
 
     @Override
-    public void populateWord(String id, String originalWord, String translatedWrd, String dictionary) {
-        mFragment.populate(id, originalWord, translatedWrd, dictionary);
+    public void populateWord(WordModel model) {
+        mFragment.populate(model);
     }
 
     public static void startActivity(Context context, WordModel model) {

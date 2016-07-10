@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
+import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.presenter.impl.WordListPresenter;
@@ -22,6 +23,7 @@ import com.goo32v2.cooldict.view.WordListViewContract;
 import com.goo32v2.cooldict.view.fragments.WordListFragment;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -32,6 +34,8 @@ import butterknife.ButterKnife;
 public class WordListActivity extends AppCompatActivity implements WordListViewContract,
         NavigationView.OnNavigationItemSelectedListener {
 
+    public static String CURRENT_DICTIONARY_STRING = "current_dictionary";
+
     @Inject protected WordListPresenter mPresenter;
     private WordListFragment mFragment;
 
@@ -40,7 +44,8 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton floatingActionButton;
 
-    private String activeDictionary;
+    private DictionaryModel activeDictionary;
+    private Map<String, DictionaryModel> menuDataMap;
 
 
     // TODO: 17-May-16 think about sorting words with rating
@@ -62,8 +67,7 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
         setupView();
 
         if (savedInstanceState != null) {
-            // TODO: 17-May-16 Get serialized current dictionary from navigation drawer
-            savedInstanceState.getSerializable(activeDictionary);
+            savedInstanceState.getSerializable(CURRENT_DICTIONARY_STRING);
         }
     }
 
@@ -81,9 +85,7 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // TODO: 17-May-16 Save state (dictionary? or implement some kind of sorting?)
-//        outState.putSerializable(CURRENT_DICTIONARY, mPresenter.getAllDictionaries());
-
+        outState.putSerializable(CURRENT_DICTIONARY_STRING, activeDictionary);
         super.onSaveInstanceState(outState);
     }
 
@@ -111,11 +113,13 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
 
     // TODO: 08-Jul-16 create map and add keys only
     @Override
-    public void setMenu(List<DictionaryModel> entries) {
+    public void setMenu(Map<String, DictionaryModel> entries) {
+        this.menuDataMap = entries;
+
         Menu m = mNavigationView.getMenu();
         m.add(R.string.show_all_words);
-        for (DictionaryModel item : entries) {
-            m.add(item.getTitle());
+        for (String item : entries.keySet()) {
+            m.add(item);
         }
     }
 
@@ -125,7 +129,7 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
     }
 
     @Override
-    public void showList(List<WordModel> words) {
+    public void showList(List<Pair<WordModel, View.OnClickListener>> words) {
         mFragment.showWords(words);
     }
 
@@ -169,7 +173,7 @@ public class WordListActivity extends AppCompatActivity implements WordListViewC
             activeDictionary = null;
             mPresenter.getWords(null);
         } else {
-            activeDictionary = item.getTitle().toString();
+            activeDictionary = menuDataMap.get(item.getTitle().toString());
             mPresenter.getWords(activeDictionary);
         }
         mDrawerLayout.closeDrawers();

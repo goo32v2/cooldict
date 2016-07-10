@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.goo32v2.cooldict.R;
+import com.goo32v2.cooldict.data.models.WordModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,10 +107,10 @@ public class WordManagerFragment extends Fragment {
         this.mWordId.setText(text);
     }
 
-    public void populate(String id, String originalWord, String translatedWrd, String dictionary) {
-        setWordId(id);
-        setOriginalWord(originalWord);
-        setTranslatedWord(translatedWrd);
-        setDictionary(dictionary);
+    public void populate(WordModel model) {
+        setWordId(model.getId());
+        setOriginalWord(model.getOriginalWord());
+        setTranslatedWord(model.getTranslatedWord());
+        setDictionary(model.getDictionaryTitle());
     }
 }

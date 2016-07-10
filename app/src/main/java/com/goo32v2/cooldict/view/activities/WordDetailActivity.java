@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 public class WordDetailActivity extends AppCompatActivity implements WordDetailViewContract {
 
-    public static final String EXTRA_WORD_ID = "WORD_ID";
+    public static final String EXTRA_WORD = "WORD_ID";
 
     private WordDetailFragment mFragment;
     private WordModel extraWord;
@@ -48,7 +48,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
 
     @Override
     public WordModel getExtraWord() {
-        this.extraWord = (WordModel) getIntent().getSerializableExtra(EXTRA_WORD_ID);
+        this.extraWord = (WordModel) getIntent().getSerializableExtra(EXTRA_WORD);
         return extraWord;
     }
 
@@ -125,7 +125,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailV
 
     public static void startActivity(Context context, WordModel model) {
         Intent intent = new Intent(context, WordDetailActivity.class);
-        intent.putExtra(WordDetailActivity.EXTRA_WORD_ID, model);
+        intent.putExtra(WordDetailActivity.EXTRA_WORD, model);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

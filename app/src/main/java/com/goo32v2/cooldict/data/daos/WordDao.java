@@ -71,10 +71,10 @@ public class WordDao implements WordDataSource {
                 .append("w.").append(WordsEntry.COLUMN_TRANSLATED_WORD).append(", ")
                 .append("d.").append(DictionaryEntry.COLUMN_ENTRY_ID).append(", ")
                 .append("d.").append(DictionaryEntry.COLUMN_TITLE)
-                .append(" FROM ").append(WordsEntry.TABLE_NAME).append(" AS w INNER JOIN ")
+                .append(" FROM ").append(WordsEntry.TABLE_NAME).append(" AS w JOIN ")
                 .append(DictionaryEntry.TABLE_NAME).append(" AS d ON ")
-                .append("w.").append(DictionaryEntry.COLUMN_ENTRY_ID).append("=w.")
-                .append(WordsEntry.COLUMN_ENTRY_ID);
+                .append("d.").append(DictionaryEntry.COLUMN_ENTRY_ID).append("=w.")
+                .append(WordsEntry.COLUMN_DICTIONARY_ID);
 
         if(selection != null && !selection.isEmpty()){
             query.append(" WHERE ").append(selection);

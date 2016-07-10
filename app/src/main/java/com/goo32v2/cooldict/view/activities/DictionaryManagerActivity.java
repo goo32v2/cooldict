@@ -8,7 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
@@ -50,6 +53,48 @@ public class DictionaryManagerActivity extends AppCompatActivity implements Dict
         super.onResume();
         mPresenter.setView(this);
         mPresenter.start();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dictionary_manager, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_create_new_dictionary) {
+            createDialog(this).show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private AlertDialog.Builder createDialog(Context context) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+
+        final EditText dictionaryName = new EditText(context);
+        alert.setMessage("Enter Your Message");
+        alert.setTitle("Enter Your Title");
+
+        alert.setView(dictionaryName);
+
+        alert.setPositiveButton("Yes Option", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                DictionaryModel model = new DictionaryModel(dictionaryName.getText().toString());
+                mPresenter.save(model);
+            }
+        });
+
+        alert.setNegativeButton("No Option", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+            }
+        });
+
+        return alert;
     }
 
     @Override

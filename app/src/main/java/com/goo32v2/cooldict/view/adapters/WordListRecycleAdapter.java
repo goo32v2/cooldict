@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.goo32v2.cooldict.R;
+import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.view.viewholders.WordListRecycleViewHolder;
 
@@ -17,9 +18,9 @@ import java.util.List;
 
 public class WordListRecycleAdapter extends RecyclerView.Adapter<WordListRecycleViewHolder> {
 
-    private List<WordModel> models;
+    private List<Pair<WordModel, View.OnClickListener>> models;
 
-    public WordListRecycleAdapter(List<WordModel> list) {
+    public WordListRecycleAdapter(List<Pair<WordModel, View.OnClickListener>> list) {
         setList(list);
     }
 
@@ -31,10 +32,11 @@ public class WordListRecycleAdapter extends RecyclerView.Adapter<WordListRecycle
 
     @Override
     public void onBindViewHolder(WordListRecycleViewHolder holder, int position) {
-        WordModel model = models.get(holder.getAdapterPosition());
+        WordModel model = models.get(holder.getAdapterPosition()).getElement0();
+        View.OnClickListener listener = models.get(holder.getAdapterPosition()).getElement1();
         holder.originalWordTV.setText(model.getOriginalWord());
         holder.translatedWordTV.setText(model.getTranslatedWord());
-        holder.setListener(model.getOnClickListener());
+        holder.setListener(listener);
     }
 
     @Override
@@ -42,12 +44,12 @@ public class WordListRecycleAdapter extends RecyclerView.Adapter<WordListRecycle
         return models.size();
     }
 
-    public void replaceData(List<WordModel> list){
+    public void replaceData(List<Pair<WordModel, View.OnClickListener>> list){
         setList(list);
         notifyDataSetChanged();
     }
 
-    private void setList(List<WordModel> list) {
+    private void setList(List<Pair<WordModel, View.OnClickListener>> list) {
         this.models = list;
     }
 }

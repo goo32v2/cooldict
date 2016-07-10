@@ -1,5 +1,7 @@
 package com.goo32v2.cooldict.view;
 
+import com.goo32v2.cooldict.data.models.WordModel;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ public interface WordManagerViewContract extends BaseView {
 
     void finishActivity();
 
-    void populateWord(String id, String originalWord, String translatedWrd, String dictionary);
+    void populateWord(WordModel model);
 
     void submit();
 

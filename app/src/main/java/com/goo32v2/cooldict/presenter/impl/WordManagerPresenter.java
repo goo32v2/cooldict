@@ -34,45 +34,38 @@ public class WordManagerPresenter implements WordManagerPresenterContract {
     }
 
     @Override
-    public void create(String originalWord, String translatedWord, String dictionary) {
-        mModel.create(originalWord, translatedWord, dictionary);
+    public void create(WordModel model) {
+        mModel.create(model);
         mView.finishActivity();
     }
 
     @Override
-    public void update(String id, String originalText, String translatedText, String dictionary) {
-        mModel.update(id, originalText, translatedText, dictionary);
+    public void update(WordModel model) {
+        mModel.update(model);
         mView.finishActivity();
     }
 
-    // TODO: 04-Jul-16 separate
     @Override
     public void populate(WordModel wordModel) {
-        DictionaryModel dictionary = mModel.getDictionary(wordModel.getDictionaryId());
-
-        if (dictionary != null){
-            mView.populateWord(
-                    wordModel.getId(),
-                    wordModel.getOriginalWord(),
-                    wordModel.getTranslatedWord(),
-                    dictionary.getTitle()
-            );
-        } else {
-            mView.populateWord(
-                    wordModel.getId(),
-                    wordModel.getOriginalWord(),
-                    wordModel.getTranslatedWord(),
-                    ""
-            );
-        }
+            mView.populateWord(wordModel);
     }
 
     @Override
     public void formSubmit(String wordId, String originalText, String translatedText, String dictionary) {
+        DictionaryModel dictionaryModel = mModel.getDictionaryByName(dictionary);
         if (activeWord != null) {
-            update(wordId, originalText, translatedText, dictionary);
+            activeWord.setId(wordId);
+            activeWord.setOriginalWord(originalText);
+            activeWord.setTranslatedWord(translatedText);
+            if (activeWord.getDictionaryTitle() != null &&
+                    !activeWord.getDictionaryTitle().equals(dictionary) &&
+                    dictionaryModel != null){
+                activeWord.setDictionaryId(dictionaryModel.getId());
+                activeWord.setDictionaryTitle(dictionaryModel.getTitle());
+            }
+            update(activeWord);
         } else {
-            create(originalText, translatedText, dictionary);
+            create(new WordModel(originalText, translatedText, dictionaryModel));
         }
     }
 

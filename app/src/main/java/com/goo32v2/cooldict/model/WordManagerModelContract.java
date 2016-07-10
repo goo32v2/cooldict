@@ -1,6 +1,7 @@
 package com.goo32v2.cooldict.model;
 
 import com.goo32v2.cooldict.data.models.DictionaryModel;
+import com.goo32v2.cooldict.data.models.WordModel;
 
 import java.util.List;
 
@@ -12,13 +13,13 @@ public interface WordManagerModelContract {
 
     List<String> getDictionaryNames();
 
-    DictionaryModel getDictionaryByName(String id);
+    DictionaryModel getDictionaryByName(String name);
 
     void saveDictionary(DictionaryModel model);
 
-    void create(String originalWord, String translatedWord, String dictionary);
+    void create(WordModel model);
 
-    void update(String id, String originalText, String translatedText, String dictionary);
+    void update(WordModel model);
 
-    DictionaryModel getDictionary(String dictionaryID);
+//    DictionaryModel getDictionary(String dictionaryID);
 }

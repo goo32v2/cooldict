@@ -1,5 +1,6 @@
 package com.goo32v2.cooldict.presenter;
 
+import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.view.WordListViewContract;
 
@@ -9,11 +10,11 @@ import com.goo32v2.cooldict.view.WordListViewContract;
 
 public interface WordListPresenterContract extends BasePresenter<WordListViewContract> {
 
-    void start(String dictionary);
+    void start(DictionaryModel dictionary);
 
-    void getDictionaries();
+    void setDictionaryMenuData();
 
-    void getWords(String dictionary);
+    void getWords(DictionaryModel dictionary);
 
     void navigateToDictionaryManagerActivity();
 

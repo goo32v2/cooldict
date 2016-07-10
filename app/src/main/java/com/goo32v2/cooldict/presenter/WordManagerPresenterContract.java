@@ -13,9 +13,9 @@ public interface WordManagerPresenterContract extends BasePresenter<WordManagerV
 
     List<String> getDictionaryNames();
 
-    void create(String originalWord, String translatedWord, String dictionaryId);
+    void create(WordModel model);
 
-    void update(String id, String originalText, String translatedText, String dictionary);
+    void update(WordModel model);
 
     void showMessage(String msg);
 

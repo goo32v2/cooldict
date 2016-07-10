@@ -42,20 +42,6 @@ public class WordDetailFragment extends Fragment {
     }
 
     public void populate(WordModel model) {
-//        WordModel word = dto.getWord();
-//        DictionaryModel dictionary = dto.getDictionary();
-//        if (word != null) {
-//            mOriginalWord.setText(word.getOriginalWord());
-//            mTranslatedWord.setText(word.getTranslatedWord());
-//
-//            if (dictionary != null) {
-//                mDictionaryTitle.setText(dictionary.getTitle());
-//            } else {
-//                // we have word, that assign to dictionary, that we haven't got
-//                mDictionaryTitle.setText(word.getDictionaryId());
-//            }
-//        }
-
         mOriginalWord.setText(model.getOriginalWord());
         mTranslatedWord.setText(model.getTranslatedWord());
         mDictionaryTitle.setText(model.getDictionaryTitle());
