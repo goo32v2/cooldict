@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_dictionary_manager"
-        android:orderInCategory="100"
-        android:title="@string/action_dictionary_manager"
-        app:showAsAction="never" />
+
+    <group
+        android:id="@+id/dictionary_preset"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/words_all"
+            android:checked="true"
+            android:icon="@drawable/ic_nav_all"
+            android:title="@string/show_all_words"
+            app:showAsAction="ifRoom" />
+
+    </group>
+
+    <group
+        android:id="@+id/dictionary_list"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/action_create_new_dictionary"
+            android:icon="@drawable/ic_add"
+            android:orderInCategory="1000"
+            android:title="@string/nav_dictionary_create"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/action_dictionary_manager"
+            android:icon="@drawable/ic_nav_dictionary_manager"
+            android:orderInCategory="1000"
+            android:title="@string/action_dictionary_manager"
+            app:showAsAction="ifRoom" />
+    </group>
+
+    <group
+        android:id="@+id/footer"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_nav_settings"
+            android:orderInCategory="1001"
+            android:title="@string/action_settings"
+            app:showAsAction="ifRoom" />
+    </group>
+
 </menu>
