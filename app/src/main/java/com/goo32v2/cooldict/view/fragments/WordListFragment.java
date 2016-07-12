@@ -4,6 +4,7 @@ package com.goo32v2.cooldict.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.view.adapters.WordListRecycleAdapter;
 

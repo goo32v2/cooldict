@@ -1,5 +1,6 @@
 package com.goo32v2.cooldict.view.adapters;
 
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.goo32v2.cooldict.R;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.view.viewholders.DictionaryManagerRecycleViewHolder;
 
 import java.util.List;
@@ -42,8 +42,8 @@ public class DictionaryManagerRecycleAdapter extends RecyclerView.Adapter<Dictio
     @Override
     public void onBindViewHolder(DictionaryManagerRecycleViewHolder holder, int position) {
         Pair<DictionaryModel, View.OnClickListener> model = pairs.get(holder.getAdapterPosition());
-        holder.setListener(model.getElement1());
-        holder.textView.setText(model.getElement0().getTitle());
+        holder.setListener(model.second);
+        holder.textView.setText(model.first.getTitle());
     }
 
     @Override

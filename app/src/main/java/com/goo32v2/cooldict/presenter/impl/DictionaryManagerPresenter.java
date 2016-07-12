@@ -1,9 +1,9 @@
 package com.goo32v2.cooldict.presenter.impl;
 
+import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.view.View;
 
-import com.goo32v2.cooldict.data.converters.Converters;
-import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.model.impl.DictionaryManagerModel;
 import com.goo32v2.cooldict.presenter.DictionaryManagerPresenterContract;
@@ -41,29 +41,35 @@ public class DictionaryManagerPresenter implements DictionaryManagerPresenterCon
     }
 
     @Override
-    public Pair<DictionaryModel, View.OnClickListener> convert(DictionaryModel model, View.OnClickListener listener) {
-        return Converters.uniteDictionaryWithListener(model, listener);
+    public void onCreate(DictionaryManagerViewContract view) {
+        this.mView = view;
     }
 
     @Override
-    public void start() {
+    public void onResume(Bundle bundle) {
         List<Pair<DictionaryModel, View.OnClickListener>> res = new ArrayList<>();
 
         List<DictionaryModel> dictionaries = get();
         for (final DictionaryModel dictionary : dictionaries) {
-            res.add(convert(dictionary, new View.OnClickListener() {
+            View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mView.getConfirmationDialog(dictionary).show();
                 }
-            }));
+            };
+            res.add(Pair.create(dictionary, listener));
         }
 
         mView.showDictionaries(res);
     }
 
     @Override
-    public void setView(DictionaryManagerViewContract view) {
-        mView = view;
+    public void onPause() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        this.mView = null;
     }
 }

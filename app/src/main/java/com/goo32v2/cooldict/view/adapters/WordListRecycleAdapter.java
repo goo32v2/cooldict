@@ -1,12 +1,12 @@
 package com.goo32v2.cooldict.view.adapters;
 
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.view.viewholders.WordListRecycleViewHolder;
 
@@ -32,8 +32,8 @@ public class WordListRecycleAdapter extends RecyclerView.Adapter<WordListRecycle
 
     @Override
     public void onBindViewHolder(WordListRecycleViewHolder holder, int position) {
-        WordModel model = models.get(holder.getAdapterPosition()).getElement0();
-        View.OnClickListener listener = models.get(holder.getAdapterPosition()).getElement1();
+        WordModel model = models.get(holder.getAdapterPosition()).first;
+        View.OnClickListener listener = models.get(holder.getAdapterPosition()).second;
         holder.originalWordTV.setText(model.getOriginalWord());
         holder.translatedWordTV.setText(model.getTranslatedWord());
         holder.setListener(listener);

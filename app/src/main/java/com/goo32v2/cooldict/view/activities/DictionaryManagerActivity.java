@@ -1,11 +1,15 @@
 package com.goo32v2.cooldict.view.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,7 +19,6 @@ import android.widget.EditText;
 
 import com.goo32v2.cooldict.CoolDictApp;
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.presenter.impl.DictionaryManagerPresenter;
 import com.goo32v2.cooldict.view.DictionaryManagerViewContract;
@@ -26,14 +29,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created on 29-Jun-16. (c) CoolDict
  */
 
 public class DictionaryManagerActivity extends AppCompatActivity implements DictionaryManagerViewContract {
 
-    @Inject protected DictionaryManagerPresenter mPresenter;
+    @Inject
+    protected DictionaryManagerPresenter mPresenter;
     private DictionaryManagerFragment mFragment;
+
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout mCoordinatorLayout;
 
 
     @Override
@@ -41,6 +50,8 @@ public class DictionaryManagerActivity extends AppCompatActivity implements Dict
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dictionary_manager);
         CoolDictApp.getComponent().inject(this);
+        ButterKnife.bind(this);
+        mPresenter.onCreate(this);
 
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         if (!fragments.isEmpty() && fragments.get(0) instanceof DictionaryManagerFragment){
@@ -51,8 +62,7 @@ public class DictionaryManagerActivity extends AppCompatActivity implements Dict
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.setView(this);
-        mPresenter.start();
+        mPresenter.onResume(new Bundle());
     }
 
     @Override
@@ -135,5 +145,21 @@ public class DictionaryManagerActivity extends AppCompatActivity implements Dict
         Intent intent = new Intent(context, DictionaryManagerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
+    }
+
+    @Override
+    public void showLoading(boolean trigger) {
+        // TODO: 11-Jul-16 implement
+    }
+
+    @Override
+    public void finishActivity() {
+        this.setResult(Activity.RESULT_OK);
+        this.finish();
     }
 }

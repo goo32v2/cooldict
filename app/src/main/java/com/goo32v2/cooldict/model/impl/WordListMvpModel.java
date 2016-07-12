@@ -14,7 +14,7 @@ import java.util.List;
  * Created on 02-Jul-16. (c) CoolDict
  */
 
-public class WordListModel implements WordListModelContract {
+public class WordListMvpModel implements WordListModelContract {
 
     private DictionaryRepository mDictionaryRepository;
     private WordRepository mWordRepository;
@@ -22,7 +22,7 @@ public class WordListModel implements WordListModelContract {
     private List<WordModel> activeWordModelList;
     private List<DictionaryModel> activeDictionaryModelList;
 
-    public WordListModel(WordRepository wordRepository, DictionaryRepository dictionaryRepository) {
+    public WordListMvpModel(WordRepository wordRepository, DictionaryRepository dictionaryRepository) {
         this.mWordRepository = wordRepository;
         this.mDictionaryRepository = dictionaryRepository;
     }
@@ -74,5 +74,11 @@ public class WordListModel implements WordListModelContract {
         });
 
         return activeDictionaryModelList;
+    }
+
+    @Override
+    public void createDictionary(String dictionary) {
+        DictionaryModel model = new DictionaryModel(dictionary);
+        mDictionaryRepository.save(model);
     }
 }

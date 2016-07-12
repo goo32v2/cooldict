@@ -15,4 +15,5 @@ public interface WordListModelContract {
 
     List<DictionaryModel> getDictionaryList();
 
+    void createDictionary(String dictionary);
 }

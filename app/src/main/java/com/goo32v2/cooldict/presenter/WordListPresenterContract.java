@@ -10,8 +10,6 @@ import com.goo32v2.cooldict.view.WordListViewContract;
 
 public interface WordListPresenterContract extends BasePresenter<WordListViewContract> {
 
-    void start(DictionaryModel dictionary);
-
     void setDictionaryMenuData();
 
     void getWords(DictionaryModel dictionary);
@@ -24,5 +22,5 @@ public interface WordListPresenterContract extends BasePresenter<WordListViewCon
 
     void navigateToWordDetailActivity(WordModel word);
 
-    void showMessage(String msg);
+    void actionCreateDictionary(String dictionary);
 }

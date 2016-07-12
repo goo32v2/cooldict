@@ -1,9 +1,9 @@
 package com.goo32v2.cooldict.view;
 
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
-import com.goo32v2.cooldict.data.dtos.Pair;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 
 import java.util.List;
