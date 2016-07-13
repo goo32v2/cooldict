@@ -57,6 +57,7 @@ public class DictionaryRepository implements DictDataSource {
         mDictionaryDao.remove(entry);
     }
 
+    // TODO: 11-Jul-16 implement for words in dictionary
     @Override
     public void removeAll() {
         mDictionaryDao.removeAll();
