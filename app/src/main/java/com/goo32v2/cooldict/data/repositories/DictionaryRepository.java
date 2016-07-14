@@ -1,11 +1,11 @@
 package com.goo32v2.cooldict.data.repositories;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.goo32v2.cooldict.data.DictDataSource;
 import com.goo32v2.cooldict.data.daos.DictionaryDao;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract;
 
 /**
  * Created on 14-May-16. (c) CoolDict
@@ -28,11 +28,23 @@ public class DictionaryRepository implements DictDataSource {
     }
 
     @Override
-    public void get(@NonNull GetListCallback<DictionaryModel> callback,
-                    String selection,
-                    String[] selectionArgs) {
+    public void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback) {
+        mDictionaryDao.getDictionaryList(callback);
+    }
 
-        mDictionaryDao.get(callback, selection, selectionArgs);
+    @Override
+    public void getDictionaryById(String id, @NonNull GetListCallback<DictionaryModel> callback) {
+        mDictionaryDao.getDictionaryById(id, callback);
+    }
+
+    @Override
+    public void getDictionaryByName(String name, @NonNull GetListCallback<DictionaryModel> callback) {
+        mDictionaryDao.getDictionaryByName(name, callback);
+    }
+
+    @Override
+    public void get(@NonNull GetListCallback<DictionaryModel> callback, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy) {
+        mDictionaryDao.get(callback, selection, selectionArgs, orderBy);
     }
 
     @Override
@@ -41,37 +53,18 @@ public class DictionaryRepository implements DictDataSource {
     }
 
     @Override
-    public void update(String id, DictionaryModel newModel) {
-        mDictionaryDao.update(id, newModel);
-    }
-
-    @Override
     public void remove(@NonNull DictionaryModel entry) {
         mDictionaryDao.remove(entry);
     }
 
+    // TODO: 11-Jul-16 implement for words in dictionary
     @Override
     public void removeAll() {
         mDictionaryDao.removeAll();
     }
 
     @Override
-    public void getDictionary(String id, @NonNull GetListCallback<DictionaryModel> callback){
-        String selection = DatabasePersistenceContract.DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
-        String[] selectionArgs= { id };
-        get(callback, selection, selectionArgs);
-
-    }
-
-    @Override
-    public void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback){
-        get(callback, null, null);
-    }
-
-    @Override
-    public void getDictionaryByName(String name, @NonNull GetListCallback<DictionaryModel> callback) {
-        String selection = DatabasePersistenceContract.DictionaryEntry.COLUMN_TITLE + " LIKE ?";
-        String[] selectionArgs= { name };
-        get(callback, selection, selectionArgs);
+    public void update(@NonNull DictionaryModel model) {
+        mDictionaryDao.update(model);
     }
 }

@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.models.DictionaryModel;
-import com.goo32v2.cooldict.data.dtos.WordWithDictionaryDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
 
 import butterknife.BindView;
@@ -21,7 +19,7 @@ public class WordDetailFragment extends Fragment {
 
     @BindView(R.id.original_word) TextView mOriginalWord;
     @BindView(R.id.translated_word) TextView mTranslatedWord;
-    @BindView(R.id.dictionary_id) TextView mDictionaryId;
+    @BindView(R.id.dictionary_id) TextView mDictionaryTitle;
 
 
     public static WordDetailFragment newInstance() {
@@ -43,19 +41,9 @@ public class WordDetailFragment extends Fragment {
         getFragmentManager().beginTransaction().remove(this).commit();
     }
 
-    public void populate(WordWithDictionaryDTO<WordModel, DictionaryModel> dto) {
-        WordModel word = dto.getWord();
-        DictionaryModel dictionary = dto.getDictionary();
-        if (word != null) {
-            mOriginalWord.setText(word.getOriginalWord());
-            mTranslatedWord.setText(word.getTranslatedWord());
-
-            if (dictionary != null) {
-                mDictionaryId.setText(dictionary.getTitle());
-            } else {
-                // we have word, that assign to dictionary, that we haven't got
-                mDictionaryId.setText(word.getDictionaryID());
-            }
-        }
+    public void populate(WordModel model) {
+        mOriginalWord.setText(model.getOriginalWord());
+        mTranslatedWord.setText(model.getTranslatedWord());
+        mDictionaryTitle.setText(model.getDictionaryTitle());
     }
 }

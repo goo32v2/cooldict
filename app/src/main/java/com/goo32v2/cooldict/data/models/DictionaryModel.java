@@ -10,52 +10,63 @@ import java.util.UUID;
  * Created on 14-May-16. (c) CoolDict
  */
 
-// TODO: 06-Jul-16 make model mutable
 public final class DictionaryModel implements BaseModel, Serializable{
 
-    private final String mId;
-    @NonNull private final String mTitle;
+    @NonNull private String id;
+    @NonNull private String title;
 
     /**
-     * Use this constructor to copy dictionary from another dictionary.
+     * Use this constructor to populate dictionary from repository.
      *
-     * @param mId - id
-     * @param mTitle - dictionary title
+     * @param id - id
+     * @param title - dictionary title
      */
-    public DictionaryModel(String mId, @NonNull String mTitle) {
-        this.mId = mId;
-        this.mTitle = mTitle;
+    public DictionaryModel(@NonNull String id, @NonNull String title) {
+        this.id = id;
+        this.title = title;
     }
 
     /**
      * Use this constructor to create new dictionary.
      *
-     * @param mTitle - dictionary title
+     * @param title - dictionary title
      */
-    public DictionaryModel(@NonNull String mTitle) {
-        this.mId = UUID.randomUUID().toString();
-        this.mTitle = mTitle;
+    public DictionaryModel(@NonNull String title) {
+        this.id = UUID.randomUUID().toString();
+        this.title = title;
     }
 
-    @Override
+    @NonNull
     public String getId() {
-        return mId;
+        return id;
     }
 
-    @NonNull public String getTitle() {
-        return mTitle;
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
+    @NonNull
+    public String getTitle() {
+        return title;
+    }
 
-    @NonNull @Override public String toString() {
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
         return getId();
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hashCode(this);
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DictionaryModel dictionaryModel = (DictionaryModel) o;

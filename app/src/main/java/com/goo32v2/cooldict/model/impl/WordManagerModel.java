@@ -37,63 +37,37 @@ public class WordManagerModel implements WordManagerModelContract {
             }
 
             @Override
-            public void onDataNotAvailable() {}
+            public void onDataNotAvailable() {
+                dictionaryModelList = new ArrayList<>();
+            }
         });
 
         return dictionaryModelList;
     }
 
-    private List<String> getNames(List<DictionaryModel> target){
+    private List<String> getNames(List<DictionaryModel> source){
         List<String> names = new ArrayList<>();
-        for (DictionaryModel model : target) {
+        for (DictionaryModel model : source) {
             names.add(model.getTitle());
         }
         return names;
     }
 
     @Override
-    public void create(String originalWord, String translatedWord, final String dictionary) {
-        DictionaryModel dictionaryModel = getDictionaryByName(dictionary);
-        WordModel wordModel = new WordModel(originalWord, translatedWord, dictionaryModel.getId());
-
-        mWordRepository.save(wordModel);
+    public void create(WordModel model) {
+        mWordRepository.save(model);
     }
 
     @Override
-    public void update(String id, String originalText, String translatedText, final String dictionary) {
-        DictionaryModel dictionaryModel = getDictionaryByName(dictionary);
-        WordModel wordModel = new WordModel(id, originalText, translatedText, dictionaryModel.getId());
-
-        mWordRepository.update(id, wordModel);
+    public void update(WordModel model) {
+        mWordRepository.update(model);
     }
 
     @Override
+    @Nullable
     public DictionaryModel getDictionaryByName(final String name) {
         final DictionaryModel[] model = new DictionaryModel[1];
         mDictionaryRepository.getDictionaryByName(name, new DataSource.GetListCallback<DictionaryModel>() {
-            @Override
-            public void onLoaded(List<DictionaryModel> entries) {
-                model[0] = entries.get(0);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                model[0] = new DictionaryModel(name);
-                saveDictionary(model[0]);
-            }
-        });
-        return model[0];
-    }
-
-    @Override
-    public void saveDictionary(DictionaryModel model){
-        mDictionaryRepository.save(model);
-    }
-
-    @Override
-    public DictionaryModel getDictionary(String dictionaryID) {
-        final DictionaryModel[] model = new DictionaryModel[1];
-        mDictionaryRepository.getDictionary(dictionaryID, new DataSource.GetListCallback<DictionaryModel>() {
             @Override
             public void onLoaded(List<DictionaryModel> entries) {
                 model[0] = entries.get(0);
@@ -106,4 +80,26 @@ public class WordManagerModel implements WordManagerModelContract {
         });
         return model[0];
     }
+
+    @Override
+    public void saveDictionary(DictionaryModel model){
+        mDictionaryRepository.save(model);
+    }
+
+//    @Override
+//    public DictionaryModel getDictionary(String dictionaryID) {
+//        final DictionaryModel[] model = new DictionaryModel[1];
+//        mDictionaryRepository.getDictionaryById(dictionaryID, new DataSource.GetListCallback<DictionaryModel>() {
+//            @Override
+//            public void onLoaded(List<DictionaryModel> entries) {
+//                model[0] = entries.get(0);
+//            }
+//
+//            @Override
+//            public void onDataNotAvailable() {
+//                model[0] = null;
+//            }
+//        });
+//        return model[0];
+//    }
 }

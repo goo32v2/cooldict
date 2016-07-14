@@ -5,24 +5,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
-import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.Constants;
+import com.goo32v2.cooldict.data.DictDataSource;
+import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
 import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.DictionaryEntry;
-import com.goo32v2.cooldict.data.DataSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created on 16-May-16. (c) CoolDict
  */
 
-public class DictionaryDao implements DataSource<DictionaryModel> {
+public class DictionaryDao implements DictDataSource {
 
     private static DictionaryDao INSTANCE;
     private DatabaseHelper mDatabaseHelper;
@@ -40,35 +39,16 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
     }
 
     @Override
-    public void get(@NonNull GetListCallback<DictionaryModel> callback,
-                    String selection,
-                    String[] selectionArgs) {
-
-        List<DictionaryModel> dictionaries = new ArrayList<>();
+    public void get(@NonNull GetListCallback<DictionaryModel> callback, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy) {
         db = mDatabaseHelper.getReadableDatabase();
 
-        String[] projection = {
-                DictionaryEntry.COLUMN_ENTRY_ID,
-                DictionaryEntry.COLUMN_TITLE,
-        };
+        String query = getQuery(selection, orderBy);
 
-        Cursor c = db.query(
-                DictionaryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null
-        );
+        Log.d(this.getClass().getCanonicalName(), query);
 
-        if (c != null && c.getCount() > 0 && c.moveToFirst()){
-            do {
-                String itemId = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_ENTRY_ID));
-                String title = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_TITLE));
-
-                DictionaryModel dictionary = new DictionaryModel(itemId, title);
-                dictionaries.add(dictionary);
-            } while (c.moveToNext());
-        }
-
-        if (c != null){
-            c.close();
-        }
+        Cursor c = db.rawQuery(query, selectionArgs);
+        List<DictionaryModel> dictionaries = populate(c);
+        c.close();
         db.close();
 
         if (dictionaries.isEmpty()){
@@ -76,6 +56,58 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
         } else {
             callback.onLoaded(dictionaries);
         }
+    }
+
+    @NonNull
+    private String getQuery(@Nullable String selection, @Nullable String orderBy){
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT ").append(DictionaryEntry.COLUMN_ENTRY_ID).append(", ")
+                .append(DictionaryEntry.COLUMN_TITLE)
+                .append(" FROM ").append(DictionaryEntry.TABLE_NAME);
+
+        if(selection != null && !selection.isEmpty()){
+            query.append(" WHERE ").append(selection);
+        }
+        if (orderBy != null && !orderBy.isEmpty()){
+            query.append(" ORDER BY ").append(orderBy);
+        }
+
+        return query.toString();
+    }
+
+    private List<DictionaryModel> populate(@NonNull Cursor c){
+        List<DictionaryModel> dictionaries = new ArrayList<>();
+        if (c.getCount() > 0 && c.moveToFirst()){
+            do {
+                String itemId = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_ENTRY_ID));
+                String title = c.getString(c.getColumnIndexOrThrow(DictionaryEntry.COLUMN_TITLE));
+                DictionaryModel dictionary = new DictionaryModel(itemId, title);
+                dictionaries.add(dictionary);
+            } while (c.moveToNext());
+        }
+        return dictionaries;
+    }
+
+    @Override
+    public void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback) {
+        get(callback, null, null, null);
+    }
+
+    @Override
+    public void getDictionaryById(String id, @NonNull GetListCallback<DictionaryModel> callback) {
+        String selection = DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
+        String[] selectionArgs = { id };
+
+        get(callback, selection, selectionArgs, null);
+    }
+
+    @Override
+    public void getDictionaryByName(String name, @NonNull GetListCallback<DictionaryModel> callback) {
+        String selection = DictionaryEntry.COLUMN_TITLE + " LIKE ?";
+        String[] selectionArgs = { name };
+
+        get(callback, selection, selectionArgs, null);
     }
 
     @Override
@@ -90,22 +122,15 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
         db.close();
     }
 
-    // TODO: 06-Jul-16 rewrite with mutable model
     @Override
-    public void update(String id, DictionaryModel newModel) {
-        if (!Objects.equals(newModel.getId(), id)) {
-            throw new IllegalArgumentException("ID an newModel.getId() must equals");
-        }
-        checkNotNull(id);
-        checkNotNull(newModel);
-
+    public void update(@NonNull DictionaryModel model) {
         db = mDatabaseHelper.getWritableDatabase();
 
         String whereClause = DictionaryEntry.COLUMN_ENTRY_ID + "= ?";
-        String[] whereArgs = { id };
+        String[] whereArgs = { model.getId() };
 
         ContentValues values = new ContentValues();
-        values.put(DictionaryEntry.COLUMN_TITLE, newModel.getTitle());
+        values.put(DictionaryEntry.COLUMN_TITLE, model.getTitle());
 
         db.update(DictionaryEntry.TABLE_NAME, values, whereClause, whereArgs);
         db.close();
@@ -118,7 +143,7 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
         String selection = DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
         String[] selectionArgs = { dictionary.getId() };
 
-        db.delete(DictionaryEntry.TABLE_NAME, selection,selectionArgs);
+        db.delete(DictionaryEntry.TABLE_NAME, selection, selectionArgs);
 
         db.close();
     }

@@ -10,9 +10,10 @@ import com.goo32v2.cooldict.data.models.WordModel;
 
 public interface WordDataSource extends DataSource<WordModel> {
 
-    void getWord(String id, final @NonNull GetListCallback<WordModel> callback);
+    void getWordsList(@NonNull final GetListCallback<WordModel> callback);
 
-    void getWordsList(final @NonNull GetListCallback<WordModel> callback);
+    void getWordById(@NonNull String wordId, @NonNull final GetListCallback<WordModel> callback);
 
-    void getWordsByDictionary(String id, final @NonNull GetListCallback<WordModel> callback);
+    void getWordsByDictionary(@NonNull String dictionaryId, @NonNull  final GetListCallback<WordModel> callback);
+
 }

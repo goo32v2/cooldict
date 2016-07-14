@@ -12,7 +12,7 @@ public interface DictDataSource extends DataSource<DictionaryModel> {
 
     void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback);
 
-    void getDictionary(String id, @NonNull GetListCallback<DictionaryModel> callback);
+    void getDictionaryById(String id, @NonNull GetListCallback<DictionaryModel> callback);
 
     void getDictionaryByName(String name, @NonNull GetListCallback<DictionaryModel> callback);
 

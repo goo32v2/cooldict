@@ -1,8 +1,5 @@
 package com.goo32v2.cooldict.presenter;
 
-import android.view.View;
-
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.view.DictionaryManagerViewContract;
 
@@ -19,7 +16,5 @@ public interface DictionaryManagerPresenterContract extends BasePresenter<Dictio
     void save(DictionaryModel model);
 
     void remove(DictionaryModel model);
-
-    ModelDTO<DictionaryModel, View.OnClickListener> convert(DictionaryModel model, View.OnClickListener listener);
 
 }

@@ -1,13 +1,11 @@
 package com.goo32v2.cooldict.data.repositories;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import com.goo32v2.cooldict.data.models.WordModel;
-import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract;
-import com.goo32v2.cooldict.data.daos.WordDao;
 import com.goo32v2.cooldict.data.WordDataSource;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.goo32v2.cooldict.data.daos.WordDao;
+import com.goo32v2.cooldict.data.models.WordModel;
 
 /**
  * Created on 17-May-16. (c) CoolDict
@@ -19,7 +17,7 @@ public class WordRepository implements WordDataSource {
     private final WordDao mWordDao;
 
     private WordRepository(@NonNull WordDao wordDao){
-        this.mWordDao = checkNotNull(wordDao);
+        this.mWordDao = wordDao;
     }
 
     public static WordRepository getInstance(WordDao wordDao){
@@ -29,23 +27,27 @@ public class WordRepository implements WordDataSource {
     }
 
     @Override
-    public void removeAll() {
-        mWordDao.removeAll();
+    public void getWordsList(@NonNull GetListCallback<WordModel> callback) {
+        mWordDao.getWordsList(callback);
     }
 
     @Override
-    public void get(@NonNull final GetListCallback<WordModel> callback,
-                    String selection,
-                    String[] selectionArgs) {
+    public void getWordById(@NonNull String wordId, @NonNull GetListCallback<WordModel> callback) {
+        mWordDao.getWordById(wordId, callback);
+    }
 
-        checkNotNull(callback);
+    @Override
+    public void getWordsByDictionary(@NonNull String dictionaryId, @NonNull GetListCallback<WordModel> callback) {
+        mWordDao.getWordsByDictionary(dictionaryId, callback);
+    }
 
-        mWordDao.get(callback, selection, selectionArgs);
+    @Override
+    public void get(@NonNull GetListCallback<WordModel> callback, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy) {
+        mWordDao.get(callback, selection, selectionArgs, orderBy);
     }
 
     @Override
     public void save(@NonNull WordModel entry) {
-        checkNotNull(entry);
         mWordDao.save(entry);
     }
 
@@ -55,26 +57,12 @@ public class WordRepository implements WordDataSource {
     }
 
     @Override
-    public void update(String id, WordModel newModel) {
-        mWordDao.update(id, newModel);
+    public void removeAll() {
+        mWordDao.removeAll();
     }
 
     @Override
-    public void getWord(String id, final @NonNull GetListCallback<WordModel> callback){
-        String selection = DatabasePersistenceContract.WordsEntry.COLUMN_ENTRY_ID + " LIKE ?";
-        String[] selectionArgs= { id };
-        get(callback, selection, selectionArgs);
-    }
-
-    @Override
-    public void getWordsList(final @NonNull GetListCallback<WordModel> callback){
-        get(callback, null, null);
-    }
-
-    @Override
-    public void getWordsByDictionary(String id, final @NonNull GetListCallback<WordModel> callback){
-        String selection = DatabasePersistenceContract.WordsEntry.COLUMN_DICTIONARY_ID + " LIKE ?";
-        String[] selectionArgs= { id };
-        get(callback, selection, selectionArgs);
+    public void update(@NonNull WordModel model) {
+        mWordDao.update(model);
     }
 }

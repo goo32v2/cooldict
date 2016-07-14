@@ -4,6 +4,7 @@ package com.goo32v2.cooldict.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.goo32v2.cooldict.R;
-import com.goo32v2.cooldict.data.dtos.ModelDTO;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.view.adapters.WordListRecycleAdapter;
 
@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
  */
 
 public class WordListFragment extends Fragment {
-//public class WordListFragment extends Fragment implements WordListViewContract.FragmentView {
 
     private WordListRecycleAdapter mWordAdapter;
     private LinearLayoutManager llm;
@@ -49,8 +48,7 @@ public class WordListFragment extends Fragment {
         return root;
     }
 
-//    @Override
-    public void showWords(List<ModelDTO<WordModel, View.OnClickListener>> words) {
+    public void showWords(List<Pair<WordModel, View.OnClickListener>> words) {
         mNoWordsView.setVisibility(View.GONE);
         mWordRecycleView.setVisibility(View.VISIBLE);
 
@@ -62,7 +60,6 @@ public class WordListFragment extends Fragment {
         }
     }
 
-//    @Override
     public void showNoWords() {
         mWordRecycleView.setVisibility(View.GONE);
         mNoWordsView.setVisibility(View.VISIBLE);
@@ -70,19 +67,14 @@ public class WordListFragment extends Fragment {
         mNoWordsTextView.setText(getString(R.string.no_word_text));
     }
 
-//    @Override
-//    public boolean isActive() {
-//        return isAdded();
-//    }
-
-    private void setupRecycleView(List<ModelDTO<WordModel, View.OnClickListener>> words){
+    private void setupRecycleView(List<Pair<WordModel, View.OnClickListener>> words){
         llm = new LinearLayoutManager(getActivity());
         mWordAdapter = new WordListRecycleAdapter(words);
         mWordRecycleView.setLayoutManager(llm);
         mWordRecycleView.setAdapter(mWordAdapter);
     }
 
-    private void update(List<ModelDTO<WordModel, View.OnClickListener>> words) {
+    private void update(List<Pair<WordModel, View.OnClickListener>> words) {
         mWordAdapter.replaceData(words);
     }
 }
