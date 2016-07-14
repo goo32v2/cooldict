@@ -22,13 +22,13 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    public WordRepository provideWordRepository(@NonNull Context context){
+    WordRepository provideWordRepository(@NonNull Context context){
         return WordRepository.getInstance(WordDao.getInstance(context));
     }
 
     @Provides
     @Singleton
-    public DictionaryRepository provideDictionaryRepository(@NonNull Context context){
+    DictionaryRepository provideDictionaryRepository(@NonNull Context context){
         return DictionaryRepository.getInstance(DictionaryDao.getInstance(context));
     }
 }

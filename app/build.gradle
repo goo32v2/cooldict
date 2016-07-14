@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
@@ -7,21 +8,18 @@ android {
 
     defaultConfig {
         applicationId "com.goo32v2.cooldict"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 24
-        versionCode 3
+        versionCode 4
         versionName "0.3"
-
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
+
     buildTypes {
         debug {
             minifyEnabled true
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguardTest-rules.pro'
         }
 
         release {
@@ -29,69 +27,45 @@ android {
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguardTest-rules.pro'
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+    dataBinding {
+        enabled = true
     }
 
-//    testOptions.unitTests.all {
-//        testLogging {
-//            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
-//        }
-//    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 ext {
     supportLibraryVer = '24.0.0'
-    butterKnifeVer = '8.1.0'
-    guavaVer = '19.0'
-    espressoVer = '2.2.2'
-    junitVer = '4.12'
-    mockitoVer = '2.0.52-beta'
-    hamcrestVer = '1.3'
-    runnerVer = '0.5'
-    dexmakerVer = '1.2'
+    butterKnifeVer = '8.2.1'
     duggerVer = '2.5'
+    rxAndroidVer = '1.2.1'
+    rxJavaVer = '1.1.7'
+
+    // test dependencies
+    junitVer = '4.12'
 }
 
 dependencies {
-    apt "com.jakewharton:butterknife-compiler:$butterKnifeVer"
     apt "com.google.dagger:dagger-compiler:$duggerVer"
+    apt "com.jakewharton:butterknife-compiler:$butterKnifeVer"
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    provided 'javax.annotation:jsr250-api:1.0'
     compile "com.android.support:appcompat-v7:$supportLibraryVer",
             "com.android.support:cardview-v7:$supportLibraryVer",
             "com.android.support:recyclerview-v7:$supportLibraryVer",
             "com.android.support:design:$supportLibraryVer",
-            "com.android.support:support-v4:$supportLibraryVer",
+            "com.android.support:support-annotations:$supportLibraryVer",
             "com.google.dagger:dagger:$duggerVer",
-            "com.google.guava:guava:$guavaVer",
-            "com.jakewharton:butterknife:$butterKnifeVer",
-            "com.android.support.test.espresso:espresso-idling-resource:$espressoVer"
-
-    provided 'javax.annotation:jsr250-api:1.0'
-
-    testCompile "junit:junit:$junitVer",
-                "org.mockito:mockito-core:$mockitoVer",
-                "org.hamcrest:hamcrest-all:$hamcrestVer"
-
-    androidTestCompile  "junit:junit:$junitVer",
-                        "com.android.support.test:runner:$runnerVer",
-                        "com.android.support.test:rules:$runnerVer",
-                        "org.mockito:mockito-core:$mockitoVer",
-                        "com.google.dexmaker:dexmaker:$dexmakerVer",
-                        "com.google.dexmaker:dexmaker-mockito:$dexmakerVer",
-                        "com.android.support.test.espresso:espresso-core:$espressoVer",
-                        "com.android.support.test.espresso:espresso-contrib:$espressoVer",
-                        "com.android.support.test.espresso:espresso-intents:$espressoVer",
-                        "com.android.support:appcompat-v7:$supportLibraryVer",
-                        "com.android.support:design:$supportLibraryVer",
-                        "com.android.support:support-annotations:$supportLibraryVer",
-                        "com.android.support:support-v4:$supportLibraryVer",
-                        "com.android.support:recyclerview-v7:$supportLibraryVer"
+            "io.reactivex:rxandroid:$rxAndroidVer",
+            "io.reactivex:rxjava:$rxJavaVer",
+            "com.jakewharton:butterknife:$butterKnifeVer"
+    testCompile "junit:junit:$junitVer"
+    androidTestCompile "junit:junit:$junitVer"
 }

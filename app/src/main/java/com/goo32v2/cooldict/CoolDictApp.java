@@ -5,8 +5,6 @@ import android.app.Application;
 import com.goo32v2.cooldict.injection.AppComponent;
 import com.goo32v2.cooldict.injection.AppModule;
 import com.goo32v2.cooldict.injection.DaggerAppComponent;
-import com.goo32v2.cooldict.injection.MVPModelModule;
-import com.goo32v2.cooldict.injection.PresenterModule;
 import com.goo32v2.cooldict.injection.RepositoryModule;
 import com.goo32v2.cooldict.injection.UtilsModule;
 
@@ -28,13 +26,11 @@ public class CoolDictApp extends Application {
         component = buildComponent();
     }
 
-    protected AppComponent buildComponent() {
+    private AppComponent buildComponent() {
         return DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .utilsModule(new UtilsModule())
-                .presenterModule(new PresenterModule())
                 .repositoryModule(new RepositoryModule())
-                .mVPModelModule(new MVPModelModule())
                 .build();
     }
 }

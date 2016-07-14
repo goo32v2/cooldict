@@ -18,7 +18,7 @@ public class UtilsModule {
 
     @Provides
     @Singleton
-    public Navigator provideNavigator(Context context){
+    Navigator provideNavigator(Context context){
         return new Navigator(context);
     }
 }

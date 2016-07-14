@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.goo32v2.cooldict.Constants;
 import com.goo32v2.cooldict.data.DictDataSource;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
@@ -151,12 +150,7 @@ public class DictionaryDao implements DictDataSource {
     @Override
     public void removeAll() {
         db = mDatabaseHelper.getWritableDatabase();
-
-        String whereClause = DictionaryEntry.COLUMN_ENTRY_ID + "<> ?";
-        String[] whereArgs = { Constants.DEFAULT_DICTIONARY_ID };
-
-        db.delete(DictionaryEntry.TABLE_NAME, whereClause, whereArgs);
-
+        db.delete(DictionaryEntry.TABLE_NAME, null, null);
         db.close();
     }
 }
