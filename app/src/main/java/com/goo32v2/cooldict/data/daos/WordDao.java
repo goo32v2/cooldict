@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.goo32v2.cooldict.data.WordDataSource;
 import com.goo32v2.cooldict.data.models.WordModel;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
 import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.DictionaryEntry;

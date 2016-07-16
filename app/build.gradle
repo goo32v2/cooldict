@@ -47,6 +47,7 @@ ext {
     duggerVer = '2.5'
     rxAndroidVer = '1.2.1'
     rxJavaVer = '1.1.7'
+    gsonVer = '2.7'
 
     // test dependencies
     junitVer = '4.12'
@@ -66,6 +67,7 @@ dependencies {
             "io.reactivex:rxandroid:$rxAndroidVer",
             "io.reactivex:rxjava:$rxJavaVer",
             "com.jakewharton:butterknife:$butterKnifeVer"
+            "com.google.code.gson:$gsonVer"
     testCompile "junit:junit:$junitVer"
     androidTestCompile "junit:junit:$junitVer"
 }

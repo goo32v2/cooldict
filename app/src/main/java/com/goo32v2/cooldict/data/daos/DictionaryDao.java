@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.goo32v2.cooldict.data.DictDataSource;
+import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 import com.goo32v2.cooldict.data.sources.database.DatabaseHelper;
 import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.DictionaryEntry;
@@ -20,7 +20,7 @@ import java.util.List;
  * Created on 16-May-16. (c) CoolDict
  */
 
-public class DictionaryDao implements DictDataSource {
+public class DictionaryDao implements DataSource<DictionaryModel> {
 
     private static DictionaryDao INSTANCE;
     private DatabaseHelper mDatabaseHelper;

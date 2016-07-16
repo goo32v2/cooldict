@@ -3,7 +3,6 @@ package com.goo32v2.cooldict.data.repositories;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.goo32v2.cooldict.data.DictDataSource;
 import com.goo32v2.cooldict.data.daos.DictionaryDao;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
 
