@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.goo32v2.cooldict.data.DataSource;
 import com.goo32v2.cooldict.data.models.DictionaryModel;
@@ -15,6 +14,8 @@ import com.goo32v2.cooldict.data.sources.database.DatabasePersistenceContract.Di
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created on 16-May-16. (c) CoolDict
@@ -37,25 +38,25 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
         return INSTANCE;
     }
 
-    @Override
-    public void get(@NonNull GetListCallback<DictionaryModel> callback, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy) {
-        db = mDatabaseHelper.getReadableDatabase();
-
-        String query = getQuery(selection, orderBy);
-
-        Log.d(this.getClass().getCanonicalName(), query);
-
-        Cursor c = db.rawQuery(query, selectionArgs);
-        List<DictionaryModel> dictionaries = populate(c);
-        c.close();
-        db.close();
-
-        if (dictionaries.isEmpty()){
-            callback.onDataNotAvailable();
-        } else {
-            callback.onLoaded(dictionaries);
-        }
-    }
+//    @Override
+//    public void get(@NonNull GetListCallback<DictionaryModel> callback, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy) {
+//        db = mDatabaseHelper.getReadableDatabase();
+//
+//        String query = getQuery(selection, orderBy);
+//
+//        Log.d(this.getClass().getCanonicalName(), query);
+//
+//        Cursor c = db.rawQuery(query, selectionArgs);
+//        List<DictionaryModel> dictionaries = populate(c);
+//        c.close();
+//        db.close();
+//
+//        if (dictionaries.isEmpty()){
+//            callback.onDataNotAvailable();
+//        } else {
+//            callback.onLoaded(dictionaries);
+//        }
+//    }
 
     @NonNull
     private String getQuery(@Nullable String selection, @Nullable String orderBy){
@@ -89,24 +90,8 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
     }
 
     @Override
-    public void getDictionaryList(@NonNull GetListCallback<DictionaryModel> callback) {
-        get(callback, null, null, null);
-    }
-
-    @Override
-    public void getDictionaryById(String id, @NonNull GetListCallback<DictionaryModel> callback) {
-        String selection = DictionaryEntry.COLUMN_ENTRY_ID + " LIKE ?";
-        String[] selectionArgs = { id };
-
-        get(callback, selection, selectionArgs, null);
-    }
-
-    @Override
-    public void getDictionaryByName(String name, @NonNull GetListCallback<DictionaryModel> callback) {
-        String selection = DictionaryEntry.COLUMN_TITLE + " LIKE ?";
-        String[] selectionArgs = { name };
-
-        get(callback, selection, selectionArgs, null);
+    public Observable<DictionaryModel> get(@Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy) {
+        return null;
     }
 
     @Override
@@ -148,9 +133,8 @@ public class DictionaryDao implements DataSource<DictionaryModel> {
     }
 
     @Override
-    public void removeAll() {
-        db = mDatabaseHelper.getWritableDatabase();
-        db.delete(DictionaryEntry.TABLE_NAME, null, null);
-        db.close();
+    public void remove(@NonNull List<DictionaryModel> entries) {
+
     }
+
 }
