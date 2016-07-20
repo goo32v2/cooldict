@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.data;
+package com.goo32v2.cooldict.data.daos;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +11,7 @@ import rx.Observable;
  * Created on 14-May-16. (c) CoolDict
  */
 
-public interface DataSource<T> {
+interface DataSource<T> {
 
     Observable<T> get(@Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy);
 

@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.data.models;
+package com.goo32v2.cooldict.models;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,7 +25,7 @@ public final class WordModel implements BaseModel, Serializable{
      *
      * @param originalWord - Original word
      * @param translatedWord - Translated word
-     * @param dictionaryId - DictionaryEntry
+     * @param dictionaryId - DictionariesEntry
      */
     public WordModel(@NonNull String originalWord,
                      @Nullable String translatedWord,
@@ -41,7 +41,7 @@ public final class WordModel implements BaseModel, Serializable{
      *
      * @param originalWord - Original word
      * @param translatedWord - Translated word
-     * @param dictionary - DictionaryEntry
+     * @param dictionary - DictionariesEntry
      */
     public WordModel(@NonNull String originalWord,
                      @Nullable String translatedWord,
@@ -61,7 +61,7 @@ public final class WordModel implements BaseModel, Serializable{
      * @param mId - Id
      * @param originalWord - Original word
      * @param translatedWord - Translated word
-     * @param dictionaryId - DictionaryEntry
+     * @param dictionaryId - DictionariesEntry
      */
     public WordModel(@NonNull String mId,
                      @NonNull String originalWord,
@@ -81,7 +81,7 @@ public final class WordModel implements BaseModel, Serializable{
      * @param id - Id
      * @param originalWord - Original word
      * @param translatedWord - Translated word
-     * @param dictionary - DictionaryEntry
+     * @param dictionary - DictionariesEntry
      */
     public WordModel(@NonNull String id,
                      @NonNull String originalWord,

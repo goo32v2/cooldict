@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.data.sources.database;
+package com.goo32v2.cooldict.data.database;
 
 import android.provider.BaseColumns;
 
@@ -18,7 +18,7 @@ public class DatabasePersistenceContract {
         public static final String COLUMN_DICTIONARY_ID = "dictionary_id";
     }
 
-    public static abstract class DictionaryEntry implements BaseColumns{
+    public static abstract class DictionariesEntry implements BaseColumns{
         public static final String TABLE_NAME = "dictionary";
         public static final String COLUMN_ENTRY_ID = "entry_id";
         public static final String COLUMN_TITLE = "title";

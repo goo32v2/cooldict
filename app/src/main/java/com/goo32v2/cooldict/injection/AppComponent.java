@@ -10,7 +10,7 @@ import dagger.Component;
 
 @Component(modules = {
         AppModule.class,
-        RepositoryModule.class,
+        DataModule.class,
         UtilsModule.class
 })
 @Singleton

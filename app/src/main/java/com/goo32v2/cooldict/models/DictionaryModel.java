@@ -1,4 +1,4 @@
-package com.goo32v2.cooldict.data.models;
+package com.goo32v2.cooldict.models;
 
 import android.support.annotation.NonNull;
 
