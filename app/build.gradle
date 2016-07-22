@@ -42,7 +42,7 @@ android {
 }
 
 ext {
-    supportLibraryVer = '24.0.0'
+    supportLibraryVer = '24.1.1'
     butterKnifeVer = '8.2.1'
     duggerVer = '2.5'
     rxAndroidVer = '1.2.1'

@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.goo32v2.cooldict.data.database.DatabaseHelper;
-import com.goo32v2.cooldict.data.database.DatabasePersistenceContract.DictionariesEntry;
+import com.goo32v2.cooldict.data.database.DatabasePersistence.DictionariesEntry;
 import com.goo32v2.cooldict.models.DictionaryModel;
 
 import java.util.ArrayList;
@@ -41,7 +41,6 @@ public class DictionariesDao implements DataSource<DictionaryModel> {
         c.close();
         db.close();
 
-//        return Observable.create(subscriber -> subscriber.onNext(dictionaries));
         return Observable.from(dictionaries);
     }
 

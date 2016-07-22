@@ -8,8 +8,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.goo32v2.cooldict.data.database.DatabaseHelper;
-import com.goo32v2.cooldict.data.database.DatabasePersistenceContract.DictionariesEntry;
-import com.goo32v2.cooldict.data.database.DatabasePersistenceContract.WordsEntry;
+import com.goo32v2.cooldict.data.database.DatabasePersistence.DictionariesEntry;
+import com.goo32v2.cooldict.data.database.DatabasePersistence.WordsEntry;
+import com.goo32v2.cooldict.models.DictionaryModel;
 import com.goo32v2.cooldict.models.WordModel;
 
 import java.util.ArrayList;
@@ -131,7 +132,7 @@ public class WordsDao implements DataSource<WordModel> {
                 String dictId = c.getString(c.getColumnIndexOrThrow(DictionariesEntry.COLUMN_ENTRY_ID));
                 String dictTitle = c.getString(c.getColumnIndexOrThrow(DictionariesEntry.COLUMN_TITLE));
 
-                WordModel word = new WordModel(itemId, origWord, translWord, dictId, dictTitle);
+                WordModel word = new WordModel(itemId, origWord, translWord, new DictionaryModel(dictId, dictTitle));
                 words.add(word);
             } while (c.moveToNext());
         }

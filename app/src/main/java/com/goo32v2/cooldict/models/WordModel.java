@@ -4,96 +4,48 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Created on 14-May-16. (c) CoolDict
  */
 
-public final class WordModel implements BaseModel, Serializable{
+public final class WordModel implements Serializable {
 
     @NonNull private String id;
     @NonNull private String originalWord;
     @Nullable private String translatedWord;
-    @Nullable private String dictionaryId;
-    @Nullable private String dictionaryTitle;
-
+    @NonNull private DictionaryModel dictionary;
 
     /**
-     * Use this constructor to create new Word.
+     * Use for mapping data
      *
-     * @param originalWord - Original word
-     * @param translatedWord - Translated word
-     * @param dictionaryId - DictionariesEntry
+     * @param id - word id
+     * @param originalWord - original word title
+     * @param translatedWord - translated word title, can be null
+     * @param dictionary - dictionary model, that assign with word
      */
-    public WordModel(@NonNull String originalWord,
-                     @Nullable String translatedWord,
-                     @Nullable String dictionaryId) {
-        this.id = UUID.randomUUID().toString();
-        this.originalWord = originalWord;
-        this.translatedWord = translatedWord;
-        this.dictionaryId = dictionaryId;
-    }
-
-    /**
-     * Use this constructor to create new Word.
-     *
-     * @param originalWord - Original word
-     * @param translatedWord - Translated word
-     * @param dictionary - DictionariesEntry
-     */
-    public WordModel(@NonNull String originalWord,
-                     @Nullable String translatedWord,
-                     @Nullable DictionaryModel dictionary) {
-        this.id = UUID.randomUUID().toString();
-        this.originalWord = originalWord;
-        this.translatedWord = translatedWord;
-        if (dictionary != null){
-            this.dictionaryId = dictionary.getId();
-            this.dictionaryTitle = dictionary.getTitle();
-        }
-    }
-
-    /**
-     * Use this constructor to populate Word from repository.
-     *
-     * @param mId - Id
-     * @param originalWord - Original word
-     * @param translatedWord - Translated word
-     * @param dictionaryId - DictionariesEntry
-     */
-    public WordModel(@NonNull String mId,
-                     @NonNull String originalWord,
-                     @Nullable String translatedWord,
-                     @Nullable String dictionaryId,
-                     @Nullable String dictionaryTitle) {
-        this.id = mId;
-        this.originalWord = originalWord;
-        this.translatedWord = translatedWord;
-        this.dictionaryId = dictionaryId;
-        this.dictionaryTitle = dictionaryTitle;
-    }
-
-    /**
-     * Use this constructor to populate Word from repository.
-     *
-     * @param id - Id
-     * @param originalWord - Original word
-     * @param translatedWord - Translated word
-     * @param dictionary - DictionariesEntry
-     */
-    public WordModel(@NonNull String id,
-                     @NonNull String originalWord,
-                     @Nullable String translatedWord,
-                     @Nullable DictionaryModel dictionary) {
+    public WordModel(@NonNull String id, @NonNull String originalWord,
+                     @Nullable String translatedWord, @NonNull DictionaryModel dictionary) {
         this.id = id;
         this.originalWord = originalWord;
         this.translatedWord = translatedWord;
-        if (dictionary != null){
-            this.dictionaryId = dictionary.getId();
-            this.dictionaryTitle = dictionary.getTitle();
-        }
+        this.dictionary = dictionary;
+    }
+
+    /**
+     * Use for create new word
+     *
+     * @param originalWord - original word title
+     * @param translatedWord - translated word title, can be null
+     * @param dictionary - dictionary model, that assign with word
+     */
+    public WordModel(@NonNull String originalWord, @Nullable String translatedWord,
+                     @NonNull DictionaryModel dictionary) {
+        this.id = UUID.randomUUID().toString();
+        this.originalWord = originalWord;
+        this.translatedWord = translatedWord;
+        this.dictionary = dictionary;
     }
 
     @NonNull
@@ -111,54 +63,51 @@ public final class WordModel implements BaseModel, Serializable{
         return translatedWord;
     }
 
-    @Nullable
+    @NonNull
+    public DictionaryModel getDictionary() {
+        return dictionary;
+    }
+
+    @NonNull
     public String getDictionaryId() {
-        return dictionaryId;
+        return dictionary.getId();
     }
 
-    public void setId(@NonNull String id) {
-        this.id = id;
-    }
-
-    public void setOriginalWord(@NonNull String originalWord) {
-        this.originalWord = originalWord;
-    }
-
-    public void setTranslatedWord(@Nullable String translatedWord) {
-        this.translatedWord = translatedWord;
-    }
-
-    public void setDictionaryId(@Nullable String dictionaryId) {
-        this.dictionaryId = dictionaryId;
-    }
-
-    @Nullable
+    @NonNull
     public String getDictionaryTitle() {
-        return dictionaryTitle;
-    }
-
-    public void setDictionaryTitle(@Nullable String dictionaryTitle) {
-        this.dictionaryTitle = dictionaryTitle;
+        return dictionary.getTitle();
     }
 
     @Override
     public String toString() {
-        return getId();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(this);
+        return "WordModel{" +
+                "id='" + id + '\'' +
+                ", originalWord='" + originalWord + '\'' +
+                ", translatedWord='" + translatedWord + '\'' +
+                ", dictionary=" + dictionary +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         WordModel wordModel = (WordModel) o;
-        return Objects.equals(getId(), wordModel.getId()) &&
-                Objects.equals(getOriginalWord(), wordModel.getOriginalWord()) &&
-                Objects.equals(getTranslatedWord(), wordModel.getTranslatedWord()) &&
-                Objects.equals(getDictionaryId(), wordModel.getDictionaryId());
+
+        if (!getId().equals(wordModel.getId())) return false;
+        if (!getOriginalWord().equals(wordModel.getOriginalWord())) return false;
+        if (getTranslatedWord() != null ? !getTranslatedWord().equals(wordModel.getTranslatedWord()) : wordModel.getTranslatedWord() != null)
+            return false;
+        return getDictionary().equals(wordModel.getDictionary());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getOriginalWord().hashCode();
+        result = 31 * result + (getTranslatedWord() != null ? getTranslatedWord().hashCode() : 0);
+        result = 31 * result + getDictionary().hashCode();
+        return result;
     }
 }

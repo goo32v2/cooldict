@@ -11,7 +11,7 @@ import rx.Observable;
  * Created on 14-May-16. (c) CoolDict
  */
 
-interface DataSource<T> {
+public interface DataSource<T> {
 
     Observable<T> get(@Nullable String selection, @Nullable String[] selectionArgs, @Nullable String orderBy);
 

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.goo32v2.cooldict.data.database.DatabasePersistenceContract.*;
+import com.goo32v2.cooldict.data.database.DatabasePersistence.*;
 
 /**
  * Created on 14-May-16. (c) CoolDict
@@ -17,19 +17,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "cooldict.db";
     private static final String TEXT_TYPE = " TEXT";
-    private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ", ";
 
     private static final String CREATE_TABLE_WORDS = "CREATE TABLE " + WordsEntry.TABLE_NAME + "("
-            + WordsEntry.COLUMN_ENTRY_ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT NOT NULL"
+            + WordsEntry.COLUMN_ENTRY_ID + " " + TEXT_TYPE + " PRIMARY KEY NOT NULL"
             + COMMA_SEP + WordsEntry.COLUMN_ORIGINAL_WORD + TEXT_TYPE + COMMA_SEP
             + WordsEntry.COLUMN_TRANSLATED_WORD + TEXT_TYPE + COMMA_SEP
-            + WordsEntry.COLUMN_DICTIONARY_ID + TEXT_TYPE + ")";
+            + WordsEntry.COLUMN_DICTIONARY_ID + TEXT_TYPE + COMMA_SEP
+            + WordsEntry.COLUMN_CREATION_DATE + "DEFAULT CURRENT_TIMESTAMP)";
 
     private static final String CREATE_TABLE_DICTIONARY = "CREATE TABLE "
-            + DictionariesEntry.TABLE_NAME + "(" + DictionariesEntry.COLUMN_ENTRY_ID + INTEGER_TYPE
-            + " PRIMARY KEY AUTOINCREMENT NOT NULL" + COMMA_SEP
-            + DictionariesEntry.COLUMN_TITLE + TEXT_TYPE + ")";
+            + DictionariesEntry.TABLE_NAME + "(" + DictionariesEntry.COLUMN_ENTRY_ID + " " + TEXT_TYPE
+            + " PRIMARY KEY NOT NULL" + COMMA_SEP
+            + DictionariesEntry.COLUMN_TITLE + TEXT_TYPE + COMMA_SEP
+            + DictionariesEntry.COLUMN_CREATION_DATE + "DEFAULT CURRENT_TIMESTAMP)";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
