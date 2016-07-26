@@ -1,36 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/nav_dictionaries_preset"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_action_show_all"
+            android:checked="true"
+            android:icon="@drawable/ic_nav_action_show_all"
+            android:title="@string/nav_action_show_all"
+            app:showAsAction="ifRoom" />
     </group>
 
-    <item android:title="Communicate">
+    <item
+        android:id="@+id/nav_dictionaries_group"
+        android:title=""
+        app:showAsAction="never">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_action_create_dictionary"
+                android:icon="@drawable/ic_nav_create_dictionary"
+                android:orderInCategory="9999"
+                android:title="@string/nav_action_create_dictionary_title"
+                app:showAsAction="ifRoom" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_action_open_dictionary_manager"
+                android:icon="@drawable/ic_nav_dictionary_manager"
+                android:orderInCategory="9999"
+                android:title="@string/action_dictionary_manager"
+                app:showAsAction="ifRoom" />
         </menu>
     </item>
+
+    <group
+        android:id="@+id/footer"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_nav_settings"
+            android:orderInCategory="1001"
+            android:title="@string/action_settings"
+            app:showAsAction="ifRoom" />
+    </group>
 
 </menu>
