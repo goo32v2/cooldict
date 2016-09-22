@@ -8,5 +8,9 @@
     <string name="action_settings">Settings</string>
     <string name="nav_action_show_all">Show all</string>
     <string name="nav_action_create_dictionary_title">Create dictionary</string>
+    <string name="action_dictionary_manager">Dictionary Manager</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

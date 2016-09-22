@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.goo32v2.cooldict"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 24
         versionCode 4
         versionName "0.3"
@@ -42,12 +42,13 @@ android {
 }
 
 ext {
-    supportLibraryVer = '24.1.1'
+    supportLibraryVer = '24.2.1'
     butterKnifeVer = '8.2.1'
     duggerVer = '2.5'
     rxAndroidVer = '1.2.1'
     rxJavaVer = '1.1.7'
     gsonVer = '2.7'
+    constraintLayoutVer = '1.0.0-alpha8'
 
     // test dependencies
     junitVer = '4.12'
@@ -60,8 +61,10 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibraryVer",
             "com.android.support:cardview-v7:$supportLibraryVer",
             "com.android.support:recyclerview-v7:$supportLibraryVer",
+            "com.android.support:support-v4:$supportLibraryVer",
             "com.android.support:design:$supportLibraryVer",
             "com.android.support:support-annotations:$supportLibraryVer",
+            "com.android.support.constraint:constraint-layout:$constraintLayoutVer",
             "com.google.dagger:dagger:$duggerVer",
             "io.reactivex:rxandroid:$rxAndroidVer",
             "io.reactivex:rxjava:$rxJavaVer",
@@ -69,6 +72,5 @@ dependencies {
     "com.google.code.gson:$gsonVer"
     testCompile "junit:junit:$junitVer"
     androidTestCompile "junit:junit:$junitVer"
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
     provided 'javax.annotation:jsr250-api:1.0'
 }

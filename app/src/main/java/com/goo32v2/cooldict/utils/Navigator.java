@@ -8,7 +8,6 @@ import android.content.Context;
 
 public class Navigator {
 
-    // inject app context
     private Context context;
 
     public Navigator(Context context) {
@@ -16,4 +15,7 @@ public class Navigator {
     }
 
 
+    public static void startDictionaryManagerActivity() {
+
+    }
 }
